@@ -1,0 +1,6 @@
+framework module Pods_UBike_UBikeUITests {
+  umbrella header "Pods-UBike-UBikeUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
