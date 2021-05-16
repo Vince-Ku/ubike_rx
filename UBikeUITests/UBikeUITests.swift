@@ -2,7 +2,7 @@
 //  UBikeUITests.swift
 //  UBikeUITests
 //
-//  Created by 辜敬閎 on 2021/5/12.
+//  Created by Vince on 2021/5/12.
 //
 
 import XCTest
