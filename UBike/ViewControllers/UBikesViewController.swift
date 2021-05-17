@@ -22,7 +22,6 @@ class UBikesViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initUI()
         setupRx()
     }
     
@@ -44,33 +43,28 @@ class UBikesViewController : UIViewController {
             return
             
         default:
-            print("prepare none ")
+            print("unpredicted segue")
         }
     }
     
-    private func initUI(){
-    }
-    
     private func setupRx(){
-        //temp
-        favoriteBtn.rx.controlEvent(.touchUpInside).subscribe(onNext: { [weak self] in
-            guard let self = self else { return }
-            self.areaBtn.isSelected = false
-            self.favoriteBtn.isSelected = !self.favoriteBtn.isSelected
-            self.favoriteContainerView.isHidden = false
-            self.areaContainerView.isHidden = true
-            
-        }).disposed(by: disposeBag)
-        
-        //temp
-        areaBtn.rx.controlEvent(.touchUpInside).subscribe(onNext: { [weak self] in
-            guard let self = self else { return }
-            self.favoriteBtn.isSelected = false
-            self.areaBtn.isSelected = !self.areaBtn.isSelected
-            self.favoriteContainerView.isHidden = true
-            self.areaContainerView.isHidden = false
-            
-        }).disposed(by: disposeBag)
+        //radio button
+        Observable.merge(areaBtn.rx.tap.map{0} , favoriteBtn.rx.tap.map{1})
+            .subscribe(onNext:{ [weak self] btnType in
+                guard let self = self else { return }
+                if btnType == 0{
+                    self.favoriteBtn.isSelected = false
+                    self.areaBtn.isSelected = !self.areaBtn.isSelected
+                    self.favoriteContainerView.isHidden = true
+                    self.areaContainerView.isHidden = false
+                }else{
+                    self.areaBtn.isSelected = false
+                    self.favoriteBtn.isSelected = !self.favoriteBtn.isSelected
+                    self.favoriteContainerView.isHidden = false
+                    self.areaContainerView.isHidden = true
+                }
+                
+            }).disposed(by: disposeBag)
         
         viewModel.ubikeCellTap.subscribe(onNext:{ [weak self] ubike in
             guard let ubike = ubike else { return }
@@ -81,12 +75,18 @@ class UBikesViewController : UIViewController {
         }).disposed(by: disposeBag)
         
         if let homeViewModel = homeViewModel{
-            viewModel.navigateBtnTap
+            
+            viewModel.guideBtnTap
+                .bind(to: homeViewModel.selectAnnotation)
+                .disposed(by: disposeBag)
+            
+            viewModel.guideBtnTap
                 .do(onNext: { [weak self] _ in
                     self?.navigationController?.popViewController(animated: true)
                 })
-                .bind(to: homeViewModel.navigateTap)
+                .bind(to: homeViewModel.guideTap)
                 .disposed(by: disposeBag)
+            
         }
         
     }

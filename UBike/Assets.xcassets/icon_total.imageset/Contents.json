@@ -1,12 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "icon_sm_star_on@2x.png",
+      "filename" : "icon_total.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icon_sm_star_on@3x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

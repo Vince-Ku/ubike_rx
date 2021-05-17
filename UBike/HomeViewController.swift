@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
     private var currentLocation: CLLocation? {
         didSet{
             if firstLoading {
-                showLocation(currentLocation)
+                showLocation(currentLocation,5000,5000)
                 firstLoading = false
             }
         }
@@ -54,14 +54,14 @@ class HomeViewController: UIViewController {
             return
             
         default:
-            print("prepare none ")
+            print("unpredicted segue")
         }
     }
     
     private func initUI(){
         mapView.showsUserLocation = true
         mapView.delegate = self
-        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "pin")
+        mapView.register(UBikeAnnotationView.self, forAnnotationViewWithReuseIdentifier: "ubikePin")
         
         // location service
         if CLLocationManager.locationServicesEnabled(){
@@ -72,15 +72,6 @@ class HomeViewController: UIViewController {
             locationManager.startUpdatingLocation()
         }
         
-    }
-    
-    private func showLocation(_ location:CLLocation?){
-        if let location = location{
-            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            
-            let region = MKCoordinateRegion(center: center, latitudinalMeters: 1000, longitudinalMeters: 1000)
-            mapView.setRegion(region, animated: true)
-        }
     }
     
     private func setUpRx(){
@@ -95,17 +86,15 @@ class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
 
         showCurrentBtn.rx.controlEvent(.touchUpInside).subscribe(onNext:{ [unowned self] in
-            showLocation(currentLocation)
+            showLocation(currentLocation, nil,nil)
             
         }).disposed(by:disposeBag)
         
         viewModel.selectAnnotation.subscribe(onNext:{ [weak self] ubike in
-            guard let self = self , let lat = Double(ubike.lat ?? ""), let lng = Double(ubike.lng ?? ""), let selectedSno = ubike.sno else { return }
-            
-            self.showLocation(CLLocation(latitude: lat, longitude: lng))
+            guard let self = self , let selectedSno = ubike.sno else { return }
             
             for annotation in self.mapView.annotations {
-                let ubikeAnnotation = self.mapView.view(for: annotation)?.annotation as? UBikePointAnnotation
+                let ubikeAnnotation = self.mapView.view(for: annotation)?.annotation as? UBikeAnnotation
                 
                 if let sno = ubikeAnnotation?.ubike?.sno {
                     if sno == selectedSno {
@@ -121,14 +110,14 @@ class HomeViewController: UIViewController {
             guard let self = self else { return }
             //initialize
             self.mapView.removeAnnotations(self.mapView.annotations)
+            self.mapView.removeOverlays(self.mapView.overlays)
             
             //display ubikes station on Apple Map
             for ubike in ubikes{
-                
-                var uBikesPoint : [UBikePointAnnotation] = []
+                var uBikesPoint : [UBikeAnnotation] = []
                 if let lat = Double(ubike.lat ?? "") , let lng = Double(ubike.lng ?? ""){
                     
-                    let uBikePoint = UBikePointAnnotation()
+                    let uBikePoint = UBikeAnnotation()
                     
                     uBikePoint.ubike = ubike
                     uBikePoint.title = ubike.sna
@@ -142,50 +131,97 @@ class HomeViewController: UIViewController {
             
         }).disposed(by: disposeBag)
         
-        viewModel.navigateTap.subscribe(onNext:{ [weak self] ubike in
+        viewModel.guideTap.subscribe(onNext:{ [weak self] ubike in
             guard let currentLocation = self?.currentLocation ,
-                  let lat = Double(ubike?.lat ?? ""),
-                  let lng = Double(ubike?.lng ?? "")  else { return }
+                  let lat = Double(ubike.lat ?? ""),
+                  let lng = Double(ubike.lng ?? "")  else { return }
             
+            // remove all current routes
             if let overlays = self?.mapView.overlays {
                 self?.mapView.removeOverlays(overlays)
             }
             
-            //MKPlacemark(coordinate: CLLocationCoordinate2D, addressDictionary: [String : Any]?)
-            // coordinate 2D ---> MKPlacemark ---> MKMapItem
-            let toCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-            let toMKPlacemark: MKPlacemark = MKPlacemark(coordinate: toCoordinate, addressDictionary: nil)
-            let toLocation: MKMapItem = MKMapItem(placemark: toMKPlacemark)
-            toLocation.name = "去的地方";
+            //
+            // destination
+            //
+            let toCoordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+            let toMKPlacemark = MKPlacemark(coordinate: toCoordinate, addressDictionary: nil)
+            let toLocation = MKMapItem(placemark: toMKPlacemark)
             
-            let meCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
-            let meMKPlacemark: MKPlacemark = MKPlacemark(coordinate: meCoordinate, addressDictionary: nil)
-            let meLocation: MKMapItem = MKMapItem(placemark: meMKPlacemark)
-            meLocation.name = "我在的地方";
+            //
+            // current location
+            //
+            let meCoordinate = CLLocationCoordinate2D(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+            let meMKPlacemark = MKPlacemark(coordinate: meCoordinate, addressDictionary: nil)
+            let meLocation = MKMapItem(placemark: meMKPlacemark)
             
-            // 创建请求导航路线数据信息
-            let request: MKDirections.Request = MKDirections.Request()
+            //request for apple direction apit
+            let request = MKDirections.Request()
             request.transportType = .walking
-            // 创建起点:根据 CLPlacemark 地标对象创建 MKPlacemark 地标对象
             request.source = meLocation
-            // 创建终点:根据 CLPlacemark 地标对象创建 MKPlacemark 地标对象)
             request.destination = toLocation
 
-            // 创建导航对象，根据请求，获取实际路线信息
-            let directions: MKDirections = MKDirections(request: request)
-
-            // 计算路线信息
-            directions.calculate { (response:MKDirections.Response?, error:Error?) in
-                if let resp = response {
-                    // 遍历 routes （MKRoute对象）：因为有多种路线
-                    for route: MKRoute in resp.routes {
-                        // 添加折线
-                        self?.mapView.addOverlay(route.polyline, level: MKOverlayLevel.aboveRoads)
+            let directions = MKDirections(request: request)
+            
+            // call Apple api to get route
+            directions.calculate { [weak self] (response:MKDirections.Response?, error:Error?) in
+                if let resp = response, let route = resp.routes.first {// only show one route , temporarily
+                    
+                    // add expected teavel time
+                    switch route.expectedTravelTime {
+                    case 0..<60: // less then one minute
+                        self?.mapInfoVC?.guideBtn.setTitle("步行，1分鐘以內", for: .normal)
+                        break
+                        
+                    case 60..<3600: // less then one hour
+                        let title = "步行，\(Int(route.expectedTravelTime / 60))分鐘"
+                        self?.mapInfoVC?.guideBtn.setTitle(title, for: .normal)
+                        break
+                        
+                    case 3660...:
+                        let result = Int(route.expectedTravelTime).quotientAndRemainder(dividingBy: 3600)
+                        let hour = result.quotient
+                        let min = result.remainder / 60
+                        
+                        let title = "步行，\(hour)小時 \(min)分鐘"
+                        self?.mapInfoVC?.guideBtn.setTitle(title, for: .normal)
+                        break
+                    default:
+                        print("unpredicted expectedTravelTime")
                     }
+                    
+                    // add route
+                    self?.mapView.addOverlay(route.polyline, level: MKOverlayLevel.aboveRoads)
+                    
+                    let center = CLLocation(latitude: (toCoordinate.latitude + meCoordinate.latitude)/2,
+                                            longitude: (toCoordinate.longitude + meCoordinate.longitude)/2)
+                    
+                    //use route.distance to show span
+                    //because it can definitely cover the whole route
+                    self?.showLocation(center, route.distance , route.distance)
+                    
                 }
             }
             
         }).disposed(by: disposeBag)
+    }
+    
+    private func showLocation(_ location:CLLocation? ,_ latMeters : CLLocationDistance?,_ lngMeters:CLLocationDistance?){
+        if let location = location{
+            
+            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
+                                                longitude: location.coordinate.longitude)
+            
+            var region : MKCoordinateRegion!
+            
+            if let latMeters = latMeters , let lngMeters = lngMeters {
+                region = MKCoordinateRegion(center: center, latitudinalMeters: latMeters ,longitudinalMeters: lngMeters)
+            }else{
+                region = MKCoordinateRegion(center: center, span: mapView.region.span)
+            }
+            
+            mapView.setRegion(region, animated: true)
+        }
     }
 
 }
@@ -193,79 +229,51 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController : CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        print("didUpdateLocations")
-//        print("經度 -> \(String(describing: locations.last?.coordinate.latitude))")
-//        print("緯度 -> \(String(describing: locations.last?.coordinate.longitude))")
         currentLocation = locations.last
-        
     }
 }
 
 extension HomeViewController : MKMapViewDelegate {
-    
+    //
+    // route's style related
+    //
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        // 折线覆盖层
+        
         if overlay is MKPolyline{
-            
-            // 创建折线渲染对象 (不同的覆盖层数据模型, 对应不同的覆盖层视图来显示)
-            let render: MKPolylineRenderer = MKPolylineRenderer(overlay: overlay)
-            render.lineWidth = 6                // 设置线宽
-            render.strokeColor = UIColor.red    // 设置颜色
+            let render = MKPolylineRenderer(overlay: overlay)
+            render.lineWidth = 10
+            render.strokeColor = #colorLiteral(red: 0.03796023922, green: 0.5027811544, blue: 0.9708467497, alpha: 1)
             return render
 
         }
         return MKOverlayRenderer()
     }
     
-    //temp //MARK: - Custom Annotation
+    //MARK: - Custom Annotation
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard annotation is UBikePointAnnotation else {
+        guard annotation is UBikeAnnotation else {
             return nil
         }
         var annotationView : MKAnnotationView?
         
-        //
-        // why use dequeueReusableAnnotationView(withIdentifier, image can't reset
-        //
-//        if let dequeuedAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "pin") {
-//            annotationView = dequeuedAnnotationView
-//            annotationView?.annotation = annotation
-//        }else {
-//        }
-        
-        annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "pin")
-        
-        if let annotationView = annotationView {
-            let ubikePin = annotationView.annotation as? UBikePointAnnotation
-            
-            if let bikesSpace = Int(ubikePin?.ubike?.sbi ?? "") ,
-               let emptySpace = Int(ubikePin?.ubike?.bemp ?? "") {
-                
-                // according to remaining parking space to set the image
-                if bikesSpace == 0{
-                    annotationView.image = UIImage(named: "icon_pin_red")
-                }else if emptySpace == 0{
-                    annotationView.image = UIImage(named: "icon_pin_brown")
-                }else{
-                    annotationView.image = UIImage(named: "icon_pin_green")
-                }
-            }
+        if let dequeuedAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "ubikePin") as? UBikeAnnotationView {
+            annotationView = dequeuedAnnotationView
+            annotationView?.annotation = annotation
+        }else {
+            annotationView = UBikeAnnotationView(annotation: annotation, reuseIdentifier: "ubikePin")
         }
         
         return annotationView
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView){
-        guard view.annotation is UBikePointAnnotation else {
+        guard view.annotation is UBikeAnnotation else {
             return
         }
-        let pin = view.annotation as! UBikePointAnnotation
+        let pin = view.annotation as! UBikeAnnotation
         
-        //temp
-        view.frame = CGRect(origin: view.frame.origin, size: CGSize(width: view.frame.size.width * 1.5, height: view.frame.size.height * 1.5))
-
         if let lat = Double(pin.ubike?.lat ?? "") , let lng = Double(pin.ubike?.lng ?? "") {
-            showLocation(CLLocation(latitude: lat, longitude: lng))
+            showLocation(CLLocation(latitude: lat, longitude: lng), nil, nil)
         }
         
         mapInfoVC?.ubike = pin.ubike
@@ -273,16 +281,14 @@ extension HomeViewController : MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView){
-        guard view.annotation is UBikePointAnnotation else {
+        guard view.annotation is UBikeAnnotation else {
             return
         }
-        //temp
-        view.frame = CGRect(origin: view.frame.origin,
-                            size: CGSize(width: view.frame.size.width / 1.5,
-                                         height: view.frame.size.height / 1.5))
         
         //initialize
         mapView.removeOverlays(mapView.overlays)
+        mapInfoVC?.favoriteBtn.isEnabled = false
+        mapInfoVC?.guideBtn.isEnabled = false
         mapInfoVC?.stationName.text = "尚未選擇站點"
         mapInfoVC?.bikesSpace.text = ":"
         mapInfoVC?.emptySpace.text = ":"

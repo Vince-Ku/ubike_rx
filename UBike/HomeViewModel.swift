@@ -14,7 +14,7 @@ class HomeViewModel {
     //MARK: -- Input
     var refresh = BehaviorSubject<Void>(value: ())
     var selectAnnotation = PublishSubject<UBike>()
-    var navigateTap = PublishSubject<UBike?>()
+    var guideTap = PublishSubject<UBike>()
     
     //MARK: -- Output
     var ubikes : Observable<[UBike]>!
@@ -37,7 +37,6 @@ class HomeViewModel {
 }
 
 extension HomeViewModel{
-    
     private func fetchUBikesApi() -> Observable<GetUBikesResp?>{
         return ApiRequest.fetchApi(requestDic: nil , urlPath: HttpPathEnum.GetUBikes.rawValue)
     }

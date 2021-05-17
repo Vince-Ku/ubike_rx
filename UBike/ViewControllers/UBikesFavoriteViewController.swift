@@ -56,7 +56,7 @@ class UBikesFavoriteViewController : UIViewController {
 extension UBikesFavoriteViewController : UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
         
-        let size = CGSize(width: UIScreen.main.bounds.width - 10  , height: UIScreen.main.bounds.height / 4.1)
+        let size = CGSize(width: UIScreen.main.bounds.width - 10  , height: 200)
         
         return size
     }

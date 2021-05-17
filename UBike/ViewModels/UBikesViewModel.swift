@@ -18,7 +18,7 @@ class UBikesViewModel {
     var refreshFavorite = BehaviorSubject<Void>(value: ())
     var refreshAreaAndFavorite = BehaviorSubject<Void>(value: ())
     var ubikeCellTap = PublishSubject<UBike?>()
-    var navigateBtnTap = PublishSubject<UBike?>()
+    var guideBtnTap = PublishSubject<UBike>()
     
     //MARK: -- Output
     var loadingResult : Observable<GetUBikesResp?>!
@@ -98,7 +98,6 @@ class UBikesViewModel {
 }
 
 extension UBikesViewModel{
-    
     private func fetchUBikesApi() -> Observable<GetUBikesResp?>{
         return ApiRequest.fetchApi(requestDic: nil , urlPath: HttpPathEnum.GetUBikes.rawValue)
     }

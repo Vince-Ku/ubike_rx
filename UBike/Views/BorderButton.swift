@@ -8,7 +8,6 @@
 import UIKit
 
 @IBDesignable
-//temp
 class BorderButton : UIButton{
 
     override init(frame: CGRect) {

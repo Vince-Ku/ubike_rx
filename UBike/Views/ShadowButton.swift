@@ -8,7 +8,6 @@
 import UIKit
 
 @IBDesignable
-//temp
 class ShadowButton : UIButton{
 
     override init(frame: CGRect) {
@@ -25,7 +24,6 @@ class ShadowButton : UIButton{
     }
     
     func initStyle() {
-        // temp -- how to calculate cornerRadius
         layer.cornerRadius = bounds.width / 4
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowRadius = 12

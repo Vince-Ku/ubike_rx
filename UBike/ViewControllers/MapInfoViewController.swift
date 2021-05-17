@@ -20,9 +20,13 @@ class MapInfoViewController : UIViewController {
     weak var homeViewModel : HomeViewModel!
     var disposeBag : DisposeBag!
     
-    var ubike : UBike? {
+    var ubike : UBike! {
         didSet{
             disposeBag = DisposeBag()
+            
+            guideBtn.isEnabled = true
+            favoriteBtn.isEnabled = true
+            
             let favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: ubilkesFavoriteKey) as! [String:Bool]
             
             let isSelected = favoriteUbikes
@@ -54,32 +58,21 @@ class MapInfoViewController : UIViewController {
             }).disposed(by:disposeBag)
             
             guideBtn.rx.controlEvent(.touchUpInside)
-                .flatMapLatest{ [weak self] _ -> Observable<UBike?> in
-                    return Observable.just(self?.ubike)
+                .flatMapLatest{ [ubike] _ -> Observable<UBike> in
+                    return Observable.just(ubike!)
                 }
-                .bind(to: homeViewModel.navigateTap)
+                .bind(to: homeViewModel.guideTap)
                 .disposed(by: disposeBag)
             
         }
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupRx()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // temp -- how to calculate cornerRadius
-        mainView.layer.cornerRadius = 19
+        mainView.layer.cornerRadius = view.bounds.height / 8
         mainView.layer.shadowColor = UIColor.black.cgColor
-        mainView.layer.shadowRadius = 30
+        mainView.layer.shadowRadius = view.bounds.height / 8
         mainView.layer.shadowOpacity = 0.3
-        //mainView.layer.masksToBounds = false
     }
     
-    private func setupRx(){
-        
-    }
 }

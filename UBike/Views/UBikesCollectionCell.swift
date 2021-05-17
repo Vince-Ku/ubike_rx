@@ -52,7 +52,7 @@ extension UBikesCollectionCell : UICollectionViewDelegateFlowLayout{
         
         // you have to make sectionInset half of minimumLineSpacing, in order to support page scrolling
         let gap = ubikeCVLayout.minimumLineSpacing
-        let size = CGSize(width: UIScreen.main.bounds.width - gap , height: bounds.height / 2.1)
+        let size = CGSize(width: UIScreen.main.bounds.width - gap , height: 200)
         
         return size
     }

@@ -1,17 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "icon_sm_star_off@1x.png",
+      "filename" : "icon_sm_star_off@2x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icon_sm_star_off@2x.png",
+      "filename" : "icon_sm_star_off@3x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "icon_sm_star_off@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

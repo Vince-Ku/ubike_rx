@@ -14,7 +14,7 @@ class UBikeCollectionCell : UICollectionViewCell {
     @IBOutlet unowned var address : UILabel!
     @IBOutlet unowned var updateDate : UILabel!
     @IBOutlet unowned var favoriteBtn : UIButton!
-    @IBOutlet unowned var navigationBtn : BorderButton!
+    @IBOutlet unowned var guideBtn : BorderButton!
     @IBOutlet unowned var totalSpaces : UILabel!
     @IBOutlet unowned var bikesSpaces : UILabel!
     @IBOutlet unowned var emptySpaces : UILabel!
@@ -68,11 +68,11 @@ class UBikeCollectionCell : UICollectionViewCell {
             }).disposed(by: disposeBag)
             
             if let viewModel = viewModel {
-                navigationBtn.rx.controlEvent(.touchUpInside)
-                    .flatMapLatest{ [weak self] _ -> Observable<UBike?> in
-                        return Observable.just(self?.ubike)
+                guideBtn.rx.controlEvent(.touchUpInside)
+                    .flatMapLatest{ [ubike] _ -> Observable<UBike> in
+                        return Observable.just(ubike!)
                     }
-                    .bind(to: viewModel.navigateBtnTap)
+                    .bind(to: viewModel.guideBtnTap)
                     .disposed(by: disposeBag)
             }
             

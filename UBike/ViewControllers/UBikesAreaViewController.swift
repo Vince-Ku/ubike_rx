@@ -62,7 +62,7 @@ class UBikesAreaViewController : UIViewController {
 extension UBikesAreaViewController : UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
         
-        let size = CGSize(width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.height / 2)
+        let size = CGSize(width: UIScreen.main.bounds.width , height: 200 * 2 + 20)
         
         return size
     }
