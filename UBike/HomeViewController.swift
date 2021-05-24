@@ -178,7 +178,7 @@ class HomeViewController: UIViewController {
                         self?.mapInfoVC?.guideBtn.setTitle(title, for: .normal)
                         break
                         
-                    case 3660...:
+                    case 3600...:
                         let result = Int(route.expectedTravelTime).quotientAndRemainder(dividingBy: 3600)
                         let hour = result.quotient
                         let min = result.remainder / 60

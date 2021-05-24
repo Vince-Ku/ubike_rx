@@ -20,21 +20,21 @@ class UBikesCollectionCell : UICollectionViewCell {
     weak var viewModel : UBikesViewModel?
     var disposeBag : DisposeBag!
     
-    var ubikes : [UBike] = [] {
+    var ubikesCM : [UBikeCellModel] = [] {
         didSet{
             disposeBag = DisposeBag()
             
-            Observable.just(ubikes)
-                .bind(to: ubikeCV.rx.items(cellIdentifier: "bikeItem", cellType: UBikeCollectionCell.self )){ [weak self] _, ubike, cell in
+            Observable.just(ubikesCM)
+                .bind(to: ubikeCV.rx.items(cellIdentifier: "bikeItem", cellType: UBikeCollectionCell.self )){ [weak self] _, ubikeCM, cell in
                     cell.viewModel = self?.viewModel
-                    cell.ubike = ubike
+                    cell.ubikeCM = ubikeCM
                 }.disposed(by: disposeBag)
             
             if let viewModel = viewModel {
                 ubikeCV.rx.itemSelected
                     .flatMapLatest{ [weak self] indexPath -> Observable<UBike?> in
                         let cell = self?.ubikeCV.cellForItem(at: indexPath) as? UBikeCollectionCell
-                        return Observable.just(cell?.ubike)
+                        return Observable.just(cell?.ubikeCM.ubike)
                     }
                     .bind(to: viewModel.ubikeCellTap)
                     .disposed(by: disposeBag)

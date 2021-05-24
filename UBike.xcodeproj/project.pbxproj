@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		19805C94F613F6BB33AA1F40 /* Pods_UBike.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE796E7CEF8D622CEBE9422 /* Pods_UBike.framework */; };
+		3A12ED66265BEA360015C658 /* UBikesViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A12ED65265BEA360015C658 /* UBikesViewModelTest.swift */; };
 		3AC6E43726513CA600B19084 /* UserDefaultsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC6E43626513CA600B19084 /* UserDefaultsUtil.swift */; };
 		3AC6E4392651519E00B19084 /* UBikeCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC6E4382651519E00B19084 /* UBikeCollectionCell.swift */; };
 		3AD19619264B73D7000E0BA4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19618264B73D7000E0BA4 /* AppDelegate.swift */; };
@@ -17,7 +18,7 @@
 		3AD19623264B73D7000E0BA4 /* UBike.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19621264B73D7000E0BA4 /* UBike.xcdatamodeld */; };
 		3AD19625264B73DE000E0BA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD19624264B73DE000E0BA4 /* Assets.xcassets */; };
 		3AD19628264B73DE000E0BA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AD19626264B73DE000E0BA4 /* LaunchScreen.storyboard */; };
-		3AD19633264B73DF000E0BA4 /* UBikeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19632264B73DF000E0BA4 /* UBikeTests.swift */; };
+		3AD19633264B73DF000E0BA4 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19632264B73DF000E0BA4 /* HomeViewModelTests.swift */; };
 		3AD1963E264B73DF000E0BA4 /* UBikeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1963D264B73DF000E0BA4 /* UBikeUITests.swift */; };
 		3AD1964F264B791C000E0BA4 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1964E264B791C000E0BA4 /* ApiRequest.swift */; };
 		3AD19654264B7E63000E0BA4 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19653264B7E63000E0BA4 /* HomeViewModel.swift */; };
@@ -57,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		0AE796E7CEF8D622CEBE9422 /* Pods_UBike.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UBike.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A12ED65265BEA360015C658 /* UBikesViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikesViewModelTest.swift; sourceTree = "<group>"; };
 		3AC6E43626513CA600B19084 /* UserDefaultsUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsUtil.swift; sourceTree = "<group>"; };
 		3AC6E4382651519E00B19084 /* UBikeCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikeCollectionCell.swift; sourceTree = "<group>"; };
 		3AD19615264B73D7000E0BA4 /* UBike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UBike.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,7 +71,7 @@
 		3AD19627264B73DE000E0BA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3AD19629264B73DE000E0BA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AD1962E264B73DF000E0BA4 /* UBikeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UBikeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3AD19632264B73DF000E0BA4 /* UBikeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikeTests.swift; sourceTree = "<group>"; };
+		3AD19632264B73DF000E0BA4 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		3AD19634264B73DF000E0BA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AD19639264B73DF000E0BA4 /* UBikeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UBikeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AD1963D264B73DF000E0BA4 /* UBikeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikeUITests.swift; sourceTree = "<group>"; };
@@ -173,8 +175,9 @@
 		3AD19631264B73DF000E0BA4 /* UBikeTests */ = {
 			isa = PBXGroup;
 			children = (
-				3AD19632264B73DF000E0BA4 /* UBikeTests.swift */,
+				3AD19632264B73DF000E0BA4 /* HomeViewModelTests.swift */,
 				3AD19634264B73DF000E0BA4 /* Info.plist */,
+				3A12ED65265BEA360015C658 /* UBikesViewModelTest.swift */,
 			);
 			path = UBikeTests;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				3AD1962A264B73DF000E0BA4 /* Sources */,
 				3AD1962B264B73DF000E0BA4 /* Frameworks */,
 				3AD1962C264B73DF000E0BA4 /* Resources */,
+				869062E547C961153FE4D7AC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -416,6 +420,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UBike/Pods-UBike-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		869062E547C961153FE4D7AC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UBikeTests/Pods-UBikeTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UBikeTests/Pods-UBikeTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UBikeTests/Pods-UBikeTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		91260B67562D9DC06D43162A /* [CP] Check Pods Manifest.lock */ = {
@@ -536,7 +557,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AD19633264B73DF000E0BA4 /* UBikeTests.swift in Sources */,
+				3AD19633264B73DF000E0BA4 /* HomeViewModelTests.swift in Sources */,
+				3A12ED66265BEA360015C658 /* UBikesViewModelTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,7 +656,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -689,7 +711,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -708,7 +730,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 25Q4Y7QB9R;
 				INFOPLIST_FILE = UBike/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -729,7 +751,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 25Q4Y7QB9R;
 				INFOPLIST_FILE = UBike/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

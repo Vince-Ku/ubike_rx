@@ -14,7 +14,7 @@ import RxAlamofire
 class ApiRequest {
     
     static func fetchApi<T:Codable>(requestDic:[String:Any]? ,urlPath:String) -> Observable<T?> {
-        
+        print("fetchApi")
         guard let url = URL(string: urlPath ) else {
             print("Api URL doesn't exist!!")
             return Observable.just(nil)

@@ -35,16 +35,16 @@ class UBikesFavoriteViewController : UIViewController {
             .bind(to: viewModel.refresh)
             .disposed(by: disposeBag)
         
-        viewModel.ubikesForFavorite.bind(to: collectionView.rx.items(cellIdentifier: "favoriteBikeItem", cellType: UBikeCollectionCell.self )){ [weak self] _, ubike, cell in
+        viewModel.ubikesForFavorite.bind(to: collectionView.rx.items(cellIdentifier: "favoriteBikeItem", cellType: UBikeCollectionCell.self )){ [weak self] _, ubikeCM, cell in
             cell.viewModel = self?.viewModel // must be set first
-            cell.ubike = ubike
+            cell.ubikeCM = ubikeCM
             
         }.disposed(by: disposeBag)
         
         collectionView.rx.itemSelected
             .flatMapLatest{ [weak self] indexPath -> Observable<UBike?> in
                 let cell = self?.collectionView.cellForItem(at: indexPath) as? UBikeCollectionCell
-                return Observable.just(cell?.ubike)
+                return Observable.just(cell?.ubikeCM.ubike)
             }
             .bind(to: self.viewModel.ubikeCellTap)
             .disposed(by: disposeBag)

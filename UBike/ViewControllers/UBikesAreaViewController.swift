@@ -36,11 +36,11 @@ class UBikesAreaViewController : UIViewController {
             .bind(to: viewModel.refresh)
             .disposed(by: disposeBag)
         
-        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, [UBike]>>(
+        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, [UBikeCellModel]>>(
             configureCell: { [weak self] (dataSource, collectionView, indexPath, element) in
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "areaBikesItem", for: indexPath) as! UBikesCollectionCell
                 cell.viewModel = self?.viewModel
-                cell.ubikes = element
+                cell.ubikesCM = element
                 return cell
             },
             configureSupplementaryView: {

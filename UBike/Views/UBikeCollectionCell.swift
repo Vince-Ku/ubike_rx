@@ -21,17 +21,17 @@ class UBikeCollectionCell : UICollectionViewCell {
     
     weak var viewModel : UBikesViewModel?
     var disposeBag : DisposeBag!
-    var ubike : UBike! {
+    var ubikeCM : UBikeCellModel! {
         didSet{
             disposeBag = DisposeBag()
             
-            station.text = ubike.sna
-            address.text = ubike.ar
-            bikesSpaces.text = ": \(ubike.sbi ?? "")"
-            totalSpaces.text = ": \(ubike.tot ?? "")"
-            emptySpaces.text = ": \(ubike.bemp ?? "")"
+            station.text = ubikeCM.ubike.sna
+            address.text = ubikeCM.ubike.ar
+            bikesSpaces.text = ": \(ubikeCM.ubike.sbi ?? "")"
+            totalSpaces.text = ": \(ubikeCM.ubike.tot ?? "")"
+            emptySpaces.text = ": \(ubikeCM.ubike.bemp ?? "")"
             
-            if let mday = ubike.mday{
+            if let mday = ubikeCM.ubike.mday{
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyyMMddHHmmss"
 
@@ -41,38 +41,24 @@ class UBikeCollectionCell : UICollectionViewCell {
                 }
             }
             
-            let favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: ubilkesFavoriteKey) as! [String:Bool]
-            
-            let isSelected = favoriteUbikes
-                                    .filter{ $0.key == ubike?.sno ?? "none" }
-                                    .first?.value
-            favoriteBtn.isSelected = isSelected ?? false
-            
-            favoriteBtn.rx.controlEvent(.touchUpInside).subscribe(onNext:{ [weak self] in
-                guard let self = self , let station = self.ubike?.sno else {return}
-                self.favoriteBtn.isSelected = !self.favoriteBtn.isSelected
-                
-                var favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: ubilkesFavoriteKey) as! [String:Bool]
-
-                favoriteUbikes.updateValue(self.favoriteBtn.isSelected, forKey: station)
-                UserDefaults.standard.setValue(favoriteUbikes, forKey: ubilkesFavoriteKey)
-                
-                //refresh data without fetching API
-                if self.reuseIdentifier == "bikeItem" {
-                    self.viewModel?.refreshFavorite.onNext(())
-                    
-                }else if self.reuseIdentifier == "favoriteBikeItem"{
-                    self.viewModel?.refreshAreaAndFavorite.onNext(())
-                }
-                
-            }).disposed(by: disposeBag)
+            favoriteBtn.isSelected = ubikeCM.isFavorite
             
             if let viewModel = viewModel {
                 guideBtn.rx.controlEvent(.touchUpInside)
-                    .flatMapLatest{ [ubike] _ -> Observable<UBike> in
-                        return Observable.just(ubike!)
+                    .flatMapLatest{ [ubikeCM] _ -> Observable<UBike> in
+                        return Observable.just(ubikeCM!.ubike)
                     }
                     .bind(to: viewModel.guideBtnTap)
+                    .disposed(by: disposeBag)
+                
+                favoriteBtn.rx.controlEvent(.touchUpInside)
+                    .do(onNext:{ [unowned self] in
+                        self.favoriteBtn.isSelected = !self.favoriteBtn.isSelected
+                    })
+                    .map{ [unowned self] in
+                        [self.reuseIdentifier! : UBikeCellModel(ubike: self.ubikeCM.ubike, isFavorite: self.favoriteBtn.isSelected) ]
+                    }
+                    .bind(to: viewModel.favoriteBtnTap)
                     .disposed(by: disposeBag)
             }
             
@@ -99,4 +85,9 @@ class UBikeCollectionCell : UICollectionViewCell {
         //layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius:
     }
     
+}
+
+struct UBikeCellModel {
+    var ubike : UBike
+    var isFavorite : Bool
 }
