@@ -15,11 +15,9 @@
 		3AD1961B264B73D7000E0BA4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1961A264B73D7000E0BA4 /* SceneDelegate.swift */; };
 		3AD1961D264B73D7000E0BA4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1961C264B73D7000E0BA4 /* HomeViewController.swift */; };
 		3AD19620264B73D7000E0BA4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AD1961E264B73D7000E0BA4 /* Main.storyboard */; };
-		3AD19623264B73D7000E0BA4 /* UBike.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19621264B73D7000E0BA4 /* UBike.xcdatamodeld */; };
 		3AD19625264B73DE000E0BA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD19624264B73DE000E0BA4 /* Assets.xcassets */; };
 		3AD19628264B73DE000E0BA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AD19626264B73DE000E0BA4 /* LaunchScreen.storyboard */; };
 		3AD19633264B73DF000E0BA4 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19632264B73DF000E0BA4 /* HomeViewModelTests.swift */; };
-		3AD1963E264B73DF000E0BA4 /* UBikeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1963D264B73DF000E0BA4 /* UBikeUITests.swift */; };
 		3AD1964F264B791C000E0BA4 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1964E264B791C000E0BA4 /* ApiRequest.swift */; };
 		3AD19654264B7E63000E0BA4 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19653264B7E63000E0BA4 /* HomeViewModel.swift */; };
 		3AD19656264B7F1A000E0BA4 /* GetUBikesResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19655264B7F1A000E0BA4 /* GetUBikesResource.swift */; };
@@ -36,18 +34,10 @@
 		3AD1966E26512423000E0BA4 /* UBikesFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1966D26512423000E0BA4 /* UBikesFavoriteViewController.swift */; };
 		3ADD5ED42651725500AFD1AA /* UBikesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADD5ED32651725500AFD1AA /* UBikesViewController.swift */; };
 		4B4F4CC638E34C8CABBED353 /* Pods_UBikeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B47E696C4077EDA55E829A95 /* Pods_UBikeTests.framework */; };
-		E28C02D7CA8B19A80BE6400A /* Pods_UBike_UBikeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FDE8ECB29A97431BC186D50 /* Pods_UBike_UBikeUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		3AD1962F264B73DF000E0BA4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3AD1960D264B73D6000E0BA4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3AD19614264B73D7000E0BA4;
-			remoteInfo = UBike;
-		};
-		3AD1963A264B73DF000E0BA4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3AD1960D264B73D6000E0BA4 /* Project object */;
 			proxyType = 1;
@@ -66,16 +56,12 @@
 		3AD1961A264B73D7000E0BA4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		3AD1961C264B73D7000E0BA4 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		3AD1961F264B73D7000E0BA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		3AD19622264B73D7000E0BA4 /* UBike.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UBike.xcdatamodel; sourceTree = "<group>"; };
 		3AD19624264B73DE000E0BA4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AD19627264B73DE000E0BA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3AD19629264B73DE000E0BA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AD1962E264B73DF000E0BA4 /* UBikeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UBikeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AD19632264B73DF000E0BA4 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		3AD19634264B73DF000E0BA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3AD19639264B73DF000E0BA4 /* UBikeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UBikeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3AD1963D264B73DF000E0BA4 /* UBikeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikeUITests.swift; sourceTree = "<group>"; };
-		3AD1963F264B73DF000E0BA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AD1964E264B791C000E0BA4 /* ApiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
 		3AD19653264B7E63000E0BA4 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		3AD19655264B7F1A000E0BA4 /* GetUBikesResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUBikesResource.swift; sourceTree = "<group>"; };
@@ -119,14 +105,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3AD19636264B73DF000E0BA4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E28C02D7CA8B19A80BE6400A /* Pods_UBike_UBikeUITests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -135,7 +113,6 @@
 			children = (
 				3AD19617264B73D7000E0BA4 /* UBike */,
 				3AD19631264B73DF000E0BA4 /* UBikeTests */,
-				3AD1963C264B73DF000E0BA4 /* UBikeUITests */,
 				3AD19616264B73D7000E0BA4 /* Products */,
 				EC29779872D267C4FE195B14 /* Pods */,
 				C72CD4F6A566EAB178C39BD2 /* Frameworks */,
@@ -147,7 +124,6 @@
 			children = (
 				3AD19615264B73D7000E0BA4 /* UBike.app */,
 				3AD1962E264B73DF000E0BA4 /* UBikeTests.xctest */,
-				3AD19639264B73DF000E0BA4 /* UBikeUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -164,7 +140,6 @@
 				3AD19624264B73DE000E0BA4 /* Assets.xcassets */,
 				3AD19626264B73DE000E0BA4 /* LaunchScreen.storyboard */,
 				3AD19629264B73DE000E0BA4 /* Info.plist */,
-				3AD19621264B73D7000E0BA4 /* UBike.xcdatamodeld */,
 			);
 			path = UBike;
 			sourceTree = "<group>";
@@ -177,15 +152,6 @@
 				3A12ED65265BEA360015C658 /* UBikesViewModelTest.swift */,
 			);
 			path = UBikeTests;
-			sourceTree = "<group>";
-		};
-		3AD1963C264B73DF000E0BA4 /* UBikeUITests */ = {
-			isa = PBXGroup;
-			children = (
-				3AD1963D264B73DF000E0BA4 /* UBikeUITests.swift */,
-				3AD1963F264B73DF000E0BA4 /* Info.plist */,
-			);
-			path = UBikeUITests;
 			sourceTree = "<group>";
 		};
 		3AD1964C264B768A000E0BA4 /* Repository */ = {
@@ -325,26 +291,6 @@
 			productReference = 3AD1962E264B73DF000E0BA4 /* UBikeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		3AD19638264B73DF000E0BA4 /* UBikeUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3AD19648264B73DF000E0BA4 /* Build configuration list for PBXNativeTarget "UBikeUITests" */;
-			buildPhases = (
-				91260B67562D9DC06D43162A /* [CP] Check Pods Manifest.lock */,
-				3AD19635264B73DF000E0BA4 /* Sources */,
-				3AD19636264B73DF000E0BA4 /* Frameworks */,
-				3AD19637264B73DF000E0BA4 /* Resources */,
-				EF6B2A4BB404D18C64F1DAEB /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				3AD1963B264B73DF000E0BA4 /* PBXTargetDependency */,
-			);
-			name = UBikeUITests;
-			productName = UBikeUITests;
-			productReference = 3AD19639264B73DF000E0BA4 /* UBikeUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -358,10 +304,6 @@
 						CreatedOnToolsVersion = 12.5;
 					};
 					3AD1962D264B73DF000E0BA4 = {
-						CreatedOnToolsVersion = 12.5;
-						TestTargetID = 3AD19614264B73D7000E0BA4;
-					};
-					3AD19638264B73DF000E0BA4 = {
 						CreatedOnToolsVersion = 12.5;
 						TestTargetID = 3AD19614264B73D7000E0BA4;
 					};
@@ -382,7 +324,6 @@
 			targets = (
 				3AD19614264B73D7000E0BA4 /* UBike */,
 				3AD1962D264B73DF000E0BA4 /* UBikeTests */,
-				3AD19638264B73DF000E0BA4 /* UBikeUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -399,13 +340,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3AD1962C264B73DF000E0BA4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3AD19637264B73DF000E0BA4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -449,28 +383,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UBikeTests/Pods-UBikeTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		91260B67562D9DC06D43162A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-UBike-UBikeUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		A4835C3F3555FED7F6B5C92A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -491,23 +403,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EF6B2A4BB404D18C64F1DAEB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UBike-UBikeUITests/Pods-UBike-UBikeUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UBike-UBikeUITests/Pods-UBike-UBikeUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UBike-UBikeUITests/Pods-UBike-UBikeUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FC7D7DD6B79F06008A32E1AB /* [CP] Check Pods Manifest.lock */ = {
@@ -555,7 +450,6 @@
 				3AD1965A264B89BC000E0BA4 /* GetProjectsResource.swift in Sources */,
 				3AD19662264ECF84000E0BA4 /* Constants.swift in Sources */,
 				3AD19658264B80F0000E0BA4 /* HttpPathEnum.swift in Sources */,
-				3AD19623264B73D7000E0BA4 /* UBike.xcdatamodeld in Sources */,
 				3AD1966A264FD02C000E0BA4 /* UBikesCollectionCell.swift in Sources */,
 				3AD1964F264B791C000E0BA4 /* ApiRequest.swift in Sources */,
 				3AD1961B264B73D7000E0BA4 /* SceneDelegate.swift in Sources */,
@@ -572,14 +466,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3AD19635264B73DF000E0BA4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3AD1963E264B73DF000E0BA4 /* UBikeUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -587,11 +473,6 @@
 			isa = PBXTargetDependency;
 			target = 3AD19614264B73D7000E0BA4 /* UBike */;
 			targetProxy = 3AD1962F264B73DF000E0BA4 /* PBXContainerItemProxy */;
-		};
-		3AD1963B264B73DF000E0BA4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3AD19614264B73D7000E0BA4 /* UBike */;
-			targetProxy = 3AD1963A264B73DF000E0BA4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -819,48 +700,6 @@
 			};
 			name = Release;
 		};
-		3AD19649264B73DF000E0BA4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72E0739BB1C1959D451C5CA4 /* Pods-UBike-UBikeUITests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 25Q4Y7QB9R;
-				INFOPLIST_FILE = UBikeUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = vince.UBikeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = UBike;
-			};
-			name = Debug;
-		};
-		3AD1964A264B73DF000E0BA4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FC6A3EDE4AA400B560947CE1 /* Pods-UBike-UBikeUITests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 25Q4Y7QB9R;
-				INFOPLIST_FILE = UBikeUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = vince.UBikeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = UBike;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -891,29 +730,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3AD19648264B73DF000E0BA4 /* Build configuration list for PBXNativeTarget "UBikeUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3AD19649264B73DF000E0BA4 /* Debug */,
-				3AD1964A264B73DF000E0BA4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		3AD19621264B73D7000E0BA4 /* UBike.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				3AD19622264B73D7000E0BA4 /* UBike.xcdatamodel */,
-			);
-			currentVersion = 3AD19622264B73D7000E0BA4 /* UBike.xcdatamodel */;
-			path = UBike.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 3AD1960D264B73D6000E0BA4 /* Project object */;
 }
