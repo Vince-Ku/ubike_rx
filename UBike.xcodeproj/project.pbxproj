@@ -92,6 +92,7 @@
 		3AD1966D26512423000E0BA4 /* UBikesFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikesFavoriteViewController.swift; sourceTree = "<group>"; };
 		3ADD5ED32651725500AFD1AA /* UBikesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikesViewController.swift; sourceTree = "<group>"; };
 		5D0E5A7A48A4F0F2DA7A6EB8 /* Pods-UBike.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBike.release.xcconfig"; path = "Target Support Files/Pods-UBike/Pods-UBike.release.xcconfig"; sourceTree = "<group>"; };
+		61ED233629D898E50018EDF2 /* TaiwanLocation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TaiwanLocation.gpx; sourceTree = "<group>"; };
 		72E0739BB1C1959D451C5CA4 /* Pods-UBike-UBikeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBike-UBikeUITests.debug.xcconfig"; path = "Target Support Files/Pods-UBike-UBikeUITests/Pods-UBike-UBikeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8D23C74852C1AEBA037E5396 /* Pods-UBikeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBikeTests.release.xcconfig"; path = "Target Support Files/Pods-UBikeTests/Pods-UBikeTests.release.xcconfig"; sourceTree = "<group>"; };
 		9FDE8ECB29A97431BC186D50 /* Pods_UBike_UBikeUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UBike_UBikeUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,16 +155,12 @@
 		3AD19617264B73D7000E0BA4 /* UBike */ = {
 			isa = PBXGroup;
 			children = (
-				3ADD5ED52652BBA500AFD1AA /* Views */,
-				3AD19652264B7DFC000E0BA4 /* ViewModels */,
-				3AD19651264B7DF3000E0BA4 /* ViewControllers */,
-				3AD19650264B7A27000E0BA4 /* Storyboard */,
-				3AD1964C264B768A000E0BA4 /* ApiResources */,
-				3AD1964B264B7674000E0BA4 /* Common */,
+				613039B229ED0DD700A060B2 /* Modules */,
+				3AD1964C264B768A000E0BA4 /* Repository */,
+				613039B129ED0D5400A060B2 /* Resources */,
+				613039B529ED0F1100A060B2 /* Utility */,
 				3AD19618264B73D7000E0BA4 /* AppDelegate.swift */,
 				3AD1961A264B73D7000E0BA4 /* SceneDelegate.swift */,
-				3AD1961C264B73D7000E0BA4 /* HomeViewController.swift */,
-				3AD19653264B7E63000E0BA4 /* HomeViewModel.swift */,
 				3AD19624264B73DE000E0BA4 /* Assets.xcassets */,
 				3AD19626264B73DE000E0BA4 /* LaunchScreen.storyboard */,
 				3AD19629264B73DE000E0BA4 /* Info.plist */,
@@ -191,61 +188,74 @@
 			path = UBikeUITests;
 			sourceTree = "<group>";
 		};
-		3AD1964B264B7674000E0BA4 /* Common */ = {
+		3AD1964C264B768A000E0BA4 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
 				3AD19661264ECF84000E0BA4 /* Constants.swift */,
 				3AC6E43626513CA600B19084 /* UserDefaultsUtil.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		3AD1964C264B768A000E0BA4 /* ApiResources */ = {
-			isa = PBXGroup;
-			children = (
 				3AD1964E264B791C000E0BA4 /* ApiRequest.swift */,
 				3AD19655264B7F1A000E0BA4 /* GetUBikesResource.swift */,
 				3AD19657264B80F0000E0BA4 /* HttpPathEnum.swift */,
 				3AD19659264B89BC000E0BA4 /* GetProjectsResource.swift */,
 			);
-			path = ApiResources;
+			path = Repository;
 			sourceTree = "<group>";
 		};
-		3AD19650264B7A27000E0BA4 /* Storyboard */ = {
+		613039B129ED0D5400A060B2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				61ED233629D898E50018EDF2 /* TaiwanLocation.gpx */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		613039B229ED0DD700A060B2 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				613039B329ED0E0C00A060B2 /* Home */,
+				613039B429ED0E1100A060B2 /* Ubikes */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		613039B329ED0E0C00A060B2 /* Home */ = {
 			isa = PBXGroup;
 			children = (
 				3AD1961E264B73D7000E0BA4 /* Main.storyboard */,
+				3AD1965D264DA1A1000E0BA4 /* UBikePointAnnotation.swift */,
+				3AD1965B264BC8D1000E0BA4 /* MapInfoViewController.swift */,
+				3AD1961C264B73D7000E0BA4 /* HomeViewController.swift */,
+				3AD19653264B7E63000E0BA4 /* HomeViewModel.swift */,
 			);
-			path = Storyboard;
+			path = Home;
 			sourceTree = "<group>";
 		};
-		3AD19651264B7DF3000E0BA4 /* ViewControllers */ = {
+		613039B429ED0E1100A060B2 /* Ubikes */ = {
 			isa = PBXGroup;
 			children = (
-				3AD1965B264BC8D1000E0BA4 /* MapInfoViewController.swift */,
+				3AD19667264EF934000E0BA4 /* UBikesViewModel.swift */,
+				3AC6E4382651519E00B19084 /* UBikeCollectionCell.swift */,
+				3AD19669264FD02B000E0BA4 /* UBikesCollectionCell.swift */,
 				3AD1966B26512405000E0BA4 /* UBikesAreaViewController.swift */,
 				3AD1966D26512423000E0BA4 /* UBikesFavoriteViewController.swift */,
 				3ADD5ED32651725500AFD1AA /* UBikesViewController.swift */,
 			);
-			path = ViewControllers;
+			path = Ubikes;
 			sourceTree = "<group>";
 		};
-		3AD19652264B7DFC000E0BA4 /* ViewModels */ = {
+		613039B529ED0F1100A060B2 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				3AD19667264EF934000E0BA4 /* UBikesViewModel.swift */,
+				613039B629ED0F4000A060B2 /* Views */,
 			);
-			path = ViewModels;
+			path = Utility;
 			sourceTree = "<group>";
 		};
-		3ADD5ED52652BBA500AFD1AA /* Views */ = {
+		613039B629ED0F4000A060B2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				3AD19663264EEDA6000E0BA4 /* ShadowButton.swift */,
 				3AD1965F264DB3A9000E0BA4 /* BorderButton.swift */,
-				3AD1965D264DA1A1000E0BA4 /* UBikePointAnnotation.swift */,
-				3AC6E4382651519E00B19084 /* UBikeCollectionCell.swift */,
-				3AD19669264FD02B000E0BA4 /* UBikesCollectionCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

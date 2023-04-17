@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GCH-sA-Rpt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GCH-sA-Rpt">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -19,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="UfC-iL-l2W">
-                                <rect key="frame" x="0.0" y="44" width="390" height="766"/>
+                                <rect key="frame" x="0.0" y="47" width="390" height="763"/>
                             </mapView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="GwK-Uc-pQH">
                                 <rect key="frame" x="340" y="504" width="40" height="140"/>
@@ -224,7 +225,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="m9l-uO-M62">
-                                <rect key="frame" x="0.0" y="44" width="390" height="50"/>
+                                <rect key="frame" x="0.0" y="47" width="390" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u3j-S3-pd2">
                                         <rect key="frame" x="0.0" y="0.0" width="195" height="50"/>
@@ -254,13 +255,13 @@
                                 </subviews>
                             </stackView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HRW-9M-oic">
-                                <rect key="frame" x="0.0" y="94" width="390" height="750"/>
+                                <rect key="frame" x="0.0" y="97" width="390" height="747"/>
                                 <connections>
                                     <segue destination="eJt-6A-mq3" kind="embed" identifier="areaBikesSegue" id="EET-N6-EFM"/>
                                 </connections>
                             </containerView>
                             <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="alD-Ts-MHv">
-                                <rect key="frame" x="0.0" y="94" width="390" height="716"/>
+                                <rect key="frame" x="0.0" y="97" width="390" height="713"/>
                                 <connections>
                                     <segue destination="Omy-fX-jlX" kind="embed" identifier="favoriteBikesSegue" id="aK0-YN-aBq"/>
                                 </connections>
@@ -299,11 +300,11 @@
             <objects>
                 <viewController id="eJt-6A-mq3" customClass="UBikesAreaViewController" customModule="UBike" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="r38-iR-TGn">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="750"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="747"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ZRI-U8-sKE">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="750"/>
+                                <rect key="frame" x="0.0" y="0.0" width="390" height="747"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="wax-8A-Csf">
                                     <size key="itemSize" width="387" height="352"/>
@@ -419,7 +420,7 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="05-01 01:05:51" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hVO-1F-geA">
-                                                                        <rect key="frame" x="255.33333333333334" y="211.33333333333334" width="91.666666666666657" height="15.666666666666657"/>
+                                                                        <rect key="frame" x="255.33333333333334" y="211.33333333333334" width="91.6666666666666" height="15.666666666666657"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <nil key="highlightedColor"/>
@@ -532,7 +533,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GCH-sA-Rpt" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" hidden="YES" contentMode="scaleToFill" id="OvM-uO-Gvr">
-                        <rect key="frame" x="0.0" y="44" width="390" height="44"/>
+                        <rect key="frame" x="0.0" y="47" width="390" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -549,11 +550,11 @@
             <objects>
                 <viewController id="Omy-fX-jlX" customClass="UBikesFavoriteViewController" customModule="UBike" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cqz-V9-L9s">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="716"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="713"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="B3V-zh-5FS">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="716"/>
+                                <rect key="frame" x="0.0" y="0.0" width="390" height="713"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="Kai-bw-WnV">
                                     <size key="itemSize" width="128" height="128"/>
