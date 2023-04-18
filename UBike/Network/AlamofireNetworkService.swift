@@ -11,9 +11,9 @@ import RxSwift
 import Alamofire
 import RxAlamofire
 
-class AlamofireNetworkService {
-    
-    public static let shared = AlamofireNetworkService()
+class AlamofireNetworkService: RemoteDataSourceType {
+
+    static var shared: RemoteDataSourceType = AlamofireNetworkService()
     
     func fetch<T: APIInterfaceType>(apiInterface target: T) -> Single<T.OutputModel> {
         request(HTTPMethod(rawValue: target.method), target.url, parameters: target.parameters) // use background quene by default

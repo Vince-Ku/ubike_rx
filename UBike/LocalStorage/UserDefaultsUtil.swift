@@ -7,6 +7,8 @@
 
 import Foundation
 
+let ubilkesFavoriteKey = "ubikes.favorite.station"
+
 class UserDefaultsUtil {
     
     static func saveDataToUserDefaults(data: Any?, key: String) {

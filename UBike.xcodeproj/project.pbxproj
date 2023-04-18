@@ -34,6 +34,14 @@
 		4B4F4CC638E34C8CABBED353 /* Pods_UBikeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B47E696C4077EDA55E829A95 /* Pods_UBikeTests.framework */; };
 		6124F03B29ED205C00A0301A /* APIInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F03A29ED205C00A0301A /* APIInterface.swift */; };
 		6124F03E29ED7F4B00A0301A /* GetUBikesInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F03D29ED7F4B00A0301A /* GetUBikesInterface.swift */; };
+		6124F04329EE440900A0301A /* UbikeStationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F04229EE440900A0301A /* UbikeStationsRepository.swift */; };
+		6124F04529EE453100A0301A /* RemoteDataSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F04429EE453100A0301A /* RemoteDataSourceType.swift */; };
+		6124F04929EE4E5000A0301A /* LocalDataSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F04829EE4E5000A0301A /* LocalDataSourceType.swift */; };
+		6124F04B29EE4EEC00A0301A /* UbikeStationsRepositoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F04A29EE4EEC00A0301A /* UbikeStationsRepositoryType.swift */; };
+		6124F04D29EE542000A0301A /* UbikeStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F04C29EE542000A0301A /* UbikeStation.swift */; };
+		6124F05129EE6D7B00A0301A /* UbikeStationModelMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F05029EE6D7B00A0301A /* UbikeStationModelMapper.swift */; };
+		6124F05329EE75AE00A0301A /* UBikeStationModelMapper+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F05229EE75AE00A0301A /* UBikeStationModelMapper+Rx.swift */; };
+		6124F05529EE79C100A0301A /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F05429EE79C100A0301A /* UserDefaultsService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +86,14 @@
 		5D0E5A7A48A4F0F2DA7A6EB8 /* Pods-UBike.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBike.release.xcconfig"; path = "Target Support Files/Pods-UBike/Pods-UBike.release.xcconfig"; sourceTree = "<group>"; };
 		6124F03A29ED205C00A0301A /* APIInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIInterface.swift; sourceTree = "<group>"; };
 		6124F03D29ED7F4B00A0301A /* GetUBikesInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUBikesInterface.swift; sourceTree = "<group>"; };
+		6124F04229EE440900A0301A /* UbikeStationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStationsRepository.swift; sourceTree = "<group>"; };
+		6124F04429EE453100A0301A /* RemoteDataSourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataSourceType.swift; sourceTree = "<group>"; };
+		6124F04829EE4E5000A0301A /* LocalDataSourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataSourceType.swift; sourceTree = "<group>"; };
+		6124F04A29EE4EEC00A0301A /* UbikeStationsRepositoryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStationsRepositoryType.swift; sourceTree = "<group>"; };
+		6124F04C29EE542000A0301A /* UbikeStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStation.swift; sourceTree = "<group>"; };
+		6124F05029EE6D7B00A0301A /* UbikeStationModelMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStationModelMapper.swift; sourceTree = "<group>"; };
+		6124F05229EE75AE00A0301A /* UBikeStationModelMapper+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UBikeStationModelMapper+Rx.swift"; sourceTree = "<group>"; };
+		6124F05429EE79C100A0301A /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
 		61ED233629D898E50018EDF2 /* TaiwanLocation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TaiwanLocation.gpx; sourceTree = "<group>"; };
 		72E0739BB1C1959D451C5CA4 /* Pods-UBike-UBikeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBike-UBikeUITests.debug.xcconfig"; path = "Target Support Files/Pods-UBike-UBikeUITests/Pods-UBike-UBikeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8D23C74852C1AEBA037E5396 /* Pods-UBikeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBikeTests.release.xcconfig"; path = "Target Support Files/Pods-UBikeTests/Pods-UBikeTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -131,6 +147,7 @@
 		3AD19617264B73D7000E0BA4 /* UBike */ = {
 			isa = PBXGroup;
 			children = (
+				6124F05629EE7EA000A0301A /* LocalStorage */,
 				6124F04029EDA8DA00A0301A /* Network */,
 				613039B229ED0DD700A060B2 /* Modules */,
 				3AD1964C264B768A000E0BA4 /* Repository */,
@@ -158,8 +175,12 @@
 		3AD1964C264B768A000E0BA4 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
-				3AD19661264ECF84000E0BA4 /* Constants.swift */,
-				3AC6E43626513CA600B19084 /* UserDefaultsUtil.swift */,
+				6124F04F29EE6D6D00A0301A /* Mapper */,
+				6124F04E29EE542600A0301A /* Model */,
+				6124F04629EE4E2A00A0301A /* LocalDataSource */,
+				6124F04729EE4E3600A0301A /* RemoteDataSource */,
+				6124F04229EE440900A0301A /* UbikeStationsRepository.swift */,
+				6124F04A29EE4EEC00A0301A /* UbikeStationsRepositoryType.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -176,6 +197,7 @@
 		6124F04029EDA8DA00A0301A /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				3AD19661264ECF84000E0BA4 /* Constants.swift */,
 				3AD1964E264B791C000E0BA4 /* AlamofireNetworkService.swift */,
 				6124F04129EDAA2400A0301A /* ApiModel */,
 				6124F03C29ED7DEE00A0301A /* ApiInterface */,
@@ -189,6 +211,48 @@
 				3AD19655264B7F1A000E0BA4 /* GetUBikesApiModel.swift */,
 			);
 			path = ApiModel;
+			sourceTree = "<group>";
+		};
+		6124F04629EE4E2A00A0301A /* LocalDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				6124F04829EE4E5000A0301A /* LocalDataSourceType.swift */,
+			);
+			path = LocalDataSource;
+			sourceTree = "<group>";
+		};
+		6124F04729EE4E3600A0301A /* RemoteDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				6124F04429EE453100A0301A /* RemoteDataSourceType.swift */,
+			);
+			path = RemoteDataSource;
+			sourceTree = "<group>";
+		};
+		6124F04E29EE542600A0301A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6124F04C29EE542000A0301A /* UbikeStation.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		6124F04F29EE6D6D00A0301A /* Mapper */ = {
+			isa = PBXGroup;
+			children = (
+				6124F05029EE6D7B00A0301A /* UbikeStationModelMapper.swift */,
+				6124F05229EE75AE00A0301A /* UBikeStationModelMapper+Rx.swift */,
+			);
+			path = Mapper;
+			sourceTree = "<group>";
+		};
+		6124F05629EE7EA000A0301A /* LocalStorage */ = {
+			isa = PBXGroup;
+			children = (
+				6124F05429EE79C100A0301A /* UserDefaultsService.swift */,
+				3AC6E43626513CA600B19084 /* UserDefaultsUtil.swift */,
+			);
+			path = LocalStorage;
 			sourceTree = "<group>";
 		};
 		613039B129ED0D5400A060B2 /* Resources */ = {
@@ -461,12 +525,18 @@
 				3ADD5ED42651725500AFD1AA /* UBikesViewController.swift in Sources */,
 				3AD1966E26512423000E0BA4 /* UBikesFavoriteViewController.swift in Sources */,
 				3AD1961D264B73D7000E0BA4 /* HomeViewController.swift in Sources */,
+				6124F04929EE4E5000A0301A /* LocalDataSourceType.swift in Sources */,
 				3AC6E43726513CA600B19084 /* UserDefaultsUtil.swift in Sources */,
 				3AD1965C264BC8D1000E0BA4 /* MapInfoViewController.swift in Sources */,
 				3AD19654264B7E63000E0BA4 /* HomeViewModel.swift in Sources */,
+				6124F05129EE6D7B00A0301A /* UbikeStationModelMapper.swift in Sources */,
+				6124F05329EE75AE00A0301A /* UBikeStationModelMapper+Rx.swift in Sources */,
 				3AD19619264B73D7000E0BA4 /* AppDelegate.swift in Sources */,
 				3AD19660264DB3A9000E0BA4 /* BorderButton.swift in Sources */,
 				3AD19668264EF934000E0BA4 /* UBikesViewModel.swift in Sources */,
+				6124F05529EE79C100A0301A /* UserDefaultsService.swift in Sources */,
+				6124F04D29EE542000A0301A /* UbikeStation.swift in Sources */,
+				6124F04B29EE4EEC00A0301A /* UbikeStationsRepositoryType.swift in Sources */,
 				3AD19664264EEDA6000E0BA4 /* ShadowButton.swift in Sources */,
 				3AD19656264B7F1A000E0BA4 /* GetUBikesApiModel.swift in Sources */,
 				3AD1966C26512406000E0BA4 /* UBikesAreaViewController.swift in Sources */,
@@ -476,7 +546,9 @@
 				6124F03B29ED205C00A0301A /* APIInterface.swift in Sources */,
 				3AD1966A264FD02C000E0BA4 /* UBikesCollectionCell.swift in Sources */,
 				3AD1964F264B791C000E0BA4 /* AlamofireNetworkService.swift in Sources */,
+				6124F04529EE453100A0301A /* RemoteDataSourceType.swift in Sources */,
 				3AD1961B264B73D7000E0BA4 /* SceneDelegate.swift in Sources */,
+				6124F04329EE440900A0301A /* UbikeStationsRepository.swift in Sources */,
 				3AD1965E264DA1A1000E0BA4 /* UBikePointAnnotation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
