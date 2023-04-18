@@ -21,12 +21,14 @@ class HomeViewModel {
     
     init() {
         ubikes = refresh
-            .flatMapLatest { [weak self] in
-                self?.fetchUBikesApi().catchAndReturn(nil) ?? Observable.just(nil)
+            .flatMapLatest { [weak self] _ -> Single<GetUBikesResp> in
+                guard let self = self else { return .never() }
+                
+                return self.fetchUBikesApi()
             }
             .flatMapLatest { resp -> Observable<[UBike]> in
                 var ubikes : [UBike] = []
-                for ubikeDic in resp?.retVal ?? [:] {
+                for ubikeDic in resp.retVal ?? [:] {
                     ubikes.append(ubikeDic.value)
                 }
                 
@@ -37,9 +39,8 @@ class HomeViewModel {
 }
 
 extension HomeViewModel{
-    private func fetchUBikesApi() -> Observable<GetUBikesResp?>{
-        return ApiRequest.fetchApi(requestDic: nil , urlPath: HttpPathEnum.GetUBikes.rawValue)
+    private func fetchUBikesApi() -> Single<GetUBikesResp> {
+        return AlamofireNetworkService.shared.fetch(apiInterface: GetUBikesInterface())
     }
-    
 }
     

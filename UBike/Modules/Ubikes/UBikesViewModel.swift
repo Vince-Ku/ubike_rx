@@ -22,7 +22,7 @@ class UBikesViewModel {
     var favoriteBtnTap = PublishSubject<[String:UBikeCellModel]>()
     
     //MARK: -- Output
-    var loadingResult : Observable<GetUBikesResp?>!
+    var loadingResult : Observable<GetUBikesResp>!
     var ubikesForArea = BehaviorRelay<[SectionModel<String, [UBikeCellModel]>]>(value: [])
     var ubikesForFavorite = BehaviorRelay<[UBikeCellModel]>(value: [])
     
@@ -33,8 +33,10 @@ class UBikesViewModel {
                             self?.ubikesForFavorite.accept([])
                         })
                         //.delay(.milliseconds(1500), scheduler: MainScheduler.instance)
-                        .flatMapLatest { [weak self] in
-                            self?.fetchUBikesApi().catchAndReturn(nil) ?? Observable.just(nil)
+                        .flatMapLatest { [weak self] _ -> Single<GetUBikesResp> in
+                            guard let self = self else { return .never() }
+                            
+                            return self.fetchUBikesApi()
                         }
                         .share()
         
@@ -44,7 +46,7 @@ class UBikesViewModel {
                 
                 let favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: ubilkesFavoriteKey) as! [String:Bool]
                 
-                for ubikeDic in resp?.retVal ?? [:] {
+                for ubikeDic in resp.retVal ?? [:] {
                     for favoriteUbike in favoriteUbikes{
                         if let sno = ubikeDic.value.sno {
                             if favoriteUbike.key == sno && favoriteUbike.value {
@@ -70,7 +72,7 @@ class UBikesViewModel {
                     
                     let favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: ubilkesFavoriteKey) as! [String:Bool]
                     
-                    for ubikeDic in resp?.retVal ?? [:] {
+                    for ubikeDic in resp.retVal ?? [:] {
                         if let sno = ubikeDic.value.sno {
                             var ubikeCM = UBikeCellModel(ubike: ubikeDic.value, isFavorite: false)
                             for favoriteUbike in favoriteUbikes{
@@ -128,8 +130,7 @@ class UBikesViewModel {
 }
 
 extension UBikesViewModel{
-    private func fetchUBikesApi() -> Observable<GetUBikesResp?>{
-        return ApiRequest.fetchApi(requestDic: nil , urlPath: HttpPathEnum.GetUBikes.rawValue)
+    private func fetchUBikesApi() -> Single<GetUBikesResp> {
+        return AlamofireNetworkService.shared.fetch(apiInterface: GetUBikesInterface())
     }
-    
 }
