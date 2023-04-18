@@ -9,5 +9,12 @@ import RxSwift
 
 protocol LocalDataSourceType {
     static var shared: LocalDataSourceType { get }
-    func getUbikes() -> Single<[UbikeStation]>
+    
+    // ❌❌❌ The Model `Ubike` couple to LocalDataSourceType protocol !!!
+    // CRUD is the only knowledge could exist in this place !!
+    //
+    // TODO: use generic type instead
+    //
+    func getUbikeStations() -> Single<[UbikeStation]>
+    func saveUbikeStations(ubikeStations: [UbikeStation]) -> Completable
 }

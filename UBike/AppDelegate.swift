@@ -14,8 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        if UserDefaults.standard.value(forKey: ubilkesFavoriteKey) == nil {
-           UserDefaults.standard.setValue( [String:Bool]() , forKey: ubilkesFavoriteKey)
+        if UserDefaults.standard.value(forKey: LocalStorageConstants.favoriteUbikeStationsData) == nil {
+            UserDefaults.standard.setValue( [String:Bool]() , forKey: LocalStorageConstants.favoriteUbikeStationsData)
         }
         return true
     }

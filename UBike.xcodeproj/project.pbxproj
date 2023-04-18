@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		19805C94F613F6BB33AA1F40 /* Pods_UBike.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE796E7CEF8D622CEBE9422 /* Pods_UBike.framework */; };
 		3A12ED66265BEA360015C658 /* UBikesViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A12ED65265BEA360015C658 /* UBikesViewModelTest.swift */; };
-		3AC6E43726513CA600B19084 /* UserDefaultsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC6E43626513CA600B19084 /* UserDefaultsUtil.swift */; };
 		3AC6E4392651519E00B19084 /* UBikeCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC6E4382651519E00B19084 /* UBikeCollectionCell.swift */; };
 		3AD19619264B73D7000E0BA4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19618264B73D7000E0BA4 /* AppDelegate.swift */; };
 		3AD1961B264B73D7000E0BA4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1961A264B73D7000E0BA4 /* SceneDelegate.swift */; };
@@ -24,7 +23,7 @@
 		3AD1965C264BC8D1000E0BA4 /* MapInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1965B264BC8D1000E0BA4 /* MapInfoViewController.swift */; };
 		3AD1965E264DA1A1000E0BA4 /* UBikePointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1965D264DA1A1000E0BA4 /* UBikePointAnnotation.swift */; };
 		3AD19660264DB3A9000E0BA4 /* BorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD1965F264DB3A9000E0BA4 /* BorderButton.swift */; };
-		3AD19662264ECF84000E0BA4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19661264ECF84000E0BA4 /* Constants.swift */; };
+		3AD19662264ECF84000E0BA4 /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19661264ECF84000E0BA4 /* NetworkConstants.swift */; };
 		3AD19664264EEDA6000E0BA4 /* ShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19663264EEDA6000E0BA4 /* ShadowButton.swift */; };
 		3AD19668264EF934000E0BA4 /* UBikesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19667264EF934000E0BA4 /* UBikesViewModel.swift */; };
 		3AD1966A264FD02C000E0BA4 /* UBikesCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD19669264FD02B000E0BA4 /* UBikesCollectionCell.swift */; };
@@ -42,6 +41,8 @@
 		6124F05129EE6D7B00A0301A /* UbikeStationModelMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F05029EE6D7B00A0301A /* UbikeStationModelMapper.swift */; };
 		6124F05329EE75AE00A0301A /* UBikeStationModelMapper+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F05229EE75AE00A0301A /* UBikeStationModelMapper+Rx.swift */; };
 		6124F05529EE79C100A0301A /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F05429EE79C100A0301A /* UserDefaultsService.swift */; };
+		6124F05929EECF5F00A0301A /* LocalStorageConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F05829EECF5F00A0301A /* LocalStorageConstants.swift */; };
+		6124F05D29EF11CF00A0301A /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F05C29EF11CF00A0301A /* CoreDataService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +58,6 @@
 /* Begin PBXFileReference section */
 		0AE796E7CEF8D622CEBE9422 /* Pods_UBike.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UBike.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A12ED65265BEA360015C658 /* UBikesViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikesViewModelTest.swift; sourceTree = "<group>"; };
-		3AC6E43626513CA600B19084 /* UserDefaultsUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsUtil.swift; sourceTree = "<group>"; };
 		3AC6E4382651519E00B19084 /* UBikeCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikeCollectionCell.swift; sourceTree = "<group>"; };
 		3AD19615264B73D7000E0BA4 /* UBike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UBike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AD19618264B73D7000E0BA4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 		3AD1965B264BC8D1000E0BA4 /* MapInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapInfoViewController.swift; sourceTree = "<group>"; };
 		3AD1965D264DA1A1000E0BA4 /* UBikePointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikePointAnnotation.swift; sourceTree = "<group>"; };
 		3AD1965F264DB3A9000E0BA4 /* BorderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderButton.swift; sourceTree = "<group>"; };
-		3AD19661264ECF84000E0BA4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		3AD19661264ECF84000E0BA4 /* NetworkConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
 		3AD19663264EEDA6000E0BA4 /* ShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowButton.swift; sourceTree = "<group>"; };
 		3AD19667264EF934000E0BA4 /* UBikesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikesViewModel.swift; sourceTree = "<group>"; };
 		3AD19669264FD02B000E0BA4 /* UBikesCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikesCollectionCell.swift; sourceTree = "<group>"; };
@@ -94,6 +94,8 @@
 		6124F05029EE6D7B00A0301A /* UbikeStationModelMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStationModelMapper.swift; sourceTree = "<group>"; };
 		6124F05229EE75AE00A0301A /* UBikeStationModelMapper+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UBikeStationModelMapper+Rx.swift"; sourceTree = "<group>"; };
 		6124F05429EE79C100A0301A /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
+		6124F05829EECF5F00A0301A /* LocalStorageConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageConstants.swift; sourceTree = "<group>"; };
+		6124F05C29EF11CF00A0301A /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		61ED233629D898E50018EDF2 /* TaiwanLocation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TaiwanLocation.gpx; sourceTree = "<group>"; };
 		72E0739BB1C1959D451C5CA4 /* Pods-UBike-UBikeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBike-UBikeUITests.debug.xcconfig"; path = "Target Support Files/Pods-UBike-UBikeUITests/Pods-UBike-UBikeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8D23C74852C1AEBA037E5396 /* Pods-UBikeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBikeTests.release.xcconfig"; path = "Target Support Files/Pods-UBikeTests/Pods-UBikeTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -197,7 +199,7 @@
 		6124F04029EDA8DA00A0301A /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				3AD19661264ECF84000E0BA4 /* Constants.swift */,
+				3AD19661264ECF84000E0BA4 /* NetworkConstants.swift */,
 				3AD1964E264B791C000E0BA4 /* AlamofireNetworkService.swift */,
 				6124F04129EDAA2400A0301A /* ApiModel */,
 				6124F03C29ED7DEE00A0301A /* ApiInterface */,
@@ -249,10 +251,19 @@
 		6124F05629EE7EA000A0301A /* LocalStorage */ = {
 			isa = PBXGroup;
 			children = (
-				6124F05429EE79C100A0301A /* UserDefaultsService.swift */,
-				3AC6E43626513CA600B19084 /* UserDefaultsUtil.swift */,
+				6124F05729EE873F00A0301A /* UserDefaults */,
+				6124F05829EECF5F00A0301A /* LocalStorageConstants.swift */,
 			);
 			path = LocalStorage;
+			sourceTree = "<group>";
+		};
+		6124F05729EE873F00A0301A /* UserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				6124F05429EE79C100A0301A /* UserDefaultsService.swift */,
+				6124F05C29EF11CF00A0301A /* CoreDataService.swift */,
+			);
+			path = UserDefaults;
 			sourceTree = "<group>";
 		};
 		613039B129ED0D5400A060B2 /* Resources */ = {
@@ -526,7 +537,6 @@
 				3AD1966E26512423000E0BA4 /* UBikesFavoriteViewController.swift in Sources */,
 				3AD1961D264B73D7000E0BA4 /* HomeViewController.swift in Sources */,
 				6124F04929EE4E5000A0301A /* LocalDataSourceType.swift in Sources */,
-				3AC6E43726513CA600B19084 /* UserDefaultsUtil.swift in Sources */,
 				3AD1965C264BC8D1000E0BA4 /* MapInfoViewController.swift in Sources */,
 				3AD19654264B7E63000E0BA4 /* HomeViewModel.swift in Sources */,
 				6124F05129EE6D7B00A0301A /* UbikeStationModelMapper.swift in Sources */,
@@ -541,14 +551,16 @@
 				3AD19656264B7F1A000E0BA4 /* GetUBikesApiModel.swift in Sources */,
 				3AD1966C26512406000E0BA4 /* UBikesAreaViewController.swift in Sources */,
 				3AC6E4392651519E00B19084 /* UBikeCollectionCell.swift in Sources */,
-				3AD19662264ECF84000E0BA4 /* Constants.swift in Sources */,
+				3AD19662264ECF84000E0BA4 /* NetworkConstants.swift in Sources */,
 				6124F03E29ED7F4B00A0301A /* GetUBikesInterface.swift in Sources */,
+				6124F05D29EF11CF00A0301A /* CoreDataService.swift in Sources */,
 				6124F03B29ED205C00A0301A /* APIInterface.swift in Sources */,
 				3AD1966A264FD02C000E0BA4 /* UBikesCollectionCell.swift in Sources */,
 				3AD1964F264B791C000E0BA4 /* AlamofireNetworkService.swift in Sources */,
 				6124F04529EE453100A0301A /* RemoteDataSourceType.swift in Sources */,
 				3AD1961B264B73D7000E0BA4 /* SceneDelegate.swift in Sources */,
 				6124F04329EE440900A0301A /* UbikeStationsRepository.swift in Sources */,
+				6124F05929EECF5F00A0301A /* LocalStorageConstants.swift in Sources */,
 				3AD1965E264DA1A1000E0BA4 /* UBikePointAnnotation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

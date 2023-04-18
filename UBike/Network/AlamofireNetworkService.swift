@@ -1,6 +1,6 @@
 
 //
-//  AlamofireAdapter.swift
+//  AlamofireNetworkService.swift
 //  UBike
 //
 //  Created by Vince on 2021/5/12.

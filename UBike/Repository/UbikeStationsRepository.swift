@@ -21,7 +21,7 @@ class UbikeStationsRepository: UbikeStationsRepositoryType {
     
     func getUbikeStations(isLatest: Bool) -> Single<[UbikeStation]> {
         guard isLatest else {
-            return localDataSource.getUbikes()
+            return localDataSource.getUbikeStations()
         }
         
         return fetchUbikeStations()
@@ -32,5 +32,13 @@ class UbikeStationsRepository: UbikeStationsRepositoryType {
             .flatMap { [weak self] apiModel -> Single<[UbikeStation]> in
                 self?.ubikeStationModelMapper.rx.transform(apiModel: apiModel) ?? .never()
             }
+            .flatMapCompletable { [weak self] appModel -> Completable in
+                self?.saveUbikeStations(ubikeStations: appModel) ?? .never()
+            }
+            .andThen(localDataSource.getUbikeStations())
+    }
+    
+    private func saveUbikeStations(ubikeStations: [UbikeStation]) -> Completable {
+        localDataSource.saveUbikeStations(ubikeStations: ubikeStations)
     }
 }

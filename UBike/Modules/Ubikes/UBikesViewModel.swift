@@ -44,7 +44,7 @@ class UBikesViewModel {
             .flatMapLatest { resp ,_, _ -> Observable<[UBikeCellModel]> in
                 var ubikesCM : [UBikeCellModel] = []
                 
-                let favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: ubilkesFavoriteKey) as! [String:Bool]
+                let favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: LocalStorageConstants.favoriteUbikeStationsData) as! [String:Bool]
                 
                 for ubikeDic in resp.retVal ?? [:] {
                     for favoriteUbike in favoriteUbikes{
@@ -70,7 +70,7 @@ class UBikesViewModel {
                 .flatMapLatest { resp , _  -> Observable<[SectionModel<String, [UBikeCellModel]>]> in
                     var ubikesCM : [UBikeCellModel] = []
                     
-                    let favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: ubilkesFavoriteKey) as! [String:Bool]
+                    let favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: LocalStorageConstants.favoriteUbikeStationsData) as! [String:Bool]
                     
                     for ubikeDic in resp.retVal ?? [:] {
                         if let sno = ubikeDic.value.sno {
@@ -112,9 +112,9 @@ class UBikesViewModel {
             for (reuseIdentifier,cellModel) in dic {
                 guard let station = cellModel.ubike.sno else { return }
                 
-                var favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: ubilkesFavoriteKey) as! [String:Bool]
+                var favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: LocalStorageConstants.favoriteUbikeStationsData) as! [String:Bool]
                 favoriteUbikes.updateValue(cellModel.isFavorite, forKey: station)
-                UserDefaults.standard.setValue(favoriteUbikes, forKey: ubilkesFavoriteKey)
+                UserDefaults.standard.setValue(favoriteUbikes, forKey: LocalStorageConstants.favoriteUbikeStationsData)
 
                 //refresh data without fetching API
                 if reuseIdentifier == "bikeItem" {
