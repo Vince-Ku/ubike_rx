@@ -27,7 +27,7 @@ class MapInfoViewController : UIViewController {
             guideBtn.isEnabled = true
             favoriteBtn.isEnabled = true
             
-            let favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: LocalStorageConstants.favoriteUbikeStationsData) as! [String:Bool]
+            let favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: LocalStorageConstants.UserDefaults.favoriteUbikeStationsData) as! [String:Bool]
             
             let isSelected = favoriteUbikes
                                     .filter{ $0.key == ubike?.sno ?? "none" }
@@ -50,10 +50,10 @@ class MapInfoViewController : UIViewController {
                 guard let self = self , let station = self.ubike?.sno else {return}
                 self.favoriteBtn.isSelected = !self.favoriteBtn.isSelected
                 
-                var favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: LocalStorageConstants.favoriteUbikeStationsData) as! [String:Bool]
+                var favoriteUbikes : [String:Bool] = UserDefaults.standard.value(forKey: LocalStorageConstants.UserDefaults.favoriteUbikeStationsData) as! [String:Bool]
                 
                 favoriteUbikes.updateValue(self.favoriteBtn.isSelected, forKey: station)
-                UserDefaults.standard.setValue(favoriteUbikes, forKey: LocalStorageConstants.favoriteUbikeStationsData)
+                UserDefaults.standard.setValue(favoriteUbikes, forKey: LocalStorageConstants.UserDefaults.favoriteUbikeStationsData)
                 
             }).disposed(by:disposeBag)
             

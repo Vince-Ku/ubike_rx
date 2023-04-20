@@ -7,32 +7,34 @@
 
 import RxSwift
 
-class UserDefaultsService: LocalDataSourceType {
-    static var shared: LocalDataSourceType = UserDefaultsService()
+final class UserDefaultsService: UserDefaultsServiceType {
+
+    static var shared = UserDefaultsService()
     
     private let jsonEncoder = JSONEncoder()
     private let jsonDecoder = JSONDecoder()
     private let userDefaults = UserDefaults.standard
     
-    func getUbikeStations() -> Single<[UbikeStation]> {
-        guard let ubikeStationsData = userDefaults.value(forKey: LocalStorageConstants.ubikeStationsData) as? Data else {
-            print("⚠️⚠️⚠️ ubikeStationsData is missing")
-            return .error(NSError(domain: "UserDefaultsService", code: NSURLErrorDataNotAllowed))
+    func get<T: Decodable>(key: String) -> Single<[T]> {
+        
+        guard let data = userDefaults.value(forKey: key) as? Data else {
+            print("⚠️⚠️⚠️ UserDefaults value not found, key: \(key)")
+            return .error(NSError(domain: "UserDefaultsService.get", code: NSURLErrorDataNotAllowed))
         }
         
         do {
-            let ubikeStations = try decode(ubikeStationsData: ubikeStationsData)
-            return .just(ubikeStations)
+            let data: [T] = try decode(data: data)
+            return .just(data)
             
-        } catch (let error){
+        } catch (let error) {
             return .error(error)
         }
     }
     
-    func saveUbikeStations(ubikeStations: [UbikeStation]) -> Completable {
+    func save<T: Encodable>(encodables: [T], key: String) -> Completable {
         do {
-            let ubikeStationsData = try encode(ubikeStations: ubikeStations)
-            userDefaults.set(ubikeStationsData, forKey: LocalStorageConstants.ubikeStationsData)
+            let data = try encode(encodableModels: encodables)
+            userDefaults.set(data, forKey: key)
             
             return .empty()
             
@@ -41,11 +43,11 @@ class UserDefaultsService: LocalDataSourceType {
         }
     }
     
-    private func decode(ubikeStationsData: Data) throws -> [UbikeStation] {
-        try jsonDecoder.decode([UbikeStation].self, from: ubikeStationsData)
+    private func decode<T: Decodable>(data: Data) throws -> [T] {
+        try jsonDecoder.decode([T].self, from: data)
     }
     
-    private func encode(ubikeStations: [UbikeStation]) throws -> Data {
-        try jsonEncoder.encode(ubikeStations)
+    private func encode<T: Encodable>(encodableModels: [T]) throws -> Data {
+        try jsonEncoder.encode(encodableModels)
     }
 }

@@ -9,6 +9,8 @@ import Foundation
 
 struct LocalStorageConstants {
     // MARK: UserDefaults
-    static let ubikeStationsData = "userdefaults.ubike.stations"
-    static let favoriteUbikeStationsData = "userdefaults.favorite.ubike.stations"
+    struct UserDefaults {
+        static let ubikeStationsData = "userdefaults.ubike.stations"
+        static let favoriteUbikeStationsData = "userdefaults.favorite.ubike.stations"
+    }
 }

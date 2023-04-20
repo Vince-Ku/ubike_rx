@@ -12,16 +12,16 @@ class UbikeStationsRepository: UbikeStationsRepositoryType {
     private let ubikeStationModelMapper = UbikeStationModelMapper()
 
     private let remoteDataSource: RemoteDataSourceType
-    private let localDataSource: LocalDataSourceType
+    private let ubikeStationCoreDataService: UBikeStationCoreDataServiceType
     
-    init(remoteDataSource: RemoteDataSourceType, localDataSource: LocalDataSourceType) {
+    init(remoteDataSource: RemoteDataSourceType, ubikeStationCoreDataService: UBikeStationCoreDataServiceType) {
         self.remoteDataSource = remoteDataSource
-        self.localDataSource = localDataSource
+        self.ubikeStationCoreDataService = ubikeStationCoreDataService
     }
     
     func getUbikeStations(isLatest: Bool) -> Single<[UbikeStation]> {
         guard isLatest else {
-            return localDataSource.getUbikeStations()
+            return ubikeStationCoreDataService.get()
         }
         
         return fetchUbikeStations()
@@ -35,10 +35,10 @@ class UbikeStationsRepository: UbikeStationsRepositoryType {
             .flatMapCompletable { [weak self] appModel -> Completable in
                 self?.saveUbikeStations(ubikeStations: appModel) ?? .never()
             }
-            .andThen(localDataSource.getUbikeStations())
+            .andThen(ubikeStationCoreDataService.get())
     }
     
     private func saveUbikeStations(ubikeStations: [UbikeStation]) -> Completable {
-        localDataSource.saveUbikeStations(ubikeStations: ubikeStations)
+        ubikeStationCoreDataService.save(ubikeStations: ubikeStations)
     }
 }
