@@ -50,6 +50,8 @@
 		61BBC5E629F0F5CA0029B07E /* UBikeStationCoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BBC5E529F0F5CA0029B07E /* UBikeStationCoreDataService.swift */; };
 		61BBC5E829F109230029B07E /* UserDefaultsServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BBC5E729F109230029B07E /* UserDefaultsServiceType.swift */; };
 		61BBC5EA29F10E940029B07E /* UBikeStationCoreDataServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BBC5E929F10E940029B07E /* UBikeStationCoreDataServiceType.swift */; };
+		61BBC6FB29F17EEF0029B07E /* LocationManagerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BBC6FA29F17EEF0029B07E /* LocationManagerProxy.swift */; };
+		61BBC80B29F264400029B07E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 61BBC80A29F264400029B07E /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +112,8 @@
 		61BBC5E529F0F5CA0029B07E /* UBikeStationCoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikeStationCoreDataService.swift; sourceTree = "<group>"; };
 		61BBC5E729F109230029B07E /* UserDefaultsServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsServiceType.swift; sourceTree = "<group>"; };
 		61BBC5E929F10E940029B07E /* UBikeStationCoreDataServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikeStationCoreDataServiceType.swift; sourceTree = "<group>"; };
+		61BBC6FA29F17EEF0029B07E /* LocationManagerProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerProxy.swift; sourceTree = "<group>"; };
+		61BBC80A29F264400029B07E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		61ED233629D898E50018EDF2 /* TaiwanLocation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TaiwanLocation.gpx; sourceTree = "<group>"; };
 		72E0739BB1C1959D451C5CA4 /* Pods-UBike-UBikeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBike-UBikeUITests.debug.xcconfig"; path = "Target Support Files/Pods-UBike-UBikeUITests/Pods-UBike-UBikeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8D23C74852C1AEBA037E5396 /* Pods-UBikeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBikeTests.release.xcconfig"; path = "Target Support Files/Pods-UBikeTests/Pods-UBikeTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -314,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				61ED233629D898E50018EDF2 /* TaiwanLocation.gpx */,
+				61BBC80A29F264400029B07E /* Settings.bundle */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -355,6 +360,7 @@
 		613039B529ED0F1100A060B2 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				61BBC6F929F17EDA0029B07E /* Location */,
 				613039B629ED0F4000A060B2 /* Views */,
 			);
 			path = Utility;
@@ -376,6 +382,14 @@
 				61BBC5E929F10E940029B07E /* UBikeStationCoreDataServiceType.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		61BBC6F929F17EDA0029B07E /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				61BBC6FA29F17EEF0029B07E /* LocationManagerProxy.swift */,
+			);
+			path = Location;
 			sourceTree = "<group>";
 		};
 		C72CD4F6A566EAB178C39BD2 /* Frameworks */ = {
@@ -485,6 +499,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61BBC80B29F264400029B07E /* Settings.bundle in Resources */,
 				3AD19628264B73DE000E0BA4 /* LaunchScreen.storyboard in Resources */,
 				3AD19625264B73DE000E0BA4 /* Assets.xcassets in Resources */,
 				3AD19620264B73D7000E0BA4 /* Main.storyboard in Resources */,
@@ -604,6 +619,7 @@
 				6124F04D29EE542000A0301A /* UbikeStation.swift in Sources */,
 				6124F04B29EE4EEC00A0301A /* UbikeStationsRepositoryType.swift in Sources */,
 				3AD19664264EEDA6000E0BA4 /* ShadowButton.swift in Sources */,
+				61BBC6FB29F17EEF0029B07E /* LocationManagerProxy.swift in Sources */,
 				3AD19656264B7F1A000E0BA4 /* GetUBikesApiModel.swift in Sources */,
 				61BBC5E329EFCE960029B07E /* Ubike_Station+CoreDataProperties.swift in Sources */,
 				3AD1966C26512406000E0BA4 /* UBikesAreaViewController.swift in Sources */,

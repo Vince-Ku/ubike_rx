@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Ubike 會根據您的所在地點，在地圖上加入附近的場站資訊。</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Ubike 會根據您的所在地點，在地圖上加入附近的場站資訊。</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Ubike 會根據您的所在地點，在地圖上加入附近的場站資訊。</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Ubike 會根據您的所在地點，在地圖上加入附近的場站資訊。</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -20,10 +28,6 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Please provide your location for Apple Map</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please provide your location for Apple Map 2</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -16,24 +16,19 @@ class HomeViewController: UIViewController {
     @IBOutlet unowned var refreshBtn : ShadowButton!
     @IBOutlet unowned var showListBtn : ShadowButton!
     
-    var viewModel = HomeViewModel()
-    private var locationManager: CLLocationManager!
-    private var firstLoading : Bool = true
-    private var currentLocation: CLLocation? {
-        didSet{
-            if firstLoading {
-                showLocation(currentLocation,5000,5000)
-                firstLoading = false
-            }
-        }
-    }
+    var viewModel: HomeViewModel!
+    
     weak var mapInfoVC : MapInfoViewController?
     let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        createViewModel()
         initUI()
         setUpRx()
+        setupLocation()
+        
+        viewModel.viewDidLoad.accept(())
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,11 +40,13 @@ class HomeViewController: UIViewController {
         switch segue.identifier {
         case "mapInfoSegue":
             mapInfoVC = segue.destination as? MapInfoViewController
+            // TODO: fix me
             mapInfoVC?.homeViewModel = viewModel
             return
             
         case "bikesListSegue":
             let vc = segue.destination as? UBikesViewController
+            // TODO: fix me
             vc?.homeViewModel = viewModel
             return
             
@@ -58,20 +55,16 @@ class HomeViewController: UIViewController {
         }
     }
     
+    private func createViewModel() {
+        let locationManager = LocationManagerProxy()
+        locationManager.delegate = self
+        viewModel = HomeViewModel(locationManager: locationManager)
+    }
+    
     private func initUI(){
         mapView.showsUserLocation = true
         mapView.delegate = self
         mapView.register(UBikeAnnotationView.self, forAnnotationViewWithReuseIdentifier: "ubikePin")
-        
-        // location service
-        if CLLocationManager.locationServicesEnabled(){
-            locationManager = CLLocationManager()
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.requestAlwaysAuthorization()
-            locationManager.startUpdatingLocation()
-        }
-        
     }
     
     private func setUpRx(){
@@ -85,10 +78,9 @@ class HomeViewController: UIViewController {
             .bind(to: self.viewModel.refresh)
             .disposed(by: disposeBag)
 
-        showCurrentBtn.rx.controlEvent(.touchUpInside).subscribe(onNext:{ [unowned self] in
-            showLocation(currentLocation, nil,nil)
-            
-        }).disposed(by:disposeBag)
+        showCurrentBtn.rx.tap
+            .bind(to: viewModel.showCurrentLocationBtnDidTap)
+            .disposed(by: disposeBag)
         
         viewModel.selectAnnotation.subscribe(onNext:{ [weak self] ubike in
             guard let self = self , let selectedSno = ubike.sno else { return }
@@ -131,79 +123,87 @@ class HomeViewController: UIViewController {
             
         }).disposed(by: disposeBag)
         
-        viewModel.guideTap.subscribe(onNext:{ [weak self] ubike in
-            guard let currentLocation = self?.currentLocation ,
-                  let lat = Double(ubike.lat ?? ""),
-                  let lng = Double(ubike.lng ?? "")  else { return }
-            
-            // remove all current routes
-            if let overlays = self?.mapView.overlays {
-                self?.mapView.removeOverlays(overlays)
-            }
-            
-            //
-            // destination
-            //
-            let toCoordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-            let toMKPlacemark = MKPlacemark(coordinate: toCoordinate, addressDictionary: nil)
-            let toLocation = MKMapItem(placemark: toMKPlacemark)
-            
-            //
-            // current location
-            //
-            let meCoordinate = CLLocationCoordinate2D(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
-            let meMKPlacemark = MKPlacemark(coordinate: meCoordinate, addressDictionary: nil)
-            let meLocation = MKMapItem(placemark: meMKPlacemark)
-            
-            //request for apple direction apit
-            let request = MKDirections.Request()
-            request.transportType = .walking
-            request.source = meLocation
-            request.destination = toLocation
-
-            let directions = MKDirections(request: request)
-            
-            // call Apple api to get route
-            directions.calculate { [weak self] (response:MKDirections.Response?, error:Error?) in
-                if let resp = response, let route = resp.routes.first {// only show one route , temporarily
-                    
-                    // add expected teavel time
-                    switch route.expectedTravelTime {
-                    case 0..<60: // less then one minute
-                        self?.mapInfoVC?.guideBtn.setTitle("步行，1分鐘以內", for: .normal)
-                        break
-                        
-                    case 60..<3600: // less then one hour
-                        let title = "步行，\(Int(route.expectedTravelTime / 60))分鐘"
-                        self?.mapInfoVC?.guideBtn.setTitle(title, for: .normal)
-                        break
-                        
-                    case 3600...:
-                        let result = Int(route.expectedTravelTime).quotientAndRemainder(dividingBy: 3600)
-                        let hour = result.quotient
-                        let min = result.remainder / 60
-                        
-                        let title = "步行，\(hour)小時 \(min)分鐘"
-                        self?.mapInfoVC?.guideBtn.setTitle(title, for: .normal)
-                        break
-                    default:
-                        print("unpredicted expectedTravelTime")
-                    }
-                    
-                    // add route
-                    self?.mapView.addOverlay(route.polyline, level: MKOverlayLevel.aboveRoads)
-                    
-                    let center = CLLocation(latitude: (toCoordinate.latitude + meCoordinate.latitude)/2,
-                                            longitude: (toCoordinate.longitude + meCoordinate.longitude)/2)
-                    
-                    //use route.distance to show span
-                    //because it can definitely cover the whole route
-                    self?.showLocation(center, route.distance , route.distance)
-                    
-                }
-            }
-            
-        }).disposed(by: disposeBag)
+//        viewModel.guideTap.subscribe(onNext:{ [weak self] ubike in
+//            guard let currentLocation = self?.currentLocation ,
+//                  let lat = Double(ubike.lat ?? ""),
+//                  let lng = Double(ubike.lng ?? "")  else { return }
+//
+//            // remove all current routes
+//            if let overlays = self?.mapView.overlays {
+//                self?.mapView.removeOverlays(overlays)
+//            }
+//
+//            //
+//            // destination
+//            //
+//            let toCoordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+//            let toMKPlacemark = MKPlacemark(coordinate: toCoordinate, addressDictionary: nil)
+//            let toLocation = MKMapItem(placemark: toMKPlacemark)
+//
+//            //
+//            // current location
+//            //
+//            let meCoordinate = CLLocationCoordinate2D(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+//            let meMKPlacemark = MKPlacemark(coordinate: meCoordinate, addressDictionary: nil)
+//            let meLocation = MKMapItem(placemark: meMKPlacemark)
+//
+//            //request for apple direction apit
+//            let request = MKDirections.Request()
+//            request.transportType = .walking
+//            request.source = meLocation
+//            request.destination = toLocation
+//
+//            let directions = MKDirections(request: request)
+//
+//            // call Apple api to get route
+//            directions.calculate { [weak self] (response:MKDirections.Response?, error:Error?) in
+//                if let resp = response, let route = resp.routes.first {// only show one route , temporarily
+//
+//                    // add expected teavel time
+//                    switch route.expectedTravelTime {
+//                    case 0..<60: // less then one minute
+//                        self?.mapInfoVC?.guideBtn.setTitle("步行，1分鐘以內", for: .normal)
+//                        break
+//
+//                    case 60..<3600: // less then one hour
+//                        let title = "步行，\(Int(route.expectedTravelTime / 60))分鐘"
+//                        self?.mapInfoVC?.guideBtn.setTitle(title, for: .normal)
+//                        break
+//
+//                    case 3600...:
+//                        let result = Int(route.expectedTravelTime).quotientAndRemainder(dividingBy: 3600)
+//                        let hour = result.quotient
+//                        let min = result.remainder / 60
+//
+//                        let title = "步行，\(hour)小時 \(min)分鐘"
+//                        self?.mapInfoVC?.guideBtn.setTitle(title, for: .normal)
+//                        break
+//                    default:
+//                        print("unpredicted expectedTravelTime")
+//                    }
+//
+//                    // add route
+//                    self?.mapView.addOverlay(route.polyline, level: MKOverlayLevel.aboveRoads)
+//
+//                    let center = CLLocation(latitude: (toCoordinate.latitude + meCoordinate.latitude)/2,
+//                                            longitude: (toCoordinate.longitude + meCoordinate.longitude)/2)
+//
+//                    //use route.distance to show span
+//                    //because it can definitely cover the whole route
+//                    self?.showLocation(center, route.distance , route.distance)
+//
+//                }
+//            }
+//
+//        }).disposed(by: disposeBag)
+    }
+    
+    private func setupLocation() {
+        viewModel.showUserLocation.asSignal()
+            .emit(onNext: { [weak self] location, distance in
+                self?.showLocation(location, distance, distance)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func showLocation(_ location:CLLocation? ,_ latMeters : CLLocationDistance?,_ lngMeters:CLLocationDistance?){
@@ -224,13 +224,6 @@ class HomeViewController: UIViewController {
         }
     }
 
-}
-
-
-extension HomeViewController : CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        currentLocation = locations.last
-    }
 }
 
 extension HomeViewController : MKMapViewDelegate {
@@ -294,4 +287,38 @@ extension HomeViewController : MKMapViewDelegate {
         mapInfoVC?.emptySpace.text = ":"
         mapInfoVC?.guideBtn.setTitle("", for: .normal)
     }
+}
+
+extension HomeViewController: LocationManagerProxyDelegate {
+    
+    func openLocationSettingAlert() -> Completable {
+        Completable.create { [weak self] observer in
+            let confirmButtonDidTap = { observer(.completed) }
+            let cancelButtonDidTap = { observer(.completed) }
+            
+            self?.openLocationSettingAlert(confirmButtonDidTap: confirmButtonDidTap, cancelButtonDidTap: cancelButtonDidTap)
+            return Disposables.create()
+        }
+    }
+    
+    private func openLocationSettingAlert(confirmButtonDidTap: @escaping(() -> Void), cancelButtonDidTap: @escaping(() -> Void)) {
+        let alert = UIAlertController(title: "需要位置權限", message: "請允許「UBike」取用位置權限後，才可取得定位、地圖資訊、導航等功能。", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "前往設定", style: .default, handler: { _ in
+            confirmButtonDidTap()
+            
+            guard let bundleIdentifier = Bundle.main.bundleIdentifier,
+                  let URL = URL(string: "\(UIApplication.openSettingsURLString)&path=//\(bundleIdentifier)"),
+                  UIApplication.shared.canOpenURL(URL) else {
+                return
+            }
+            
+            UIApplication.shared.open(URL, options: [:]) { _ in }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { _ in cancelButtonDidTap() }))
+        
+        present(alert, animated: true)
+    }
+    
 }
