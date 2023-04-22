@@ -36,10 +36,10 @@ struct UbikeStation: Codable {
     }
     
     let id: String                          // 站點代號
-    let name: Name                          // 場站中文名稱
-    let area: Area                          // 場站區域
+    let name: Name                          // 場站名稱 (中、英文)
+    let area: Area                          // 場站區域 (中、英文)
     let coordinator: Coordinate             // 場站座標
-    let address: Address                    // 地址 (中、英文)
-    let parkingSpace: ParkingSpace          // 場站停車格
+    let address: Address                    // 場站地址 (中、英文)
+    let parkingSpace: ParkingSpace          // 場站停車格 (全部、有車、空)
     let updatedDate: Date?                  // 資料更新時間
 }
