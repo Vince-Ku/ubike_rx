@@ -30,8 +30,13 @@ final class UBikeStationCoreDataService: UBikeStationCoreDataServiceType {
 
     func save(ubikeStations: [UbikeStation]) -> Completable {
         let context = container.newBackgroundContext()
-        mapper.setupCoreDataModel(context: context, models: ubikeStations)
+        
+        // truncate table
+        truncate(context: context)
 
+        // setup inserted core data Model
+        mapper.setupCoreDataModel(context: context, models: ubikeStations)
+        
         do {
             try context.save()
             return .empty()
@@ -39,6 +44,17 @@ final class UBikeStationCoreDataService: UBikeStationCoreDataServiceType {
         } catch (let error) {
             print("❌❌❌ UBikeStationCoreDataService save fail !")
             return .error(error)
+        }
+    }
+    
+    private func truncate(context: NSManagedObjectContext) {
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: Ubike_Station.fetchRequest())
+        
+        do {
+            try context.execute(deleteRequest)
+            try context.save()
+        } catch {
+            print("❌❌❌ UBikeStationCoreDataService truncate fail !")
         }
     }
 }
