@@ -23,7 +23,7 @@
                                 <rect key="frame" x="0.0" y="47" width="390" height="763"/>
                             </mapView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="GwK-Uc-pQH">
-                                <rect key="frame" x="340" y="504" width="40" height="140"/>
+                                <rect key="frame" x="340" y="440" width="40" height="140"/>
                                 <subviews>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ctx-es-GiU" customClass="ShadowButton" customModule="UBike" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -59,7 +59,7 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OIX-Hg-wxi">
-                                <rect key="frame" x="0.0" y="654" width="390" height="190"/>
+                                <rect key="frame" x="0.0" y="590" width="390" height="254"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="LKS-lw-Gwb">
                                         <rect key="frame" x="20" y="20" width="350" height="30"/>
@@ -102,7 +102,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="wrE-T6-HO8">
-                                        <rect key="frame" x="20" y="115" width="350" height="50"/>
+                                        <rect key="frame" x="20" y="110" width="350" height="50"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_parkinglot" translatesAutoresizingMaskIntoConstraints="NO" id="fPG-0m-Gr1">
                                                 <rect key="frame" x="0.0" y="12.666666666666629" width="25" height="25"/>
@@ -120,9 +120,9 @@
                                         </subviews>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEb-FS-EjI" customClass="BorderButton" customModule="UBike" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="131" width="350" height="39"/>
+                                        <rect key="frame" x="20" y="170" width="350" height="36"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="39" id="2oH-cE-C0u"/>
+                                            <constraint firstAttribute="height" constant="36" id="2oH-cE-C0u"/>
                                         </constraints>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
                                         <state key="normal" image="icon-direction">
@@ -135,14 +135,13 @@
                                     <constraint firstItem="hEb-FS-EjI" firstAttribute="trailing" secondItem="LKS-lw-Gwb" secondAttribute="trailing" id="0Gu-MU-p0Y"/>
                                     <constraint firstItem="fwS-IT-wKA" firstAttribute="leading" secondItem="LKS-lw-Gwb" secondAttribute="leading" id="48c-GD-Fd2"/>
                                     <constraint firstAttribute="trailing" secondItem="LKS-lw-Gwb" secondAttribute="trailing" constant="20" id="7UT-Sx-dbf"/>
-                                    <constraint firstAttribute="height" constant="190" id="8Uv-DC-VvS"/>
-                                    <constraint firstItem="wrE-T6-HO8" firstAttribute="top" secondItem="fwS-IT-wKA" secondAttribute="bottom" constant="10" id="BOR-fq-hhF"/>
+                                    <constraint firstItem="wrE-T6-HO8" firstAttribute="top" secondItem="fwS-IT-wKA" secondAttribute="bottom" constant="5" id="BOR-fq-hhF"/>
                                     <constraint firstItem="fwS-IT-wKA" firstAttribute="trailing" secondItem="LKS-lw-Gwb" secondAttribute="trailing" id="Bu0-el-TfJ"/>
                                     <constraint firstItem="wrE-T6-HO8" firstAttribute="trailing" secondItem="LKS-lw-Gwb" secondAttribute="trailing" id="DBE-94-J0j"/>
                                     <constraint firstItem="fwS-IT-wKA" firstAttribute="top" secondItem="LKS-lw-Gwb" secondAttribute="bottom" constant="5" id="H6s-TS-0xF"/>
                                     <constraint firstItem="LKS-lw-Gwb" firstAttribute="top" secondItem="OIX-Hg-wxi" secondAttribute="top" constant="20" id="HSm-EJ-RRS"/>
+                                    <constraint firstItem="hEb-FS-EjI" firstAttribute="top" secondItem="wrE-T6-HO8" secondAttribute="bottom" constant="10" id="JoE-xa-zrU"/>
                                     <constraint firstItem="hEb-FS-EjI" firstAttribute="leading" secondItem="LKS-lw-Gwb" secondAttribute="leading" id="Kf3-Gs-UhC"/>
-                                    <constraint firstAttribute="bottom" secondItem="hEb-FS-EjI" secondAttribute="bottom" constant="20" id="TvA-v5-shr"/>
                                     <constraint firstItem="wrE-T6-HO8" firstAttribute="leading" secondItem="LKS-lw-Gwb" secondAttribute="leading" id="i0M-Vk-66M"/>
                                     <constraint firstItem="LKS-lw-Gwb" firstAttribute="leading" secondItem="OIX-Hg-wxi" secondAttribute="leading" constant="20" id="yS6-If-gTv"/>
                                 </constraints>
@@ -158,6 +157,7 @@
                             <constraint firstItem="GwK-Uc-pQH" firstAttribute="bottom" secondItem="OIX-Hg-wxi" secondAttribute="top" constant="-10" id="SD5-gS-Khc"/>
                             <constraint firstItem="zcD-dE-Il1" firstAttribute="trailing" secondItem="OIX-Hg-wxi" secondAttribute="trailing" id="ZyC-11-j1b"/>
                             <constraint firstItem="zcD-dE-Il1" firstAttribute="bottom" secondItem="UfC-iL-l2W" secondAttribute="bottom" id="aNX-do-x5j"/>
+                            <constraint firstItem="zcD-dE-Il1" firstAttribute="bottom" secondItem="hEb-FS-EjI" secondAttribute="bottom" constant="14" id="aQC-qa-T4M"/>
                             <constraint firstItem="zcD-dE-Il1" firstAttribute="trailing" secondItem="GwK-Uc-pQH" secondAttribute="trailing" constant="10" id="aph-ni-n4g"/>
                             <constraint firstItem="OIX-Hg-wxi" firstAttribute="leading" secondItem="zcD-dE-Il1" secondAttribute="leading" id="wsh-8p-OHg"/>
                         </constraints>
