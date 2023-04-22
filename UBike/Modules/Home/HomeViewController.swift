@@ -58,13 +58,16 @@ class HomeViewController: UIViewController {
     private func createViewModel() {
         let locationManager = LocationManagerProxy()
         locationManager.delegate = self
-        viewModel = HomeViewModel(locationManager: locationManager)
+        let ubikeStationsRepository = UbikeStationsRepository(remoteDataSource: AlamofireNetworkService.shared,
+                                                              ubikeStationCoreDataService: UBikeStationCoreDataService.shared)
+        
+        viewModel = HomeViewModel(locationManager: locationManager, ubikeStationsRepository: ubikeStationsRepository)
     }
     
     private func initUI(){
         mapView.showsUserLocation = true
         mapView.delegate = self
-        mapView.register(UBikeAnnotationView.self, forAnnotationViewWithReuseIdentifier: "ubikePin")
+        mapView.register(UbikeStationAnnotationView.self, forAnnotationViewWithReuseIdentifier: "UbikeStationAnnotationView")
     }
     
     private func setUpRx(){
@@ -74,54 +77,42 @@ class HomeViewController: UIViewController {
 
         }).disposed(by:disposeBag)
         
-        refreshBtn.rx.controlEvent(.touchUpInside)
-            .bind(to: self.viewModel.refresh)
+        refreshBtn.rx.tap
+            .bind(to: viewModel.refreshButtonDidTap)
             .disposed(by: disposeBag)
 
         showCurrentBtn.rx.tap
             .bind(to: viewModel.showCurrentLocationBtnDidTap)
             .disposed(by: disposeBag)
         
-        viewModel.selectAnnotation.subscribe(onNext:{ [weak self] ubike in
-            guard let self = self , let selectedSno = ubike.sno else { return }
-            
-            for annotation in self.mapView.annotations {
-                let ubikeAnnotation = self.mapView.view(for: annotation)?.annotation as? UBikeAnnotation
-                
-                if let sno = ubikeAnnotation?.ubike?.sno {
-                    if sno == selectedSno {
-                        self.mapView.selectAnnotation(annotation, animated: true)
-                        break
-                    }
-                }
-            }
-            
-        }).disposed(by: disposeBag)
+//        viewModel.selectAnnotation.subscribe(onNext:{ [weak self] ubike in
+//            guard let self = self , let selectedSno = ubike.sno else { return }
+//
+//            for annotation in self.mapView.annotations {
+//                let ubikeAnnotation = self.mapView.view(for: annotation)?.annotation as? UBikeAnnotation
+//
+//                if let sno = ubikeAnnotation?.ubike?.sno {
+//                    if sno == selectedSno {
+//                        self.mapView.selectAnnotation(annotation, animated: true)
+//                        break
+//                    }
+//                }
+//            }
+//
+//        }).disposed(by: disposeBag)
         
-        viewModel.ubikes.subscribe(onNext:{ [weak self] ubikes in
-            guard let self = self else { return }
-            //initialize
-            self.mapView.removeAnnotations(self.mapView.annotations)
-            self.mapView.removeOverlays(self.mapView.overlays)
-            
-            //display ubikes station on Apple Map
-            for ubike in ubikes{
-                var uBikesPoint : [UBikeAnnotation] = []
-                if let lat = Double(ubike.lat ?? "") , let lng = Double(ubike.lng ?? ""){
-                    
-                    let uBikePoint = UBikeAnnotation()
-                    
-                    uBikePoint.ubike = ubike
-                    uBikePoint.title = ubike.sna
-                    uBikePoint.coordinate.latitude = lat
-                    uBikePoint.coordinate.longitude = lng
-                    
-                    uBikesPoint.append(uBikePoint)
-                }
-                self.mapView.addAnnotations(uBikesPoint)
-            }
-            
-        }).disposed(by: disposeBag)
+        viewModel.showUibikeStationsAnnotation.asDriver()
+            .drive(onNext: { [weak self] annotations in
+                guard let mapView = self?.mapView else { return }
+                
+                //initialize
+                mapView.removeAnnotations(mapView.annotations)
+                mapView.removeOverlays(mapView.overlays)
+
+                mapView.addAnnotations(annotations)
+                
+            })
+            .disposed(by: disposeBag)
         
 //        viewModel.guideTap.subscribe(onNext:{ [weak self] ubike in
 //            guard let currentLocation = self?.currentLocation ,
@@ -242,51 +233,47 @@ extension HomeViewController : MKMapViewDelegate {
         return MKOverlayRenderer()
     }
     
-    //MARK: - Custom Annotation
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard annotation is UBikeAnnotation else {
+        guard let ubikeStationAnnotation = annotation as? UBikeStationAnnotation else {
             return nil
         }
-        var annotationView : MKAnnotationView?
         
-        if let dequeuedAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "ubikePin") as? UBikeAnnotationView {
-            annotationView = dequeuedAnnotationView
-            annotationView?.annotation = annotation
-        }else {
-            annotationView = UBikeAnnotationView(annotation: annotation, reuseIdentifier: "ubikePin")
+        guard let ubikeStationAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "UbikeStationAnnotationView") as? UbikeStationAnnotationView else {
+            return nil
         }
-        
-        return annotationView
+
+        ubikeStationAnnotationView.setup(ubikeStation: ubikeStationAnnotation.ubikeStation)
+        return ubikeStationAnnotationView
     }
     
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView){
-        guard view.annotation is UBikeAnnotation else {
-            return
-        }
-        let pin = view.annotation as! UBikeAnnotation
-        
-        if let lat = Double(pin.ubike?.lat ?? "") , let lng = Double(pin.ubike?.lng ?? "") {
-            showLocation(CLLocation(latitude: lat, longitude: lng), nil, nil)
-        }
-        
-        mapInfoVC?.ubike = pin.ubike
-        
-    }
-    
-    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView){
-        guard view.annotation is UBikeAnnotation else {
-            return
-        }
-        
-        //initialize
-        mapView.removeOverlays(mapView.overlays)
-        mapInfoVC?.favoriteBtn.isEnabled = false
-        mapInfoVC?.guideBtn.isEnabled = false
-        mapInfoVC?.stationName.text = "尚未選擇站點"
-        mapInfoVC?.bikesSpace.text = ":"
-        mapInfoVC?.emptySpace.text = ":"
-        mapInfoVC?.guideBtn.setTitle("", for: .normal)
-    }
+//    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView){
+//        guard view.annotation is UBikeAnnotation else {
+//            return
+//        }
+//        let pin = view.annotation as! UBikeAnnotation
+//
+//        if let lat = Double(pin.ubike?.lat ?? "") , let lng = Double(pin.ubike?.lng ?? "") {
+//            showLocation(CLLocation(latitude: lat, longitude: lng), nil, nil)
+//        }
+//
+//        mapInfoVC?.ubike = pin.ubike
+//
+//    }
+//
+//    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView){
+//        guard view.annotation is UBikeAnnotation else {
+//            return
+//        }
+//
+//        //initialize
+//        mapView.removeOverlays(mapView.overlays)
+//        mapInfoVC?.favoriteBtn.isEnabled = false
+//        mapInfoVC?.guideBtn.isEnabled = false
+//        mapInfoVC?.stationName.text = "尚未選擇站點"
+//        mapInfoVC?.bikesSpace.text = ":"
+//        mapInfoVC?.emptySpace.text = ":"
+//        mapInfoVC?.guideBtn.setTitle("", for: .normal)
+//    }
 }
 
 extension HomeViewController: LocationManagerProxyDelegate {

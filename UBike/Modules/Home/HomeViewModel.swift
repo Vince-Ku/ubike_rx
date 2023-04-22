@@ -11,59 +11,31 @@ import RxRelay
 import CoreLocation
 
 class HomeViewModel {
-    let disposeBag = DisposeBag()
-    
+
     // MARK: DI
     private let locationManager: LocationManagerProxy
+    private let ubikeStationsRepository: UbikeStationsRepository
     
-    //MARK: -- Input
+    private let disposeBag = DisposeBag()
+    
+    // MARK: Input
     let viewDidLoad = PublishRelay<Void>()
     let showCurrentLocationBtnDidTap = PublishRelay<Void>()
-    
-    var refresh = BehaviorSubject<Void>(value: ())
+    var refreshButtonDidTap = PublishRelay<Void>()
+
     var selectAnnotation = PublishSubject<UBike>()
     var guideTap = PublishSubject<UBike>()
     
-    //MARK: -- Output
+    // MARK: Output
     let showUserLocation = PublishRelay<(CLLocation?, CLLocationDistance?)>()
+    let showUibikeStationsAnnotation = BehaviorRelay<[UBikeStationAnnotation]>(value: [])
     
-    var ubikes : Observable<[UBike]>!
-    
-    let repository = UbikeStationsRepository(remoteDataSource: AlamofireNetworkService.shared,
-                                             ubikeStationCoreDataService: UBikeStationCoreDataService.shared)
-    
-    
-    init(locationManager: LocationManagerProxy) {
+    init(locationManager: LocationManagerProxy, ubikeStationsRepository: UbikeStationsRepository) {
         self.locationManager = locationManager
+        self.ubikeStationsRepository = ubikeStationsRepository
+        
         setupLocation()
-        
-        
-//        refresh
-//            .flatMap { self.repository.getUbikeStations(isLatest: true) }
-//            .subscribe(onNext: { result in
-//                for each in result {
-//                    print("---")
-//                    print(each)
-//                    print()
-//                }
-//            })
-//            .disposed(by: disposeBag)
-        
-        ubikes = refresh
-            .flatMapLatest { [weak self] _ -> Single<GetUBikesResp> in
-                guard let self = self else { return .never() }
-                
-                return self.fetchUBikesApi()
-            }
-            .flatMapLatest { resp -> Observable<[UBike]> in
-                var ubikes : [UBike] = []
-                for ubikeDic in resp.retVal ?? [:] {
-                    ubikes.append(ubikeDic.value)
-                }
-                
-                return Observable<[UBike]>.just(ubikes)
-            }
-            .share()
+        setupUbikeStations()
     }
     
     private func setupLocation() {
@@ -88,11 +60,16 @@ class HomeViewModel {
             })
             .disposed(by: disposeBag)
     }
-}
-
-extension HomeViewModel{
-    private func fetchUBikesApi() -> Single<GetUBikesResp> {
-        return AlamofireNetworkService.shared.fetch(apiInterface: GetUBikesInterface())
+    
+    private func setupUbikeStations() {
+        Observable.merge(viewDidLoad.asObservable().take(1), refreshButtonDidTap.asObservable())
+            .flatMapLatest { [weak self] _ -> Single<[UbikeStation]> in
+                self?.ubikeStationsRepository.getUbikeStations(isLatest: true) ?? .never()
+            }
+            .map {
+                $0.map { UBikeStationAnnotation(ubikeStation: $0) }
+            }
+            .bind(to: showUibikeStationsAnnotation)
+            .disposed(by: disposeBag)
     }
 }
-    
