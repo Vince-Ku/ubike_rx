@@ -18,8 +18,8 @@ class UbikeStationCoreDataMapper {
             coreDataModel.name_ch = model.name.chinese
             coreDataModel.area_en = model.area.english
             coreDataModel.area_ch = model.area.chinese
-            coreDataModel.latitude = model.coordinator?.latitude ?? 0
-            coreDataModel.longitude = model.coordinator?.longitude ?? 0
+            coreDataModel.latitude = model.coordinator.latitude
+            coreDataModel.longitude = model.coordinator.longitude
             coreDataModel.address_en = model.address.english
             coreDataModel.address_ch = model.address.chinese
             coreDataModel.total_parking_number = Int16(model.parkingSpace.total)

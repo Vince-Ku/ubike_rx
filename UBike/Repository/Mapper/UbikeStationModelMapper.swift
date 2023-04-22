@@ -16,14 +16,19 @@ class UbikeStationModelMapper {
             return []
         }
 
-        return apiModels.map {
-            UbikeStation(id: $0.sno ?? unknown,
-                         name: getName(apiModel: $0),
-                         area: getArea(apiModel: $0),
-                         coordinator: getCoordinate(apiModel: $0),
-                         address: getAddress(apiModel: $0),
-                         parkingSpace: getParkingSpace(apiModel: $0),
-                         updatedDate: getUpdatedDate(apiModel: $0))
+        return apiModels.compactMap { apiModel -> UbikeStation? in
+            // filter unknown coordinate station
+            guard let coordinate = getCoordinate(apiModel: apiModel) else {
+                return nil
+            }
+            
+            return UbikeStation(id: apiModel.sno ?? unknown,
+                                name: getName(apiModel: apiModel),
+                                area: getArea(apiModel: apiModel),
+                                coordinator: coordinate,
+                                address: getAddress(apiModel: apiModel),
+                                parkingSpace: getParkingSpace(apiModel: apiModel),
+                                updatedDate: getUpdatedDate(apiModel: apiModel))
         }
     }
     
