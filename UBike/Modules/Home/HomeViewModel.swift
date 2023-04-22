@@ -15,27 +15,32 @@ class HomeViewModel {
     // MARK: DI
     private let locationManager: LocationManagerProxy
     private let ubikeStationsRepository: UbikeStationsRepository
+    private let mapper: UibikeStationBottomSheetStateMapper
     
     private let disposeBag = DisposeBag()
     
     // MARK: Input
     let viewDidLoad = PublishRelay<Void>()
     let showCurrentLocationBtnDidTap = PublishRelay<Void>()
-    var refreshButtonDidTap = PublishRelay<Void>()
+    let refreshButtonDidTap = PublishRelay<Void>()
+    let annotationDidSelect = PublishRelay<UbikeStation>()
+    let annotationDidDeselect = PublishRelay<UbikeStation>()
+    let favoriteStationButtonDidTap = PublishRelay<Void>()
+    let navigationButtonDidTap = PublishRelay<Void>()
 
-    var selectAnnotation = PublishSubject<UBike>()
-    var guideTap = PublishSubject<UBike>()
-    
     // MARK: Output
     let showUserLocation = PublishRelay<(CLLocation?, CLLocationDistance?)>()
     let showUibikeStationsAnnotation = BehaviorRelay<[UBikeStationAnnotation]>(value: [])
+    let updateUibikeStationBottomSheet = BehaviorRelay<UibikeStationBottomSheetState>(value: .empty)
     
-    init(locationManager: LocationManagerProxy, ubikeStationsRepository: UbikeStationsRepository) {
+    init(locationManager: LocationManagerProxy, ubikeStationsRepository: UbikeStationsRepository, mapper: UibikeStationBottomSheetStateMapper) {
         self.locationManager = locationManager
         self.ubikeStationsRepository = ubikeStationsRepository
+        self.mapper = mapper
         
         setupLocation()
         setupUbikeStations()
+        setupAnnotation()
     }
     
     private func setupLocation() {
@@ -71,5 +76,36 @@ class HomeViewModel {
             }
             .bind(to: showUibikeStationsAnnotation)
             .disposed(by: disposeBag)
+    }
+    
+    private func setupAnnotation() {
+        annotationDidSelect
+            .map { CLLocation(latitude: $0.coordinator.latitude, longitude: $0.coordinator.longitude) }
+            .subscribe(onNext: { [weak self] location in
+                self?.showUserLocation.accept((location, nil))
+            })
+            .disposed(by: disposeBag)
+        
+        annotationDidSelect
+            .compactMap { [weak self] ubikeStation -> UibikeStationBottomSheetState? in
+                self?.mapper.transform(ubikeStation: ubikeStation)
+            }
+            .debug()
+            .bind(to: updateUibikeStationBottomSheet)
+            .disposed(by: disposeBag)
+        
+        annotationDidDeselect
+            .map { _ -> UibikeStationBottomSheetState in
+                UibikeStationBottomSheetState.empty
+            }
+            .debug()
+            .bind(to: updateUibikeStationBottomSheet)
+            .disposed(by: disposeBag)
+    }
+    
+    private func setupButtomSheet() {
+        // TODO: implement favoriteStationButtonDidTap
+        
+        // TODO: implement navigationButtonDidTap
     }
 }

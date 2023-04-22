@@ -15,10 +15,14 @@ class HomeViewController: UIViewController {
     @IBOutlet unowned var showCurrentBtn : ShadowButton!
     @IBOutlet unowned var refreshBtn : ShadowButton!
     @IBOutlet unowned var showListBtn : ShadowButton!
+    @IBOutlet weak var bottomSheetView: UIView!
+    @IBOutlet weak var navigationButton: UIButton!
+    @IBOutlet weak var favoriteStationButton: UIButton!
+    @IBOutlet weak var stationNameLabel: UILabel!
+    @IBOutlet weak var bikesSpaceLabel: UILabel!
+    @IBOutlet weak var emptySpaceLabel: UILabel!
     
     var viewModel: HomeViewModel!
-    
-    weak var mapInfoVC : MapInfoViewController?
     let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -27,6 +31,7 @@ class HomeViewController: UIViewController {
         initUI()
         setUpRx()
         setupLocation()
+        setupBottomSheetEvent()
         
         viewModel.viewDidLoad.accept(())
     }
@@ -36,14 +41,16 @@ class HomeViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        bottomSheetView.layer.cornerRadius = bottomSheetView.bounds.height / 8
+        bottomSheetView.layer.shadowColor = UIColor.black.cgColor
+        bottomSheetView.layer.shadowRadius = bottomSheetView.bounds.height / 8
+        bottomSheetView.layer.shadowOpacity = 0.3
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
-        case "mapInfoSegue":
-            mapInfoVC = segue.destination as? MapInfoViewController
-            // TODO: fix me
-            mapInfoVC?.homeViewModel = viewModel
-            return
-            
         case "bikesListSegue":
             let vc = segue.destination as? UBikesViewController
             // TODO: fix me
@@ -60,8 +67,8 @@ class HomeViewController: UIViewController {
         locationManager.delegate = self
         let ubikeStationsRepository = UbikeStationsRepository(remoteDataSource: AlamofireNetworkService.shared,
                                                               ubikeStationCoreDataService: UBikeStationCoreDataService.shared)
-        
-        viewModel = HomeViewModel(locationManager: locationManager, ubikeStationsRepository: ubikeStationsRepository)
+        let mapper = UibikeStationBottomSheetStateMapper()
+        viewModel = HomeViewModel(locationManager: locationManager, ubikeStationsRepository: ubikeStationsRepository, mapper: mapper)
     }
     
     private func initUI(){
@@ -197,6 +204,37 @@ class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    private func setupBottomSheetEvent() {
+        favoriteStationButton.rx.tap
+            .bind(to: viewModel.favoriteStationButtonDidTap)
+            .disposed(by: disposeBag)
+            
+        navigationButton.rx.tap
+            .bind(to: viewModel.navigationButtonDidTap)
+            .disposed(by: disposeBag)
+        
+        viewModel.updateUibikeStationBottomSheet.asDriver()
+            .drive(onNext: { [weak self] state in
+                switch state {
+                case .empty:
+                    self?.favoriteStationButton.isEnabled = false
+                    self?.navigationButton.isEnabled = false
+                    self?.stationNameLabel.text = "尚未選擇站點"
+                    self?.bikesSpaceLabel.text = ":"
+                    self?.emptySpaceLabel.text = ":"
+                    self?.navigationButton.setTitle("", for: .normal)
+                    
+                case .regular(let viewObject):
+                    self?.favoriteStationButton.isEnabled = true
+                    self?.navigationButton.isEnabled = true
+                    self?.stationNameLabel.text = viewObject.nameText
+                    self?.bikesSpaceLabel.text = ": \(viewObject.bikeSpaceText)"
+                    self?.emptySpaceLabel.text = ": \(viewObject.emptySpaceText)"
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func showLocation(_ location:CLLocation? ,_ latMeters : CLLocationDistance?,_ lngMeters:CLLocationDistance?){
         if let location = location{
             
@@ -246,34 +284,17 @@ extension HomeViewController : MKMapViewDelegate {
         return ubikeStationAnnotationView
     }
     
-//    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView){
-//        guard view.annotation is UBikeAnnotation else {
-//            return
-//        }
-//        let pin = view.annotation as! UBikeAnnotation
-//
-//        if let lat = Double(pin.ubike?.lat ?? "") , let lng = Double(pin.ubike?.lng ?? "") {
-//            showLocation(CLLocation(latitude: lat, longitude: lng), nil, nil)
-//        }
-//
-//        mapInfoVC?.ubike = pin.ubike
-//
-//    }
-//
-//    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView){
-//        guard view.annotation is UBikeAnnotation else {
-//            return
-//        }
-//
-//        //initialize
-//        mapView.removeOverlays(mapView.overlays)
-//        mapInfoVC?.favoriteBtn.isEnabled = false
-//        mapInfoVC?.guideBtn.isEnabled = false
-//        mapInfoVC?.stationName.text = "尚未選擇站點"
-//        mapInfoVC?.bikesSpace.text = ":"
-//        mapInfoVC?.emptySpace.text = ":"
-//        mapInfoVC?.guideBtn.setTitle("", for: .normal)
-//    }
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let ubikeStation = (view.annotation as? UBikeStationAnnotation)?.ubikeStation else { return }
+
+        viewModel.annotationDidSelect.accept(ubikeStation)
+    }
+
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        guard let ubikeStation = (view.annotation as? UBikeStationAnnotation)?.ubikeStation else { return }
+
+        viewModel.annotationDidDeselect.accept(ubikeStation)
+    }
 }
 
 extension HomeViewController: LocationManagerProxyDelegate {

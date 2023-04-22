@@ -70,22 +70,22 @@ class UBikesViewController : UIViewController {
             guard let ubike = ubike else { return }
             
             self?.navigationController?.popViewController(animated: true)
-            self?.homeViewModel?.selectAnnotation.onNext(ubike)
+//            self?.homeViewModel?.selectAnnotation.onNext(ubike)
 
         }).disposed(by: disposeBag)
         
         if let homeViewModel = homeViewModel{
             
-            viewModel.guideBtnTap
-                .bind(to: homeViewModel.selectAnnotation)
-                .disposed(by: disposeBag)
+//            viewModel.guideBtnTap
+//                .bind(to: homeViewModel.selectAnnotation)
+//                .disposed(by: disposeBag)
             
-            viewModel.guideBtnTap
-                .do(onNext: { [weak self] _ in
-                    self?.navigationController?.popViewController(animated: true)
-                })
-                .bind(to: homeViewModel.guideTap)
-                .disposed(by: disposeBag)
+//            viewModel.guideBtnTap
+//                .do(onNext: { [weak self] _ in
+//                    self?.navigationController?.popViewController(animated: true)
+//                })
+//                .bind(to: homeViewModel.guideTap)
+//                .disposed(by: disposeBag)
             
         }
         
