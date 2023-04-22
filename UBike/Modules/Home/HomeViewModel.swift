@@ -29,7 +29,7 @@ class HomeViewModel {
     let navigationButtonDidTap = PublishRelay<Void>()
 
     // MARK: Output
-    let showUserLocation = PublishRelay<(CLLocation?, CLLocationDistance?)>()
+    let showUserLocation = PublishRelay<(CLLocation, CLLocationDistance?)>()
     let showUibikeStationsAnnotation = BehaviorRelay<[UBikeStationAnnotation]>(value: [])
     let updateUibikeStationBottomSheet = BehaviorRelay<UibikeStationBottomSheetState>(value: .empty)
     
@@ -49,7 +49,7 @@ class HomeViewModel {
             .andThen(locationManager.requestAuthorizationIfNeeded())
             .andThen(locationManager.activate())
             .subscribe(onCompleted: { [weak self] in
-                let location = self?.locationManager.getCurrentLocation()
+                guard let location = self?.locationManager.getCurrentLocation() else { return }
                 self?.showUserLocation.accept((location, 5000))
             })
             .disposed(by: disposeBag)
@@ -60,6 +60,7 @@ class HomeViewModel {
                 owner.locationManager.requestAuthorizationIfNeeded()
                     .andThen(.just(owner.locationManager.getCurrentLocation()))
             }
+            .compactMap { $0 }
             .subscribe(onNext: { [weak self] location in
                 self?.showUserLocation.accept((location, nil))
             })
@@ -90,7 +91,6 @@ class HomeViewModel {
             .compactMap { [weak self] ubikeStation -> UibikeStationBottomSheetState? in
                 self?.mapper.transform(ubikeStation: ubikeStation)
             }
-            .debug()
             .bind(to: updateUibikeStationBottomSheet)
             .disposed(by: disposeBag)
         
@@ -98,7 +98,6 @@ class HomeViewModel {
             .map { _ -> UibikeStationBottomSheetState in
                 UibikeStationBottomSheetState.empty
             }
-            .debug()
             .bind(to: updateUibikeStationBottomSheet)
             .disposed(by: disposeBag)
     }

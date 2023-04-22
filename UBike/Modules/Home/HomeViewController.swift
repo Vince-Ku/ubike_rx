@@ -235,22 +235,17 @@ class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func showLocation(_ location:CLLocation? ,_ latMeters : CLLocationDistance?,_ lngMeters:CLLocationDistance?){
-        if let location = location{
-            
-            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
-                                                longitude: location.coordinate.longitude)
-            
-            var region : MKCoordinateRegion!
-            
-            if let latMeters = latMeters , let lngMeters = lngMeters {
-                region = MKCoordinateRegion(center: center, latitudinalMeters: latMeters ,longitudinalMeters: lngMeters)
-            }else{
-                region = MKCoordinateRegion(center: center, span: mapView.region.span)
-            }
-            
-            mapView.setRegion(region, animated: true)
+    private func showLocation(_ location: CLLocation, _ latMeters : CLLocationDistance?, _ lngMeters:CLLocationDistance?) {
+        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
+                                            longitude: location.coordinate.longitude)
+        
+        guard let latMeters = latMeters, let lngMeters = lngMeters else {
+            mapView.setCenter(center, animated: true)
+            return
         }
+        
+        let region = MKCoordinateRegion(center: center, latitudinalMeters: latMeters ,longitudinalMeters: lngMeters)
+        mapView.setRegion(region, animated: true)
     }
 
 }
