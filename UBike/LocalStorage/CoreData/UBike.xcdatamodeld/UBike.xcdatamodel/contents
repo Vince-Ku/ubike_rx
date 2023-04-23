@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Favorite_Ubike_Station" representedClassName="Favorite_Ubike_Station" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="ubike_station" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ubike_Station" inverseName="favorite" inverseEntity="Ubike_Station"/>
+    </entity>
     <entity name="Ubike_Station" representedClassName="Ubike_Station" syncable="YES">
         <attribute name="address_ch" optional="YES" attributeType="String"/>
         <attribute name="address_en" optional="YES" attributeType="String"/>
@@ -14,5 +19,6 @@
         <attribute name="name_en" optional="YES" attributeType="String"/>
         <attribute name="total_parking_number" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="updated_date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="favorite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Favorite_Ubike_Station" inverseName="ubike_station" inverseEntity="Favorite_Ubike_Station"/>
     </entity>
 </model>

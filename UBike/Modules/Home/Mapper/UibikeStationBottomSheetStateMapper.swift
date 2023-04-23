@@ -14,6 +14,6 @@ class UibikeStationBottomSheetStateMapper {
                                                           nameText: ubikeStation.name.chinese,
                                                           bikeSpaceText: String(ubikeStation.parkingSpace.bike),
                                                           emptySpaceText: String(ubikeStation.parkingSpace.empty),
-                                                          isFavorite: false)) // TODO: fix me
+                                                          isFavorite: ubikeStation.isFavorite))
     }
 }

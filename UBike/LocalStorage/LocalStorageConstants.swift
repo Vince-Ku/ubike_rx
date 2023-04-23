@@ -13,4 +13,11 @@ struct LocalStorageConstants {
         static let ubikeStationsData = "userdefaults.ubike.stations"
         static let favoriteUbikeStationsData = "userdefaults.favorite.ubike.stations"
     }
+    
+    // MARK: CoreData
+    struct CoreData {
+        struct RelationShip {
+            static let favorite = "favorite"
+        }
+    }
 }

@@ -108,7 +108,7 @@ class HomeViewModel {
             .flatMapLatest { [weak self] id, isFavorite -> Single<Void> in
                 self?.ubikeStationsRepository.updateUbikeStation(id: id, isFavorite: isFavorite) ?? .never()
             }
-            .subscribe()
+            .subscribe() // TODO: update annotation
             .disposed(by: disposeBag)
             
         

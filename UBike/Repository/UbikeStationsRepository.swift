@@ -36,13 +36,11 @@ class UbikeStationsRepository: UbikeStationsRepositoryType {
             .flatMap { [weak self] apiModel -> Single<[UbikeStation]> in
                 self?.ubikeStationModelMapper.rx.transform(apiModel: apiModel) ?? .never()
             }
-            .flatMapCompletable { [weak self] appModel -> Completable in
-                self?.saveUbikeStations(ubikeStations: appModel) ?? .never()
+            .flatMap { [weak self] appModel -> Single<Void> in
+                self?.ubikeStationCoreDataService.save(ubikeStations: appModel) ?? .never()
             }
-            .andThen(ubikeStationCoreDataService.get())
-    }
-    
-    private func saveUbikeStations(ubikeStations: [UbikeStation]) -> Completable {
-        ubikeStationCoreDataService.save(ubikeStations: ubikeStations)
+            .flatMap { [weak self] _ -> Single<[UbikeStation]> in
+                self?.ubikeStationCoreDataService.get() ?? .never()
+            }
     }
 }

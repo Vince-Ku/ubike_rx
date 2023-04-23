@@ -209,7 +209,7 @@ class HomeViewController: UIViewController {
             .withUnretained(favoriteStationButton)
             .compactMap { button, _ -> (String, Bool)? in
                 guard let id = button.id else { return nil }
-                return (id, button.isSelected)
+                return (id, !button.isSelected)
             }
             .bind(to: viewModel.favoriteStationButtonDidTap)
             .disposed(by: disposeBag)
@@ -224,6 +224,7 @@ class HomeViewController: UIViewController {
                 case .empty:
                     self?.favoriteStationButton.id = nil
                     self?.favoriteStationButton.isEnabled = false
+                    self?.favoriteStationButton.isSelected = false
                     self?.navigationButton.isEnabled = false
                     self?.stationNameLabel.text = "尚未選擇站點"
                     self?.bikesSpaceLabel.text = ":"
@@ -233,6 +234,7 @@ class HomeViewController: UIViewController {
                 case .regular(let viewObject):
                     self?.favoriteStationButton.id = viewObject.id
                     self?.favoriteStationButton.isEnabled = true
+                    self?.favoriteStationButton.isSelected = viewObject.isFavorite
                     self?.navigationButton.isEnabled = true
                     self?.stationNameLabel.text = viewObject.nameText
                     self?.bikesSpaceLabel.text = ": \(viewObject.bikeSpaceText)"

@@ -28,6 +28,7 @@ class UbikeStationModelMapper {
                                 coordinator: coordinate,
                                 address: getAddress(apiModel: apiModel),
                                 parkingSpace: getParkingSpace(apiModel: apiModel),
+                                isFavorite: false, // default value
                                 updatedDate: getUpdatedDate(apiModel: apiModel))
         }
     }

@@ -10,7 +10,7 @@ import CoreData
 class UbikeStationCoreDataMapper {
     private let unknown = "unknown"
     
-    func setupCoreDataModel(context: NSManagedObjectContext, models: [UbikeStation]) {
+    func setupCoreDataModel(context: NSManagedObjectContext, models: [UbikeStation], favorites: [Favorite_Ubike_Station]) {
         models.forEach { model in
             let coreDataModel = Ubike_Station(context: context)
             coreDataModel.id = model.id
@@ -26,6 +26,7 @@ class UbikeStationCoreDataMapper {
             coreDataModel.bike_number = Int16(model.parkingSpace.bike)
             coreDataModel.empty_parking_number = Int16(model.parkingSpace.empty)
             coreDataModel.updated_date = model.updatedDate
+            coreDataModel.favorite = favorites.filter { $0.id == model.id }.first
         }
     }
     
@@ -40,6 +41,7 @@ class UbikeStationCoreDataMapper {
                                 coordinator: self.getCoordinate(coreDataModel: coreDataModel),
                                 address: self.getAddress(coreDataModel: coreDataModel),
                                 parkingSpace: self.getParkingSpace(coreDataModel: coreDataModel),
+                                isFavorite: coreDataModel.favorite?.isFavorite ?? false,
                                 updatedDate: coreDataModel.updated_date)
         }
     }
