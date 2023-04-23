@@ -10,6 +10,7 @@ enum UibikeStationBottomSheetState {
     case empty
     
     struct ViewObject {
+        let id: String
         let nameText: String
         let bikeSpaceText: String
         let emptySpaceText: String

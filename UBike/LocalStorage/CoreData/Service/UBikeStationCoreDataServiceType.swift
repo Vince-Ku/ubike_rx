@@ -10,4 +10,5 @@ import RxSwift
 protocol UBikeStationCoreDataServiceType: CoreDataServiceType {
     func get() -> Single<[UbikeStation]>
     func save(ubikeStations: [UbikeStation]) -> Completable
+    func update(id: String, isFavorite: Bool) -> Single<Void>
 }

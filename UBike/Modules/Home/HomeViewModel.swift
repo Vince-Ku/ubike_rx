@@ -14,7 +14,7 @@ class HomeViewModel {
 
     // MARK: DI
     private let locationManager: LocationManagerProxy
-    private let ubikeStationsRepository: UbikeStationsRepository
+    private let ubikeStationsRepository: UbikeStationsRepositoryType
     private let mapper: UibikeStationBottomSheetStateMapper
     
     private let disposeBag = DisposeBag()
@@ -25,7 +25,7 @@ class HomeViewModel {
     let refreshButtonDidTap = PublishRelay<Void>()
     let annotationDidSelect = PublishRelay<UbikeStation>()
     let annotationDidDeselect = PublishRelay<UbikeStation>()
-    let favoriteStationButtonDidTap = PublishRelay<Void>()
+    let favoriteStationButtonDidTap = PublishRelay<(String, Bool)>()
     let navigationButtonDidTap = PublishRelay<Void>()
 
     // MARK: Output
@@ -33,7 +33,7 @@ class HomeViewModel {
     let showUibikeStationsAnnotation = BehaviorRelay<[UBikeStationAnnotation]>(value: [])
     let updateUibikeStationBottomSheet = BehaviorRelay<UibikeStationBottomSheetState>(value: .empty)
     
-    init(locationManager: LocationManagerProxy, ubikeStationsRepository: UbikeStationsRepository, mapper: UibikeStationBottomSheetStateMapper) {
+    init(locationManager: LocationManagerProxy, ubikeStationsRepository: UbikeStationsRepositoryType, mapper: UibikeStationBottomSheetStateMapper) {
         self.locationManager = locationManager
         self.ubikeStationsRepository = ubikeStationsRepository
         self.mapper = mapper
@@ -41,6 +41,7 @@ class HomeViewModel {
         setupLocation()
         setupUbikeStations()
         setupAnnotation()
+        setupButtomSheet()
     }
     
     private func setupLocation() {
@@ -103,8 +104,16 @@ class HomeViewModel {
     }
     
     private func setupButtomSheet() {
-        // TODO: implement favoriteStationButtonDidTap
+        favoriteStationButtonDidTap
+            .flatMapLatest { [weak self] id, isFavorite -> Single<Void> in
+                self?.ubikeStationsRepository.updateUbikeStation(id: id, isFavorite: isFavorite) ?? .never()
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
+            
         
         // TODO: implement navigationButtonDidTap
     }
+    
+    
 }

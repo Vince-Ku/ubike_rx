@@ -27,6 +27,10 @@ class UbikeStationsRepository: UbikeStationsRepositoryType {
         return fetchUbikeStations()
     }
     
+    func updateUbikeStation(id: String, isFavorite: Bool) -> Single<Void> {
+        ubikeStationCoreDataService.update(id: id, isFavorite: isFavorite)
+    }
+    
     private func fetchUbikeStations() -> Single<[UbikeStation]> {
         remoteDataSource.fetch(apiInterface: ubikesApiInterface)
             .flatMap { [weak self] apiModel -> Single<[UbikeStation]> in

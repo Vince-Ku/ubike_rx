@@ -17,7 +17,7 @@ class HomeViewController: UIViewController {
     @IBOutlet unowned var showListBtn : ShadowButton!
     @IBOutlet weak var bottomSheetView: UIView!
     @IBOutlet weak var navigationButton: UIButton!
-    @IBOutlet weak var favoriteStationButton: UIButton!
+    @IBOutlet weak var favoriteStationButton: IdentifiableButton!
     @IBOutlet weak var stationNameLabel: UILabel!
     @IBOutlet weak var bikesSpaceLabel: UILabel!
     @IBOutlet weak var emptySpaceLabel: UILabel!
@@ -206,6 +206,11 @@ class HomeViewController: UIViewController {
     
     private func setupBottomSheetEvent() {
         favoriteStationButton.rx.tap
+            .withUnretained(favoriteStationButton)
+            .compactMap { button, _ -> (String, Bool)? in
+                guard let id = button.id else { return nil }
+                return (id, button.isSelected)
+            }
             .bind(to: viewModel.favoriteStationButtonDidTap)
             .disposed(by: disposeBag)
             
@@ -217,6 +222,7 @@ class HomeViewController: UIViewController {
             .drive(onNext: { [weak self] state in
                 switch state {
                 case .empty:
+                    self?.favoriteStationButton.id = nil
                     self?.favoriteStationButton.isEnabled = false
                     self?.navigationButton.isEnabled = false
                     self?.stationNameLabel.text = "尚未選擇站點"
@@ -225,6 +231,7 @@ class HomeViewController: UIViewController {
                     self?.navigationButton.setTitle("", for: .normal)
                     
                 case .regular(let viewObject):
+                    self?.favoriteStationButton.id = viewObject.id
                     self?.favoriteStationButton.isEnabled = true
                     self?.navigationButton.isEnabled = true
                     self?.stationNameLabel.text = viewObject.nameText

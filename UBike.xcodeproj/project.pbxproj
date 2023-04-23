@@ -44,6 +44,7 @@
 		6124F05D29EF11CF00A0301A /* CoreDataServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F05C29EF11CF00A0301A /* CoreDataServiceType.swift */; };
 		6124F0FC29EFB14500A0301A /* UBike.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6124F0FA29EFB14500A0301A /* UBike.xcdatamodeld */; };
 		6124F21629EFBC9E00A0301A /* UbikeStationCoreDataMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F21529EFBC9E00A0301A /* UbikeStationCoreDataMapper.swift */; };
+		6130524829F49A0F0064332B /* IdentifiableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6130524729F49A0F0064332B /* IdentifiableButton.swift */; };
 		615347B329F3D45A00FACB8F /* UbikeStationAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615347B229F3D45900FACB8F /* UbikeStationAnnotationView.swift */; };
 		616F217229F4375A00B88BD3 /* UibikeStationBottomSheetStateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F217129F4375A00B88BD3 /* UibikeStationBottomSheetStateMapper.swift */; };
 		616F217529F437D100B88BD3 /* UibikeStationBottomSheetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F217429F437D100B88BD3 /* UibikeStationBottomSheetState.swift */; };
@@ -108,6 +109,7 @@
 		6124F05C29EF11CF00A0301A /* CoreDataServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataServiceType.swift; sourceTree = "<group>"; };
 		6124F0FB29EFB14500A0301A /* UBike.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UBike.xcdatamodel; sourceTree = "<group>"; };
 		6124F21529EFBC9E00A0301A /* UbikeStationCoreDataMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStationCoreDataMapper.swift; sourceTree = "<group>"; };
+		6130524729F49A0F0064332B /* IdentifiableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableButton.swift; sourceTree = "<group>"; };
 		615347B229F3D45900FACB8F /* UbikeStationAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStationAnnotationView.swift; sourceTree = "<group>"; };
 		616F217129F4375A00B88BD3 /* UibikeStationBottomSheetStateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UibikeStationBottomSheetStateMapper.swift; sourceTree = "<group>"; };
 		616F217429F437D100B88BD3 /* UibikeStationBottomSheetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UibikeStationBottomSheetState.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 		613039B629ED0F4000A060B2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6130524729F49A0F0064332B /* IdentifiableButton.swift */,
 				3AD19663264EEDA6000E0BA4 /* ShadowButton.swift */,
 				3AD1965F264DB3A9000E0BA4 /* BorderButton.swift */,
 			);
@@ -636,6 +639,7 @@
 				616F217229F4375A00B88BD3 /* UibikeStationBottomSheetStateMapper.swift in Sources */,
 				6124F05329EE75AE00A0301A /* UBikeStationModelMapper+Rx.swift in Sources */,
 				3AD19619264B73D7000E0BA4 /* AppDelegate.swift in Sources */,
+				6130524829F49A0F0064332B /* IdentifiableButton.swift in Sources */,
 				3AD19660264DB3A9000E0BA4 /* BorderButton.swift in Sources */,
 				3AD19668264EF934000E0BA4 /* UBikesViewModel.swift in Sources */,
 				616F217529F437D100B88BD3 /* UibikeStationBottomSheetState.swift in Sources */,

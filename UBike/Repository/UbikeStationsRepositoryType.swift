@@ -9,4 +9,5 @@ import RxSwift
 
 protocol UbikeStationsRepositoryType {
     func getUbikeStations(isLatest: Bool) -> Single<[UbikeStation]>
+    func updateUbikeStation(id: String, isFavorite: Bool) -> Single<Void>
 }

@@ -47,6 +47,11 @@ final class UBikeStationCoreDataService: UBikeStationCoreDataServiceType {
         }
     }
     
+    func update(id: String, isFavorite: Bool) -> Single<Void> {
+        // TODO: to be continue
+        return .just(())
+    }
+    
     private func truncate(context: NSManagedObjectContext) {
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: Ubike_Station.fetchRequest())
         
