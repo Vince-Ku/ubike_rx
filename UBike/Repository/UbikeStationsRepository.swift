@@ -27,6 +27,10 @@ class UbikeStationsRepository: UbikeStationsRepositoryType {
         return fetchUbikeStations()
     }
     
+    func getUbikeStation(id: String) -> Single<UbikeStation?> {
+        ubikeStationCoreDataService.get(id: id)
+    }
+    
     func updateUbikeStation(id: String, isFavorite: Bool) -> Single<Void> {
         ubikeStationCoreDataService.update(id: id, isFavorite: isFavorite)
     }

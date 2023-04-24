@@ -14,6 +14,24 @@ final class UBikeStationCoreDataService: UBikeStationCoreDataServiceType {
     
     private let mapper = UbikeStationCoreDataMapper()
     
+    func get(id: String) -> Single<UbikeStation?> {
+        let context = container.newBackgroundContext()
+        
+        let fetchRequest = Ubike_Station.fetchRequest()
+        fetchRequest.relationshipKeyPathsForPrefetching = [LocalStorageConstants.CoreData.RelationShip.favorite]
+        fetchRequest.predicate = NSPredicate(format: "id = %@", id)
+            
+        do {
+            let ubikeStationCoreDataModel = try context.fetch(fetchRequest)
+            let ubikeStation = mapper.transform(coreDataModels: ubikeStationCoreDataModel).first
+
+            return .just(ubikeStation)
+        } catch (let error) {
+            print("❌❌❌ UBikeStationCoreDataService query by id fail !")
+            return .error(error)
+        }
+    }
+    
     func get() -> Single<[UbikeStation]> {
         let context = container.newBackgroundContext()
         

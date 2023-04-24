@@ -90,6 +90,12 @@ class HomeViewModel {
             .disposed(by: disposeBag)
         
         annotationDidSelect
+            .map(\.id)
+            .withUnretained(self)
+            .flatMap { owner, id -> Maybe<UbikeStation> in // get the latest data from the cache
+                owner.ubikeStationsRepository.getUbikeStation(id: id)
+                    .compactMap { $0 }
+            }
             .compactMap { [weak self] ubikeStation -> UibikeStationBottomSheetState? in
                 self?.mapper.transform(ubikeStation: ubikeStation)
             }
