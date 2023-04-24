@@ -45,23 +45,24 @@ class HomeViewModel {
     }
     
     private func setupLocation() {
-        viewDidLoad
-            .take(1).ignoreElements().asCompletable()
-            .andThen(locationManager.requestAuthorizationIfNeeded())
-            .andThen(locationManager.activate())
-            .subscribe(onCompleted: { [weak self] in
-                guard let location = self?.locationManager.getCurrentLocation() else { return }
+        viewDidLoad.take(1).asSingle()
+            .flatMap { [weak self] _ -> Single<Void> in
+                self?.locationManager.requestAuthorizationIfNeeded() ?? .never()
+            }
+            .flatMap { [weak self] _ -> Single<CLLocation?> in
+                self?.locationManager.activate() ?? .never()
+            }
+            .compactMap { $0 }
+            .subscribe(onSuccess: { [weak self] location in
                 self?.showUserLocation.accept((location, 5000))
             })
             .disposed(by: disposeBag)
         
         showCurrentLocationBtnDidTap
-            .withUnretained(self)
-            .flatMap { owner, _ -> Maybe<CLLocation?> in
-                owner.locationManager.requestAuthorizationIfNeeded()
-                    .andThen(.just(owner.locationManager.getCurrentLocation()))
+            .flatMap { [weak self] _ -> Single<Void> in
+                self?.locationManager.requestAuthorizationIfNeeded() ?? .never()
             }
-            .compactMap { $0 }
+            .compactMap { [weak self] _ in self?.locationManager.getCurrentLocation() }
             .subscribe(onNext: { [weak self] location in
                 self?.showUserLocation.accept((location, nil))
             })

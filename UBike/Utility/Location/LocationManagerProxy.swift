@@ -10,14 +10,14 @@ import RxSwift
 import RxRelay
 
 protocol LocationManagerProxyDelegate: AnyObject {
-    func openLocationSettingAlert() -> Completable
+    func openLocationSettingAlert(completion: @escaping (() -> Void))
 }
 
 class LocationManagerProxy: NSObject {
     private let disposeBag = DisposeBag()
     private let locationManager = CLLocationManager()
     
-    private let didChangeAuthorization = PublishRelay<CLAuthorizationStatus>()
+    private let didChangeAuthorization = PublishRelay<Void>()
     private let didUpdateLocation = PublishRelay<CLLocation?>()
     private let currentLocation = BehaviorRelay<CLLocation?>(value: nil)
 
@@ -42,60 +42,60 @@ class LocationManagerProxy: NSObject {
             .bind(to: currentLocation)
             .disposed(by: disposeBag)
     }
-
-    public func requestAuthorizationIfNeeded() -> Completable {
-        guard !authorizationIsValid else {
-            return .empty()
-        }
-        
-        guard locationManager.authorizationStatus != .notDetermined else {
-            return requestAuthorization()
-        }
-        
-        guard let delegate = delegate else {
-            return .never()
-        }
-        
-        return delegate.openLocationSettingAlert()
-            .andThen(didChangeAuthorizationCompletable)
+    
+    func requestAuthorizationIfNeeded() -> Single<Void> {
+        requestAuthorizationIfNeeded().ifEmpty(default: ())
     }
     
-    public func activate() -> Completable {
-        didUpdateLocationCompletable
-            .do(onSubscribe: { [weak self] in
+    func activate() -> Single<CLLocation?> {
+        didUpdateLocation.take(1).asSingle()
+            .do(onSubscribed: { [weak self] in
                 self?.locationManager.startUpdatingLocation()
             })
     }
     
-    public func getCurrentLocation() -> CLLocation? {
+    func getCurrentLocation() -> CLLocation? {
         currentLocation.value
     }
     
-    private func requestAuthorization() -> Completable {
-        didChangeAuthorizationCompletable
-            .do(onSubscribe: { [weak self] in
-                self?.locationManager.requestAlwaysAuthorization()
+    private func requestAuthorizationIfNeeded() -> Maybe<Void> {
+        presentAuthorizationAlert()
+            .flatMap { [weak self] _ -> Maybe<Void> in
+                self?.didChangeAuthorization.take(1).asMaybe() ?? .never()
+            }
+    }
+    
+    private func presentAuthorizationAlert() -> Maybe<Void> {
+        Maybe<Void>.create { [weak self] observe -> Disposable in
+            guard let self = self else { return Disposables.create() }
+            
+            guard !self.authorizationIsValid else {
+                observe(.completed)
+                return Disposables.create()
+            }
+            
+            guard self.locationManager.authorizationStatus != .notDetermined else {
+                self.locationManager.requestAlwaysAuthorization()
+                observe(.success(()))
+                return Disposables.create()
+            }
+            
+            self.delegate?.openLocationSettingAlert(completion: {
+                observe(.success(()))
             })
+            
+            return Disposables.create()
+        }
     }
 }
 
 extension LocationManagerProxy: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         guard status != .notDetermined else { return }
-        didChangeAuthorization.accept(status)
+        didChangeAuthorization.accept(())
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         didUpdateLocation.accept(locations.last)
-    }
-}
-
-extension LocationManagerProxy {
-    private var didChangeAuthorizationCompletable: Completable {
-        didChangeAuthorization.take(1).ignoreElements().asCompletable()
-    }
-    
-    private var didUpdateLocationCompletable: Completable {
-        didUpdateLocation.take(1).ignoreElements().asCompletable()
     }
 }

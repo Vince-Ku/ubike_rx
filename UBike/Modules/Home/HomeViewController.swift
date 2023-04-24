@@ -303,22 +303,10 @@ extension HomeViewController : MKMapViewDelegate {
 
 extension HomeViewController: LocationManagerProxyDelegate {
     
-    func openLocationSettingAlert() -> Completable {
-        Completable.create { [weak self] observer in
-            let confirmButtonDidTap = { observer(.completed) }
-            let cancelButtonDidTap = { observer(.completed) }
-            
-            self?.openLocationSettingAlert(confirmButtonDidTap: confirmButtonDidTap, cancelButtonDidTap: cancelButtonDidTap)
-            return Disposables.create()
-        }
-    }
-    
-    private func openLocationSettingAlert(confirmButtonDidTap: @escaping(() -> Void), cancelButtonDidTap: @escaping(() -> Void)) {
+    func openLocationSettingAlert(completion: @escaping (() -> Void)) {
         let alert = UIAlertController(title: "需要位置權限", message: "請允許「UBike」取用位置權限後，才可取得定位、地圖資訊、導航等功能。", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "前往設定", style: .default, handler: { _ in
-            confirmButtonDidTap()
-            
             guard let bundleIdentifier = Bundle.main.bundleIdentifier,
                   let URL = URL(string: "\(UIApplication.openSettingsURLString)&path=//\(bundleIdentifier)"),
                   UIApplication.shared.canOpenURL(URL) else {
@@ -328,9 +316,9 @@ extension HomeViewController: LocationManagerProxyDelegate {
             UIApplication.shared.open(URL, options: [:]) { _ in }
         }))
         
-        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { _ in cancelButtonDidTap() }))
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel))
         
-        present(alert, animated: true)
+        present(alert, animated: true, completion: completion)
     }
     
 }
