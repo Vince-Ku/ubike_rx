@@ -30,6 +30,7 @@ class HomeViewModel {
     let annotationDidDeselect = PublishRelay<UbikeStation>()
     let favoriteStationButtonDidTap = PublishRelay<(String, Bool)>()
     let navigationButtonDidTap = PublishRelay<String>()
+    let showListButtonDidTap = PublishRelay<Void>()
 
     // MARK: Output
     let showLocation = PublishRelay<(CLLocation, CLLocationDistance?)>()
@@ -50,9 +51,9 @@ class HomeViewModel {
         self.coordinator = coordinator
         
         setupLocation()
-        setupUbikeStations()
         setupAnnotation()
         setupButtomSheet()
+        setupUbikeList()
     }
     
     private func setupLocation() {
@@ -80,7 +81,7 @@ class HomeViewModel {
             .disposed(by: disposeBag)
     }
     
-    private func setupUbikeStations() {
+    private func setupAnnotation() {
         Observable.merge(viewDidLoad.asObservable().take(1), refreshAnnotationButtonDidTap.asObservable())
             .flatMapLatest { [weak self] _ -> Single<[UbikeStation]> in
                 self?.ubikeStationsRepository.getUbikeStations(isLatest: true) ?? .never()
@@ -90,9 +91,7 @@ class HomeViewModel {
             }
             .bind(to: showUibikeStationsAnnotation)
             .disposed(by: disposeBag)
-    }
-    
-    private func setupAnnotation() {
+        
         annotationDidSelect
             .map { CLLocation(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude) }
             .subscribe(onNext: { [weak self] location in
@@ -179,6 +178,14 @@ class HomeViewModel {
                 
                 self?.updateRoute.accept(route)
                 self?.showLocation.accept((centerLocation, route.distance))
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func setupUbikeList() {
+        showListButtonDidTap
+            .subscribe(onNext: { [weak self] _ in
+                self?.coordinator.openUbikeListModule()
             })
             .disposed(by: disposeBag)
     }

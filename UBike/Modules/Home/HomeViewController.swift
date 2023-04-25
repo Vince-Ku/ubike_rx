@@ -44,28 +44,13 @@ class HomeViewController: UIViewController {
         bottomSheetView.layer.shadowOpacity = 0.3
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.identifier {
-        case "bikesListSegue":
-            let vc = segue.destination as? UBikesViewController
-            // TODO: fix me
-            vc?.homeViewModel = viewModel
-            return
-            
-        default:
-            print("unpredicted segue")
-        }
-    }
-    
     private func setupMap(){
         mapView.showsUserLocation = true
         mapView.delegate = self
         mapView.register(UbikeStationAnnotationView.self, forAnnotationViewWithReuseIdentifier: "UbikeStationAnnotationView")
 
         showListButton.rx.tap
-            .subscribe(onNext:{ [weak self] in
-                self?.performSegue(withIdentifier: "bikesListSegue", sender: nil)
-            })
+            .bind(to: viewModel.showListButtonDidTap)
             .disposed(by:disposeBag)
         
         refreshAnnotationButton.rx.tap

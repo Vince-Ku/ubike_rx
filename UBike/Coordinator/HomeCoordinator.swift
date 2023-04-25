@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeCoordinator: HomeCoordinatorType {
-    var navigationController: UINavigationController
+    let navigationController: UINavigationController
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -43,6 +43,10 @@ class HomeCoordinator: HomeCoordinatorType {
         viewController.viewModel = viewModel
         
         return viewController
+    }
+    
+    func openUbikeListModule() {
+        UbikeListCoordinator(navigationController: navigationController).start()
     }
 }
 

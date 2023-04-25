@@ -9,4 +9,5 @@ import Foundation
 
 protocol HomeCoordinatorType {
     func start()
+    func openUbikeListModule()
 }

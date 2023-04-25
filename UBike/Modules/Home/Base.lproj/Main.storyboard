@@ -175,7 +175,6 @@
                         <outlet property="showListButton" destination="ctx-es-GiU" id="ir1-hW-seY"/>
                         <outlet property="showUserLocationButton" destination="GIc-yL-s8m" id="4NW-gT-yal"/>
                         <outlet property="stationNameLabel" destination="b77-ep-Qeh" id="oMc-zw-4qo"/>
-                        <segue destination="g16-J1-nIh" kind="show" identifier="bikesListSegue" id="UXN-iw-aWG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
