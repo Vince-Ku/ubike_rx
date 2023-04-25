@@ -11,11 +11,11 @@ class UbikeStationsRepository: UbikeStationsRepositoryType {
     private let ubikesApiInterface = GetUBikesInterface()
     private let ubikeStationModelMapper = UbikeStationModelMapper()
 
-    private let remoteDataSource: RemoteDataSourceType
+    private let alamofireNetworkService: AlamofireNetworkServiceType
     private let ubikeStationCoreDataService: UBikeStationCoreDataServiceType
     
-    init(remoteDataSource: RemoteDataSourceType, ubikeStationCoreDataService: UBikeStationCoreDataServiceType) {
-        self.remoteDataSource = remoteDataSource
+    init(alamofireNetworkService: AlamofireNetworkServiceType, ubikeStationCoreDataService: UBikeStationCoreDataServiceType) {
+        self.alamofireNetworkService = alamofireNetworkService
         self.ubikeStationCoreDataService = ubikeStationCoreDataService
     }
     
@@ -36,7 +36,7 @@ class UbikeStationsRepository: UbikeStationsRepositoryType {
     }
     
     private func fetchUbikeStations() -> Single<[UbikeStation]> {
-        remoteDataSource.fetch(apiInterface: ubikesApiInterface)
+        alamofireNetworkService.fetch(apiInterface: ubikesApiInterface)
             .flatMap { [weak self] apiModel -> Single<[UbikeStation]> in
                 self?.ubikeStationModelMapper.rx.transform(apiModel: apiModel) ?? .never()
             }

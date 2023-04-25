@@ -65,7 +65,7 @@ class HomeViewController: UIViewController {
     private func createViewModel() {
         let locationManager = LocationManagerProxy()
         locationManager.delegate = self
-        let ubikeStationsRepository = UbikeStationsRepository(remoteDataSource: AlamofireNetworkService.shared,
+        let ubikeStationsRepository = UbikeStationsRepository(alamofireNetworkService: AlamofireNetworkService.shared,
                                                               ubikeStationCoreDataService: UBikeStationCoreDataService.shared)
         let routeRepository = RouteRepository(appleMapService: .shared)
         let mapper = UibikeStationBottomSheetStateMapper()

@@ -7,7 +7,7 @@
 
 import MapKit
 
-class AppleMapService {
+final class AppleMapService: RemoteDataSourceType {
     static let shared = AppleMapService()
     
     func fetch(source: CLLocation, destination: CLLocation, completion: @escaping (Result<MKRoute, Error>) -> Void) {
