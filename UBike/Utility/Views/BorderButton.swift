@@ -8,25 +8,23 @@
 import UIKit
 
 @IBDesignable
-class BorderButton : UIButton{
+class BorderButton: IdentifiableButton {
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        initStyle()
-    }
-    
     override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
         initStyle()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.black.cgColor
+        layer.cornerRadius = bounds.height / 2
     }
     
     func initStyle() {
         layer.borderWidth = 1
         layer.borderColor = UIColor.black.cgColor
         layer.cornerRadius = bounds.height / 2
-        
     }
 }

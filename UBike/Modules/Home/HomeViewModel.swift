@@ -9,12 +9,14 @@ import Foundation
 import RxSwift
 import RxRelay
 import CoreLocation
+import MapKit
 
 class HomeViewModel {
 
     // MARK: DI
     private let locationManager: LocationManagerProxy
     private let ubikeStationsRepository: UbikeStationsRepositoryType
+    private let routeRepository: RouteRepositoryType
     private let mapper: UibikeStationBottomSheetStateMapper
     
     private let disposeBag = DisposeBag()
@@ -26,7 +28,7 @@ class HomeViewModel {
     let annotationDidSelect = PublishRelay<UbikeStation>()
     let annotationDidDeselect = PublishRelay<UbikeStation>()
     let favoriteStationButtonDidTap = PublishRelay<(String, Bool)>()
-    let navigationButtonDidTap = PublishRelay<Void>()
+    let navigationButtonDidTap = PublishRelay<String>()
 
     // MARK: Output
     let showLocation = PublishRelay<(CLLocation, CLLocationDistance?)>()
@@ -35,10 +37,13 @@ class HomeViewModel {
     let updateUibikeSpaceText = BehaviorRelay<String?>(value: nil)
     let updateEmptySpaceText = BehaviorRelay<String?>(value: nil)
     let updateFavoriteButtonState = BehaviorRelay<Bool>(value: false)
+    let updateNavigationTitle = BehaviorRelay<String?>(value: nil)
+    let updateRoute = BehaviorRelay<MKRoute?>(value: nil)
     
-    init(locationManager: LocationManagerProxy, ubikeStationsRepository: UbikeStationsRepositoryType, mapper: UibikeStationBottomSheetStateMapper) {
+    init(locationManager: LocationManagerProxy, ubikeStationsRepository: UbikeStationsRepositoryType, routeRepository: RouteRepositoryType, mapper: UibikeStationBottomSheetStateMapper) {
         self.locationManager = locationManager
         self.ubikeStationsRepository = ubikeStationsRepository
+        self.routeRepository = routeRepository
         self.mapper = mapper
         
         setupLocation()
@@ -100,6 +105,23 @@ class HomeViewModel {
             .disposed(by: disposeBag)
         
         annotationDidSelect
+            .map { CLLocation(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude) }
+            .compactMap { [weak self] destination -> (CLLocation, CLLocation)? in
+                guard let location = self?.locationManager.getCurrentLocation() else { return nil }
+                return (location, destination)
+            }
+            .flatMapLatest { [weak self] source, destination -> Single<MKRoute> in
+                self?.routeRepository.getWalkingRoute(source: source, destination: destination) ?? .never()
+            }
+            .map { [weak self] route in
+                self?.mapper.getNavigationText(route: route)
+            }
+            .subscribe(onNext: { [weak self] title in
+                self?.updateNavigationTitle.accept(title)
+            })
+            .disposed(by: disposeBag)
+        
+        annotationDidSelect
             .map(\.id)
             .withUnretained(self)
             .flatMap { owner, id -> Maybe<UbikeStation> in // get the latest data from the cache
@@ -119,6 +141,8 @@ class HomeViewModel {
                 self?.updateUibikeSpaceText.accept(nil)
                 self?.updateEmptySpaceText.accept(nil)
                 self?.updateFavoriteButtonState.accept(false)
+                self?.updateNavigationTitle.accept(nil)
+                self?.updateRoute.accept(nil)
             })
             .disposed(by: disposeBag)
     }
@@ -131,9 +155,27 @@ class HomeViewModel {
             .subscribe() // TODO: update annotation
             .disposed(by: disposeBag)
             
-        
-        // TODO: implement navigationButtonDidTap
+        navigationButtonDidTap
+            .withUnretained(self)
+            .flatMapLatest { owner, id -> Maybe<CLLocation> in // get Source
+                owner.ubikeStationsRepository.getUbikeStation(id: id)
+                    .compactMap { $0?.coordinate }
+                    .map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
+            }
+            .compactMap { [weak self] destination -> (CLLocation, CLLocation)? in // get Destination
+                guard let location = self?.locationManager.getCurrentLocation() else { return nil }
+                return (location, destination)
+            }
+            .flatMapLatest { [weak self] source, destination -> Single<MKRoute> in // get Route
+                self?.routeRepository.getWalkingRoute(source: source, destination: destination) ?? .never()
+            }
+            .subscribe(onNext: { [weak self] route in
+                let centerLocation = CLLocation(latitude: route.polyline.coordinate.latitude,
+                                                longitude: route.polyline.coordinate.longitude)
+                
+                self?.updateRoute.accept(route)
+                self?.showLocation.accept((centerLocation, route.distance))
+            })
+            .disposed(by: disposeBag)
     }
-    
-    
 }

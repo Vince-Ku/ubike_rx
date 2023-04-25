@@ -16,8 +16,8 @@ class HomeViewController: UIViewController {
     @IBOutlet unowned var refreshBtn : ShadowButton!
     @IBOutlet unowned var showListBtn : ShadowButton!
     @IBOutlet weak var bottomSheetView: UIView!
-    @IBOutlet weak var navigationButton: UIButton!
-    @IBOutlet weak var favoriteStationButton: IdentifiableButton!
+    @IBOutlet weak var navigationButton: IdentifiableButton!
+    @IBOutlet weak var favoriteStationButton: BorderButton!
     @IBOutlet weak var stationNameLabel: UILabel!
     @IBOutlet weak var bikesSpaceLabel: UILabel!
     @IBOutlet weak var emptySpaceLabel: UILabel!
@@ -67,8 +67,13 @@ class HomeViewController: UIViewController {
         locationManager.delegate = self
         let ubikeStationsRepository = UbikeStationsRepository(remoteDataSource: AlamofireNetworkService.shared,
                                                               ubikeStationCoreDataService: UBikeStationCoreDataService.shared)
+        let routeRepository = RouteRepository(appleMapService: .shared)
         let mapper = UibikeStationBottomSheetStateMapper()
-        viewModel = HomeViewModel(locationManager: locationManager, ubikeStationsRepository: ubikeStationsRepository, mapper: mapper)
+        
+        viewModel = HomeViewModel(locationManager: locationManager,
+                                  ubikeStationsRepository: ubikeStationsRepository,
+                                  routeRepository: routeRepository,
+                                  mapper: mapper)
     }
     
     private func initUI(){
@@ -114,86 +119,24 @@ class HomeViewController: UIViewController {
                 
                 //initialize
                 mapView.removeAnnotations(mapView.annotations)
-                mapView.removeOverlays(mapView.overlays)
-
+                
                 mapView.addAnnotations(annotations)
                 
             })
             .disposed(by: disposeBag)
         
-//        viewModel.guideTap.subscribe(onNext:{ [weak self] ubike in
-//            guard let currentLocation = self?.currentLocation ,
-//                  let lat = Double(ubike.lat ?? ""),
-//                  let lng = Double(ubike.lng ?? "")  else { return }
-//
-//            // remove all current routes
-//            if let overlays = self?.mapView.overlays {
-//                self?.mapView.removeOverlays(overlays)
-//            }
-//
-//            //
-//            // destination
-//            //
-//            let toCoordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-//            let toMKPlacemark = MKPlacemark(coordinate: toCoordinate, addressDictionary: nil)
-//            let toLocation = MKMapItem(placemark: toMKPlacemark)
-//
-//            //
-//            // current location
-//            //
-//            let meCoordinate = CLLocationCoordinate2D(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
-//            let meMKPlacemark = MKPlacemark(coordinate: meCoordinate, addressDictionary: nil)
-//            let meLocation = MKMapItem(placemark: meMKPlacemark)
-//
-//            //request for apple direction apit
-//            let request = MKDirections.Request()
-//            request.transportType = .walking
-//            request.source = meLocation
-//            request.destination = toLocation
-//
-//            let directions = MKDirections(request: request)
-//
-//            // call Apple api to get route
-//            directions.calculate { [weak self] (response:MKDirections.Response?, error:Error?) in
-//                if let resp = response, let route = resp.routes.first {// only show one route , temporarily
-//
-//                    // add expected teavel time
-//                    switch route.expectedTravelTime {
-//                    case 0..<60: // less then one minute
-//                        self?.mapInfoVC?.guideBtn.setTitle("步行，1分鐘以內", for: .normal)
-//                        break
-//
-//                    case 60..<3600: // less then one hour
-//                        let title = "步行，\(Int(route.expectedTravelTime / 60))分鐘"
-//                        self?.mapInfoVC?.guideBtn.setTitle(title, for: .normal)
-//                        break
-//
-//                    case 3600...:
-//                        let result = Int(route.expectedTravelTime).quotientAndRemainder(dividingBy: 3600)
-//                        let hour = result.quotient
-//                        let min = result.remainder / 60
-//
-//                        let title = "步行，\(hour)小時 \(min)分鐘"
-//                        self?.mapInfoVC?.guideBtn.setTitle(title, for: .normal)
-//                        break
-//                    default:
-//                        print("unpredicted expectedTravelTime")
-//                    }
-//
-//                    // add route
-//                    self?.mapView.addOverlay(route.polyline, level: MKOverlayLevel.aboveRoads)
-//
-//                    let center = CLLocation(latitude: (toCoordinate.latitude + meCoordinate.latitude)/2,
-//                                            longitude: (toCoordinate.longitude + meCoordinate.longitude)/2)
-//
-//                    //use route.distance to show span
-//                    //because it can definitely cover the whole route
-//                    self?.showLocation(center, route.distance , route.distance)
-//
-//                }
-//            }
-//
-//        }).disposed(by: disposeBag)
+        viewModel.updateRoute.asDriver()
+            .drive(onNext: { [weak self] route in
+                guard let mapView = self?.mapView else { return }
+                
+                // remove all
+                mapView.removeOverlays(mapView.overlays)
+                
+                guard let polyline = route?.polyline else { return  }
+                // add route
+                mapView.addOverlay(polyline, level: .aboveRoads)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupLocation() {
@@ -215,6 +158,8 @@ class HomeViewController: UIViewController {
             .disposed(by: disposeBag)
             
         navigationButton.rx.tap
+            .withUnretained(favoriteStationButton)
+            .compactMap(\.0.id)
             .bind(to: viewModel.navigationButtonDidTap)
             .disposed(by: disposeBag)
         
@@ -247,6 +192,12 @@ class HomeViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        viewModel.updateNavigationTitle.asDriver()
+            .drive(onNext: { [weak self] titleText in
+                self?.navigationButton.setTitle(titleText, for: .normal)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func showLocation(_ location: CLLocation, _ latMeters : CLLocationDistance?, _ lngMeters:CLLocationDistance?) {
@@ -265,19 +216,16 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController : MKMapViewDelegate {
-    //
-    // route's style related
-    //
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        
-        if overlay is MKPolyline{
-            let render = MKPolylineRenderer(overlay: overlay)
-            render.lineWidth = 10
-            render.strokeColor = #colorLiteral(red: 0.03796023922, green: 0.5027811544, blue: 0.9708467497, alpha: 1)
-            return render
 
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        guard let polyline = overlay as? MKPolyline else {
+            return MKOverlayRenderer()
         }
-        return MKOverlayRenderer()
+
+        let renderer = MKPolylineRenderer(overlay: polyline)
+        renderer.lineWidth = 10
+        renderer.strokeColor = #colorLiteral(red: 0.03796023922, green: 0.5027811544, blue: 0.9708467497, alpha: 1)
+        return renderer
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
