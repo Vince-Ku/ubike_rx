@@ -22,12 +22,13 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var bikesSpaceLabel: UILabel!
     @IBOutlet weak var emptySpaceLabel: UILabel!
     
-    private var viewModel: HomeViewModel!
+    // Note that `viewModel` access is only for the usage of setting up by the Coordinator
+    // It'll be set up to private in the future if we obsolete storyboard and then create UI programmatically instead
+    var viewModel: HomeViewModel!
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        createViewModel()
         setupMap()
         setupLocation()
         setupBottomSheetEvent()
@@ -54,20 +55,6 @@ class HomeViewController: UIViewController {
         default:
             print("unpredicted segue")
         }
-    }
-    
-    private func createViewModel() {
-        let locationManager = LocationManagerProxy()
-        locationManager.delegate = self
-        let ubikeStationsRepository = UbikeStationsRepository(alamofireNetworkService: AlamofireNetworkService.shared,
-                                                              ubikeStationCoreDataService: UBikeStationCoreDataService.shared)
-        let routeRepository = RouteRepository(appleMapService: .shared)
-        let mapper = UibikeStationBottomSheetStateMapper()
-        
-        viewModel = HomeViewModel(locationManager: locationManager,
-                                  ubikeStationsRepository: ubikeStationsRepository,
-                                  routeRepository: routeRepository,
-                                  mapper: mapper)
     }
     
     private func setupMap(){
@@ -229,26 +216,4 @@ extension HomeViewController: MKMapViewDelegate {
 
         viewModel.annotationDidDeselect.accept(ubikeStation)
     }
-}
-
-extension HomeViewController: LocationManagerProxyDelegate {
-    
-    func openLocationSettingAlert(completion: @escaping (() -> Void)) {
-        let alert = UIAlertController(title: "需要位置權限", message: "請允許「UBike」取用位置權限後，才可取得定位、地圖資訊、導航等功能。", preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "前往設定", style: .default, handler: { _ in
-            guard let bundleIdentifier = Bundle.main.bundleIdentifier,
-                  let URL = URL(string: "\(UIApplication.openSettingsURLString)&path=//\(bundleIdentifier)"),
-                  UIApplication.shared.canOpenURL(URL) else {
-                return
-            }
-            
-            UIApplication.shared.open(URL, options: [:]) { _ in }
-        }))
-        
-        alert.addAction(UIAlertAction(title: "取消", style: .cancel))
-        
-        present(alert, animated: true, completion: completion)
-    }
-    
 }

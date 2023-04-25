@@ -18,6 +18,7 @@ class HomeViewModel {
     private let ubikeStationsRepository: UbikeStationsRepositoryType
     private let routeRepository: RouteRepositoryType
     private let mapper: UibikeStationBottomSheetStateMapper
+    private let coordinator: HomeCoordinatorType
     
     private let disposeBag = DisposeBag()
     
@@ -41,11 +42,12 @@ class HomeViewModel {
     let updateNavigationTitle = BehaviorRelay<String?>(value: nil)
     let updateRoute = BehaviorRelay<MKRoute?>(value: nil)
     
-    init(locationManager: LocationManagerProxy, ubikeStationsRepository: UbikeStationsRepositoryType, routeRepository: RouteRepositoryType, mapper: UibikeStationBottomSheetStateMapper) {
+    init(locationManager: LocationManagerProxy, ubikeStationsRepository: UbikeStationsRepositoryType, routeRepository: RouteRepositoryType, mapper: UibikeStationBottomSheetStateMapper, coordinator: HomeCoordinatorType) {
         self.locationManager = locationManager
         self.ubikeStationsRepository = ubikeStationsRepository
         self.routeRepository = routeRepository
         self.mapper = mapper
+        self.coordinator = coordinator
         
         setupLocation()
         setupUbikeStations()
