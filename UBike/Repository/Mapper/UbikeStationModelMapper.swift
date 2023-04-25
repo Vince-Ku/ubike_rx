@@ -25,7 +25,7 @@ class UbikeStationModelMapper {
             return UbikeStation(id: apiModel.sno ?? unknown,
                                 name: getName(apiModel: apiModel),
                                 area: getArea(apiModel: apiModel),
-                                coordinator: coordinate,
+                                coordinate: coordinate,
                                 address: getAddress(apiModel: apiModel),
                                 parkingSpace: getParkingSpace(apiModel: apiModel),
                                 isFavorite: false, // default value

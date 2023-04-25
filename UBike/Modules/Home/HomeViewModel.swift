@@ -83,7 +83,7 @@ class HomeViewModel {
     
     private func setupAnnotation() {
         annotationDidSelect
-            .map { CLLocation(latitude: $0.coordinator.latitude, longitude: $0.coordinator.longitude) }
+            .map { CLLocation(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude) }
             .subscribe(onNext: { [weak self] location in
                 self?.showLocation.accept((location, nil))
             })

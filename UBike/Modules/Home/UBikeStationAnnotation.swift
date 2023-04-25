@@ -14,7 +14,7 @@ class UBikeStationAnnotation: MKPointAnnotation {
         self.ubikeStation = ubikeStation
         
         super.init()
-        coordinate = CLLocationCoordinate2D(latitude: ubikeStation.coordinator.latitude,
-                                            longitude: ubikeStation.coordinator.longitude)
+        coordinate = CLLocationCoordinate2D(latitude: ubikeStation.coordinate.latitude,
+                                            longitude: ubikeStation.coordinate.longitude)
     }
 }

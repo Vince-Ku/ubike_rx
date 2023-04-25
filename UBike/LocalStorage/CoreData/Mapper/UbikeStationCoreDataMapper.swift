@@ -18,8 +18,8 @@ class UbikeStationCoreDataMapper {
             coreDataModel.name_ch = model.name.chinese
             coreDataModel.area_en = model.area.english
             coreDataModel.area_ch = model.area.chinese
-            coreDataModel.latitude = model.coordinator.latitude
-            coreDataModel.longitude = model.coordinator.longitude
+            coreDataModel.latitude = model.coordinate.latitude
+            coreDataModel.longitude = model.coordinate.longitude
             coreDataModel.address_en = model.address.english
             coreDataModel.address_ch = model.address.chinese
             coreDataModel.total_parking_number = Int16(model.parkingSpace.total)
@@ -38,7 +38,7 @@ class UbikeStationCoreDataMapper {
             return UbikeStation(id: coreDataModel.id ?? unknown,
                                 name: self.getName(coreDataModel: coreDataModel),
                                 area: self.getArea(coreDataModel: coreDataModel),
-                                coordinator: self.getCoordinate(coreDataModel: coreDataModel),
+                                coordinate: self.getCoordinate(coreDataModel: coreDataModel),
                                 address: self.getAddress(coreDataModel: coreDataModel),
                                 parkingSpace: self.getParkingSpace(coreDataModel: coreDataModel),
                                 isFavorite: coreDataModel.favorite?.isFavorite ?? false,
