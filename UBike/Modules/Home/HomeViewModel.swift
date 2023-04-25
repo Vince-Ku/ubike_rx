@@ -21,7 +21,7 @@ class HomeViewModel {
     
     // MARK: Input
     let viewDidLoad = PublishRelay<Void>()
-    let showCurrentLocationBtnDidTap = PublishRelay<Void>()
+    let showUserLocationButtonDidTap = PublishRelay<Void>()
     let refreshButtonDidTap = PublishRelay<Void>()
     let annotationDidSelect = PublishRelay<UbikeStation>()
     let annotationDidDeselect = PublishRelay<UbikeStation>()
@@ -29,7 +29,7 @@ class HomeViewModel {
     let navigationButtonDidTap = PublishRelay<Void>()
 
     // MARK: Output
-    let showUserLocation = PublishRelay<(CLLocation, CLLocationDistance?)>()
+    let showLocation = PublishRelay<(CLLocation, CLLocationDistance?)>()
     let showUibikeStationsAnnotation = BehaviorRelay<[UBikeStationAnnotation]>(value: [])
     let updateUibikeStationBottomSheet = BehaviorRelay<UibikeStationBottomSheetState>(value: .empty)
     
@@ -54,17 +54,17 @@ class HomeViewModel {
             }
             .compactMap { $0 }
             .subscribe(onSuccess: { [weak self] location in
-                self?.showUserLocation.accept((location, 5000))
+                self?.showLocation.accept((location, 5000))
             })
             .disposed(by: disposeBag)
         
-        showCurrentLocationBtnDidTap
+        showUserLocationButtonDidTap
             .flatMap { [weak self] _ -> Single<Void> in
                 self?.locationManager.requestAuthorizationIfNeeded() ?? .never()
             }
             .compactMap { [weak self] _ in self?.locationManager.getCurrentLocation() }
             .subscribe(onNext: { [weak self] location in
-                self?.showUserLocation.accept((location, nil))
+                self?.showLocation.accept((location, nil))
             })
             .disposed(by: disposeBag)
     }
@@ -85,7 +85,7 @@ class HomeViewModel {
         annotationDidSelect
             .map { CLLocation(latitude: $0.coordinator.latitude, longitude: $0.coordinator.longitude) }
             .subscribe(onNext: { [weak self] location in
-                self?.showUserLocation.accept((location, nil))
+                self?.showLocation.accept((location, nil))
             })
             .disposed(by: disposeBag)
         

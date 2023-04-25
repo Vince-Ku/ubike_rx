@@ -12,7 +12,7 @@ import RxCocoa
 
 class HomeViewController: UIViewController {
     @IBOutlet unowned var mapView : MKMapView!
-    @IBOutlet unowned var showCurrentBtn : ShadowButton!
+    @IBOutlet unowned var showUserLocationButton : ShadowButton!
     @IBOutlet unowned var refreshBtn : ShadowButton!
     @IBOutlet unowned var showListBtn : ShadowButton!
     @IBOutlet weak var bottomSheetView: UIView!
@@ -88,8 +88,8 @@ class HomeViewController: UIViewController {
             .bind(to: viewModel.refreshButtonDidTap)
             .disposed(by: disposeBag)
 
-        showCurrentBtn.rx.tap
-            .bind(to: viewModel.showCurrentLocationBtnDidTap)
+        showUserLocationButton.rx.tap
+            .bind(to: viewModel.showUserLocationButtonDidTap)
             .disposed(by: disposeBag)
         
 //        viewModel.selectAnnotation.subscribe(onNext:{ [weak self] ubike in
@@ -197,7 +197,7 @@ class HomeViewController: UIViewController {
     }
     
     private func setupLocation() {
-        viewModel.showUserLocation.asSignal()
+        viewModel.showLocation.asSignal()
             .emit(onNext: { [weak self] location, distance in
                 self?.showLocation(location, distance, distance)
             })
