@@ -6,11 +6,6 @@
 //
 
 enum UibikeStationBottomSheetState {
-    case regular(ViewObject)
+    case regular(id: String) // UibikeStation id
     case empty
-    
-    struct ViewObject {
-        let id: String
-        let nameText: String
-    }
 }

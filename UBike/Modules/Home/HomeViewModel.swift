@@ -34,6 +34,7 @@ class HomeViewModel {
     let showLocation = PublishRelay<(CLLocation, CLLocationDistance?)>()
     let showUibikeStationsAnnotation = BehaviorRelay<[UBikeStationAnnotation]>(value: [])
     let updateUibikeStationBottomSheet = BehaviorRelay<UibikeStationBottomSheetState>(value: .empty)
+    let updateUibikeStationNameText = BehaviorRelay<String>(value: "尚未選擇站點")
     let updateUibikeSpaceText = BehaviorRelay<String?>(value: nil)
     let updateEmptySpaceText = BehaviorRelay<String?>(value: nil)
     let updateFavoriteButtonState = BehaviorRelay<Bool>(value: false)
@@ -98,10 +99,24 @@ class HomeViewModel {
             .disposed(by: disposeBag)
         
         annotationDidSelect
-            .compactMap { [weak self] ubikeStation -> UibikeStationBottomSheetState? in
-                self?.mapper.transform(ubikeStation: ubikeStation)
+            .subscribe(onNext: { [weak self] ubikeStation in
+                self?.updateUibikeStationNameText.accept(ubikeStation.name.chinese)
+                self?.updateUibikeStationBottomSheet.accept(.regular(id: ubikeStation.id))
+            })
+            .disposed(by: disposeBag)
+        
+        annotationDidSelect
+            .map(\.id)
+            .withUnretained(self)
+            .flatMap { owner, id -> Maybe<UbikeStation> in // get the latest data from the cache
+                owner.ubikeStationsRepository.getUbikeStation(id: id)
+                    .compactMap { $0 }
             }
-            .bind(to: updateUibikeStationBottomSheet)
+            .subscribe(onNext: { [weak self] ubikeStation in
+                self?.updateUibikeSpaceText.accept(String(ubikeStation.parkingSpace.bike))
+                self?.updateEmptySpaceText.accept(String(ubikeStation.parkingSpace.empty))
+                self?.updateFavoriteButtonState.accept(ubikeStation.isFavorite)
+            })
             .disposed(by: disposeBag)
         
         annotationDidSelect
@@ -121,23 +136,10 @@ class HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        annotationDidSelect
-            .map(\.id)
-            .withUnretained(self)
-            .flatMap { owner, id -> Maybe<UbikeStation> in // get the latest data from the cache
-                owner.ubikeStationsRepository.getUbikeStation(id: id)
-                    .compactMap { $0 }
-            }
-            .subscribe(onNext: { [weak self] ubikeStation in
-                self?.updateUibikeSpaceText.accept(String(ubikeStation.parkingSpace.bike))
-                self?.updateEmptySpaceText.accept(String(ubikeStation.parkingSpace.empty))
-                self?.updateFavoriteButtonState.accept(ubikeStation.isFavorite)
-            })
-            .disposed(by: disposeBag)
-        
         annotationDidDeselect
             .subscribe(onNext: { [weak self] _ in
                 self?.updateUibikeStationBottomSheet.accept(.empty)
+                self?.updateUibikeStationNameText.accept("尚未選擇站點")
                 self?.updateUibikeSpaceText.accept(nil)
                 self?.updateEmptySpaceText.accept(nil)
                 self?.updateFavoriteButtonState.accept(false)

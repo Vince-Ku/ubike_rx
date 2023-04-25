@@ -10,11 +10,6 @@ import MapKit
 
 class UibikeStationBottomSheetStateMapper {
     
-    func transform(ubikeStation: UbikeStation) -> UibikeStationBottomSheetState {
-        .regular(UibikeStationBottomSheetState.ViewObject(id: ubikeStation.id,
-                                                          nameText: ubikeStation.name.chinese))
-    }
-    
     func getNavigationText(route: MKRoute) -> String {
         let hours = Int(route.expectedTravelTime / 3600)
         let minutes = Int(route.expectedTravelTime.truncatingRemainder(dividingBy: 3600) / 60)

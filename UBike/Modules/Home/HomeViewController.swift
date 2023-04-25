@@ -163,18 +163,6 @@ class HomeViewController: UIViewController {
             .bind(to: viewModel.navigationButtonDidTap)
             .disposed(by: disposeBag)
         
-        viewModel.updateUibikeSpaceText
-            .bind(to: bikesSpaceLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        viewModel.updateEmptySpaceText
-            .bind(to: emptySpaceLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        viewModel.updateFavoriteButtonState
-            .bind(to: favoriteStationButton.rx.isSelected)
-            .disposed(by: disposeBag)
-        
         viewModel.updateUibikeStationBottomSheet.asDriver()
             .drive(onNext: { [weak self] state in
                 switch state {
@@ -182,15 +170,29 @@ class HomeViewController: UIViewController {
                     self?.favoriteStationButton.id = nil
                     self?.favoriteStationButton.isEnabled = false
                     self?.navigationButton.isEnabled = false
-                    self?.stationNameLabel.text = "尚未選擇站點"
                     
-                case .regular(let viewObject):
-                    self?.favoriteStationButton.id = viewObject.id
+                case .regular(let id):
+                    self?.favoriteStationButton.id = id
                     self?.favoriteStationButton.isEnabled = true
                     self?.navigationButton.isEnabled = true
-                    self?.stationNameLabel.text = viewObject.nameText
                 }
             })
+            .disposed(by: disposeBag)
+        
+        viewModel.updateUibikeStationNameText
+            .bind(to: stationNameLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.updateFavoriteButtonState
+            .bind(to: favoriteStationButton.rx.isSelected)
+            .disposed(by: disposeBag)
+        
+        viewModel.updateUibikeSpaceText
+            .bind(to: bikesSpaceLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.updateEmptySpaceText
+            .bind(to: emptySpaceLabel.rx.text)
             .disposed(by: disposeBag)
         
         viewModel.updateNavigationTitle.asDriver()
