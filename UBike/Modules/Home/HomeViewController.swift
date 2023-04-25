@@ -35,11 +35,6 @@ class HomeViewController: UIViewController {
         viewModel.viewDidLoad.accept(())
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         bottomSheetView.layer.cornerRadius = bottomSheetView.bounds.height / 8
