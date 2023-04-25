@@ -218,27 +218,32 @@ class HomeViewController: UIViewController {
             .bind(to: viewModel.navigationButtonDidTap)
             .disposed(by: disposeBag)
         
+        viewModel.updateUibikeSpaceText
+            .bind(to: bikesSpaceLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.updateEmptySpaceText
+            .bind(to: emptySpaceLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.updateFavoriteButtonState
+            .bind(to: favoriteStationButton.rx.isSelected)
+            .disposed(by: disposeBag)
+        
         viewModel.updateUibikeStationBottomSheet.asDriver()
             .drive(onNext: { [weak self] state in
                 switch state {
                 case .empty:
                     self?.favoriteStationButton.id = nil
                     self?.favoriteStationButton.isEnabled = false
-                    self?.favoriteStationButton.isSelected = false
                     self?.navigationButton.isEnabled = false
                     self?.stationNameLabel.text = "尚未選擇站點"
-                    self?.bikesSpaceLabel.text = ":"
-                    self?.emptySpaceLabel.text = ":"
-                    self?.navigationButton.setTitle("", for: .normal)
                     
                 case .regular(let viewObject):
                     self?.favoriteStationButton.id = viewObject.id
                     self?.favoriteStationButton.isEnabled = true
-                    self?.favoriteStationButton.isSelected = viewObject.isFavorite
                     self?.navigationButton.isEnabled = true
                     self?.stationNameLabel.text = viewObject.nameText
-                    self?.bikesSpaceLabel.text = ": \(viewObject.bikeSpaceText)"
-                    self?.emptySpaceLabel.text = ": \(viewObject.emptySpaceText)"
                 }
             })
             .disposed(by: disposeBag)

@@ -12,8 +12,5 @@ enum UibikeStationBottomSheetState {
     struct ViewObject {
         let id: String
         let nameText: String
-        let bikeSpaceText: String
-        let emptySpaceText: String
-        let isFavorite: Bool
     }
 }
