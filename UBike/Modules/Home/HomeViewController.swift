@@ -11,10 +11,10 @@ import RxSwift
 import RxCocoa
 
 class HomeViewController: UIViewController {
-    @IBOutlet unowned var mapView : MKMapView!
-    @IBOutlet unowned var showUserLocationButton : ShadowButton!
-    @IBOutlet unowned var refreshBtn : ShadowButton!
-    @IBOutlet unowned var showListBtn : ShadowButton!
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var showUserLocationButton: ShadowButton!
+    @IBOutlet weak var refreshAnnotationButton: ShadowButton!
+    @IBOutlet weak var showListButton: ShadowButton!
     @IBOutlet weak var bottomSheetView: UIView!
     @IBOutlet weak var navigationButton: IdentifiableButton!
     @IBOutlet weak var favoriteStationButton: BorderButton!
@@ -22,14 +22,13 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var bikesSpaceLabel: UILabel!
     @IBOutlet weak var emptySpaceLabel: UILabel!
     
-    var viewModel: HomeViewModel!
-    let disposeBag = DisposeBag()
+    private var viewModel: HomeViewModel!
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         createViewModel()
-        initUI()
-        setUpRx()
+        setupMap()
         setupLocation()
         setupBottomSheetEvent()
         
@@ -76,42 +75,24 @@ class HomeViewController: UIViewController {
                                   mapper: mapper)
     }
     
-    private func initUI(){
+    private func setupMap(){
         mapView.showsUserLocation = true
         mapView.delegate = self
         mapView.register(UbikeStationAnnotationView.self, forAnnotationViewWithReuseIdentifier: "UbikeStationAnnotationView")
-    }
-    
-    private func setUpRx(){
-        
-        showListBtn.rx.controlEvent(.touchUpInside).subscribe(onNext:{ [unowned self] in
-            self.performSegue(withIdentifier: "bikesListSegue", sender: nil)
 
-        }).disposed(by:disposeBag)
+        showListButton.rx.tap
+            .subscribe(onNext:{ [weak self] in
+                self?.performSegue(withIdentifier: "bikesListSegue", sender: nil)
+            })
+            .disposed(by:disposeBag)
         
-        refreshBtn.rx.tap
-            .bind(to: viewModel.refreshButtonDidTap)
+        refreshAnnotationButton.rx.tap
+            .bind(to: viewModel.refreshAnnotationButtonDidTap)
             .disposed(by: disposeBag)
 
         showUserLocationButton.rx.tap
             .bind(to: viewModel.showUserLocationButtonDidTap)
             .disposed(by: disposeBag)
-        
-//        viewModel.selectAnnotation.subscribe(onNext:{ [weak self] ubike in
-//            guard let self = self , let selectedSno = ubike.sno else { return }
-//
-//            for annotation in self.mapView.annotations {
-//                let ubikeAnnotation = self.mapView.view(for: annotation)?.annotation as? UBikeAnnotation
-//
-//                if let sno = ubikeAnnotation?.ubike?.sno {
-//                    if sno == selectedSno {
-//                        self.mapView.selectAnnotation(annotation, animated: true)
-//                        break
-//                    }
-//                }
-//            }
-//
-//        }).disposed(by: disposeBag)
         
         viewModel.showUibikeStationsAnnotation.asDriver()
             .drive(onNext: { [weak self] annotations in
@@ -121,7 +102,6 @@ class HomeViewController: UIViewController {
                 mapView.removeAnnotations(mapView.annotations)
                 
                 mapView.addAnnotations(annotations)
-                
             })
             .disposed(by: disposeBag)
         
@@ -217,7 +197,7 @@ class HomeViewController: UIViewController {
 
 }
 
-extension HomeViewController : MKMapViewDelegate {
+extension HomeViewController: MKMapViewDelegate {
 
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         guard let polyline = overlay as? MKPolyline else {

@@ -24,7 +24,7 @@ class HomeViewModel {
     // MARK: Input
     let viewDidLoad = PublishRelay<Void>()
     let showUserLocationButtonDidTap = PublishRelay<Void>()
-    let refreshButtonDidTap = PublishRelay<Void>()
+    let refreshAnnotationButtonDidTap = PublishRelay<Void>()
     let annotationDidSelect = PublishRelay<UbikeStation>()
     let annotationDidDeselect = PublishRelay<UbikeStation>()
     let favoriteStationButtonDidTap = PublishRelay<(String, Bool)>()
@@ -79,7 +79,7 @@ class HomeViewModel {
     }
     
     private func setupUbikeStations() {
-        Observable.merge(viewDidLoad.asObservable().take(1), refreshButtonDidTap.asObservable())
+        Observable.merge(viewDidLoad.asObservable().take(1), refreshAnnotationButtonDidTap.asObservable())
             .flatMapLatest { [weak self] _ -> Single<[UbikeStation]> in
                 self?.ubikeStationsRepository.getUbikeStations(isLatest: true) ?? .never()
             }

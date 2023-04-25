@@ -171,8 +171,8 @@
                         <outlet property="favoriteStationButton" destination="azs-5j-caA" id="TmH-h1-1hV"/>
                         <outlet property="mapView" destination="UfC-iL-l2W" id="ImP-RR-Fp3"/>
                         <outlet property="navigationButton" destination="hEb-FS-EjI" id="H8l-2V-gzN"/>
-                        <outlet property="refreshBtn" destination="fy8-dc-bzI" id="yUc-a0-5gb"/>
-                        <outlet property="showListBtn" destination="ctx-es-GiU" id="ir1-hW-seY"/>
+                        <outlet property="refreshAnnotationButton" destination="fy8-dc-bzI" id="yUc-a0-5gb"/>
+                        <outlet property="showListButton" destination="ctx-es-GiU" id="ir1-hW-seY"/>
                         <outlet property="showUserLocationButton" destination="GIc-yL-s8m" id="4NW-gT-yal"/>
                         <outlet property="stationNameLabel" destination="b77-ep-Qeh" id="oMc-zw-4qo"/>
                         <segue destination="g16-J1-nIh" kind="show" identifier="bikesListSegue" id="UXN-iw-aWG"/>
