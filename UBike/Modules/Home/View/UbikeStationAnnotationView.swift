@@ -10,21 +10,24 @@ import SnapKit
 
 class UbikeStationAnnotationView: MKAnnotationView {
     private let bikesSpaceLabel = UILabel()
+    private let scale = 1.4
+    private let animationDuration = 0.3
     
     override func setSelected(_ selected: Bool, animated: Bool){
         super.setSelected(selected, animated: animated)
-        if selected{
-            bikesSpaceLabel.font = UIFont.boldSystemFont(ofSize: 14)
-            frame = CGRect(origin: frame.origin, size: CGSize(width: frame.size.width * 1.5, height: frame.size.height * 1.5))
-            
-        }else{
-            bikesSpaceLabel.font = UIFont.boldSystemFont(ofSize: 12)
-            frame = CGRect(origin: frame.origin, size: CGSize(width: frame.size.width / 1.5, height: frame.size.height / 1.5))
+        
+        if selected {
+            animate(from: 1, to: scale)
+        } else {
+            animate(from: scale, to: 1)
         }
     }
     
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        // make bottom center of view anchor the map location
+        layer.anchorPoint = CGPoint(x: 0.5, y: 1)
+        
         addSubview(bikesSpaceLabel)
         
         bikesSpaceLabel.snp.makeConstraints{ make in
@@ -51,5 +54,18 @@ class UbikeStationAnnotationView: MKAnnotationView {
         } else {
             image = UIImage(named: "icon_pin_green")
         }
+    }
+    
+    private func animate(from: Double, to: Double) {
+        // Create the animation
+        let animation = CABasicAnimation(keyPath: "transform.scale")
+        animation.duration = animationDuration
+        animation.fillMode = .forwards
+        animation.isRemovedOnCompletion = false
+        animation.fromValue = from
+        animation.toValue = to
+
+        // Add the animation to the annotation view's layer
+        layer.add(animation, forKey: "scaleAnimation")
     }
 }
