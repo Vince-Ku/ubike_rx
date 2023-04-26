@@ -4,183 +4,12 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Home View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController storyboardIdentifier="HomeViewController" id="BYZ-38-t0r" customClass="HomeViewController" customModule="UBike" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="UfC-iL-l2W">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="810"/>
-                            </mapView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="GwK-Uc-pQH">
-                                <rect key="frame" x="340" y="440" width="40" height="140"/>
-                                <subviews>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ctx-es-GiU" customClass="ShadowButton" customModule="UBike" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="tintColor" red="1" green="0.99997437" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
-                                        <state key="normal">
-                                            <imageReference key="image" image="icon_list" symbolScale="large"/>
-                                        </state>
-                                    </button>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fy8-dc-bzI" customClass="ShadowButton" customModule="UBike" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="40" height="40"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="tintColor" red="1" green="0.99997437" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
-                                        <state key="normal">
-                                            <imageReference key="image" image="icon_refresh" symbolScale="large"/>
-                                        </state>
-                                    </button>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GIc-yL-s8m" customClass="ShadowButton" customModule="UBike" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="100" width="40" height="40"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="3Zy-fd-sbq"/>
-                                            <constraint firstAttribute="width" constant="40" id="8WX-9S-xlg"/>
-                                        </constraints>
-                                        <color key="tintColor" red="1" green="0.99997437" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
-                                        <state key="normal">
-                                            <imageReference key="image" image="icon_navigation" symbolScale="large"/>
-                                        </state>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OIX-Hg-wxi">
-                                <rect key="frame" x="0.0" y="590" width="390" height="254"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="LKS-lw-Gwb">
-                                        <rect key="frame" x="20" y="20" width="350" height="30"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="尚未選擇站點" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b77-ep-Qeh">
-                                                <rect key="frame" x="0.0" y="4.3333333333333712" width="310" height="21.666666666666668"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azs-5j-caA" customClass="IdentifiableButton" customModule="UBike" customModuleProvider="target">
-                                                <rect key="frame" x="320" y="0.0" width="30" height="30"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="Iz1-ks-bkY"/>
-                                                    <constraint firstAttribute="width" constant="30" id="SIb-QR-Ht1"/>
-                                                </constraints>
-                                                <inset key="imageEdgeInsets" minX="30" minY="30" maxX="30" maxY="30"/>
-                                                <state key="normal" image="icon_star_off"/>
-                                                <state key="disabled" image="icon_star_off"/>
-                                                <state key="selected" image="icon_star_on"/>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="fwS-IT-wKA">
-                                        <rect key="frame" x="20" y="55" width="350" height="50"/>
-                                        <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_bicycle" translatesAutoresizingMaskIntoConstraints="NO" id="AWT-XA-EIh">
-                                                <rect key="frame" x="0.0" y="12.666666666666629" width="25" height="25"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="25" id="FBu-7M-yIp"/>
-                                                    <constraint firstAttribute="height" constant="25" id="GN9-QO-rup"/>
-                                                </constraints>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="so4-0G-9N6">
-                                                <rect key="frame" x="30" y="0.0" width="320" height="50"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="wrE-T6-HO8">
-                                        <rect key="frame" x="20" y="110" width="350" height="50"/>
-                                        <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_parkinglot" translatesAutoresizingMaskIntoConstraints="NO" id="fPG-0m-Gr1">
-                                                <rect key="frame" x="0.0" y="12.666666666666629" width="25" height="25"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="25" id="pfC-Xe-WJl"/>
-                                                    <constraint firstAttribute="height" constant="25" id="thL-OZ-SMM"/>
-                                                </constraints>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdy-by-BOA">
-                                                <rect key="frame" x="30" y="0.0" width="320" height="50"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEb-FS-EjI" customClass="BorderButton" customModule="UBike" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="170" width="350" height="36"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="36" id="2oH-cE-C0u"/>
-                                        </constraints>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
-                                        <state key="normal" image="icon-direction">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstItem="hEb-FS-EjI" firstAttribute="trailing" secondItem="LKS-lw-Gwb" secondAttribute="trailing" id="0Gu-MU-p0Y"/>
-                                    <constraint firstItem="fwS-IT-wKA" firstAttribute="leading" secondItem="LKS-lw-Gwb" secondAttribute="leading" id="48c-GD-Fd2"/>
-                                    <constraint firstAttribute="trailing" secondItem="LKS-lw-Gwb" secondAttribute="trailing" constant="20" id="7UT-Sx-dbf"/>
-                                    <constraint firstItem="wrE-T6-HO8" firstAttribute="top" secondItem="fwS-IT-wKA" secondAttribute="bottom" constant="5" id="BOR-fq-hhF"/>
-                                    <constraint firstItem="fwS-IT-wKA" firstAttribute="trailing" secondItem="LKS-lw-Gwb" secondAttribute="trailing" id="Bu0-el-TfJ"/>
-                                    <constraint firstItem="wrE-T6-HO8" firstAttribute="trailing" secondItem="LKS-lw-Gwb" secondAttribute="trailing" id="DBE-94-J0j"/>
-                                    <constraint firstItem="fwS-IT-wKA" firstAttribute="top" secondItem="LKS-lw-Gwb" secondAttribute="bottom" constant="5" id="H6s-TS-0xF"/>
-                                    <constraint firstItem="LKS-lw-Gwb" firstAttribute="top" secondItem="OIX-Hg-wxi" secondAttribute="top" constant="20" id="HSm-EJ-RRS"/>
-                                    <constraint firstItem="hEb-FS-EjI" firstAttribute="top" secondItem="wrE-T6-HO8" secondAttribute="bottom" constant="10" id="JoE-xa-zrU"/>
-                                    <constraint firstItem="hEb-FS-EjI" firstAttribute="leading" secondItem="LKS-lw-Gwb" secondAttribute="leading" id="Kf3-Gs-UhC"/>
-                                    <constraint firstItem="wrE-T6-HO8" firstAttribute="leading" secondItem="LKS-lw-Gwb" secondAttribute="leading" id="i0M-Vk-66M"/>
-                                    <constraint firstItem="LKS-lw-Gwb" firstAttribute="leading" secondItem="OIX-Hg-wxi" secondAttribute="leading" constant="20" id="yS6-If-gTv"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="zcD-dE-Il1"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="UfC-iL-l2W" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="1FM-vN-1vY"/>
-                            <constraint firstItem="zcD-dE-Il1" firstAttribute="trailing" secondItem="UfC-iL-l2W" secondAttribute="trailing" id="4He-Nl-iFX"/>
-                            <constraint firstAttribute="bottom" secondItem="OIX-Hg-wxi" secondAttribute="bottom" id="7Es-ie-GAl"/>
-                            <constraint firstItem="UfC-iL-l2W" firstAttribute="leading" secondItem="zcD-dE-Il1" secondAttribute="leading" id="O0L-5e-sGR"/>
-                            <constraint firstItem="GwK-Uc-pQH" firstAttribute="bottom" secondItem="OIX-Hg-wxi" secondAttribute="top" constant="-10" id="SD5-gS-Khc"/>
-                            <constraint firstItem="zcD-dE-Il1" firstAttribute="trailing" secondItem="OIX-Hg-wxi" secondAttribute="trailing" id="ZyC-11-j1b"/>
-                            <constraint firstItem="zcD-dE-Il1" firstAttribute="bottom" secondItem="UfC-iL-l2W" secondAttribute="bottom" id="aNX-do-x5j"/>
-                            <constraint firstItem="zcD-dE-Il1" firstAttribute="bottom" secondItem="hEb-FS-EjI" secondAttribute="bottom" constant="14" id="aQC-qa-T4M"/>
-                            <constraint firstItem="zcD-dE-Il1" firstAttribute="trailing" secondItem="GwK-Uc-pQH" secondAttribute="trailing" constant="10" id="aph-ni-n4g"/>
-                            <constraint firstItem="OIX-Hg-wxi" firstAttribute="leading" secondItem="zcD-dE-Il1" secondAttribute="leading" id="wsh-8p-OHg"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="h7v-wE-RCx"/>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <connections>
-                        <outlet property="bikesSpaceLabel" destination="so4-0G-9N6" id="QId-Fe-w0z"/>
-                        <outlet property="bottomSheetView" destination="OIX-Hg-wxi" id="qge-1U-vXh"/>
-                        <outlet property="emptySpaceLabel" destination="sdy-by-BOA" id="JEm-UC-DOD"/>
-                        <outlet property="favoriteStationButton" destination="azs-5j-caA" id="TmH-h1-1hV"/>
-                        <outlet property="mapView" destination="UfC-iL-l2W" id="ImP-RR-Fp3"/>
-                        <outlet property="navigationButton" destination="hEb-FS-EjI" id="H8l-2V-gzN"/>
-                        <outlet property="refreshAnnotationButton" destination="fy8-dc-bzI" id="yUc-a0-5gb"/>
-                        <outlet property="showListButton" destination="ctx-es-GiU" id="ir1-hW-seY"/>
-                        <outlet property="showUserLocationButton" destination="GIc-yL-s8m" id="4NW-gT-yal"/>
-                        <outlet property="stationNameLabel" destination="b77-ep-Qeh" id="oMc-zw-4qo"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1067.6923076923076" y="51.895734597156398"/>
-        </scene>
         <!--Bikes View Controller-->
         <scene sceneID="mcS-e0-7EV">
             <objects>
@@ -669,33 +498,10 @@
             <point key="canvasLocation" x="3262" y="492"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="GIc-yL-s8m">
-            <size key="intrinsicContentSize" width="674" height="646"/>
-        </designable>
-        <designable name="aFk-c4-gpV">
-            <size key="intrinsicContentSize" width="18" height="22"/>
-        </designable>
-        <designable name="ctx-es-GiU">
-            <size key="intrinsicContentSize" width="724" height="974"/>
-        </designable>
-        <designable name="fy8-dc-bzI">
-            <size key="intrinsicContentSize" width="870" height="866"/>
-        </designable>
-        <designable name="hEb-FS-EjI">
-            <size key="intrinsicContentSize" width="18" height="22"/>
-        </designable>
-        <designable name="pjb-h8-hWB">
-            <size key="intrinsicContentSize" width="18" height="22"/>
-        </designable>
-    </designables>
     <resources>
         <image name="icon-direction" width="18" height="18"/>
         <image name="icon_bicycle" width="420" height="336"/>
-        <image name="icon_list" width="724" height="974"/>
-        <image name="icon_navigation" width="674" height="646"/>
         <image name="icon_parkinglot" width="580" height="564"/>
-        <image name="icon_refresh" width="870" height="866"/>
         <image name="icon_star_off" width="18" height="18"/>
         <image name="icon_star_on" width="18" height="18"/>
         <image name="icon_total" width="650" height="612"/>

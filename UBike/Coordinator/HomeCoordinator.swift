@@ -39,8 +39,7 @@ class HomeCoordinator: HomeCoordinatorType {
                                       mapper: mapper,
                                       coordinator: self)
         
-        let viewController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-        viewController.viewModel = viewModel
+        let viewController = HomeViewController(viewModel: viewModel)
         
         return viewController
     }
