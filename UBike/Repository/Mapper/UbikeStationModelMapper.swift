@@ -10,7 +10,7 @@ import RxSwift
 class UbikeStationModelMapper {
     private let unknown = "unknown"
     
-    func transform(apiModel: GetUBikesResp) -> [UbikeStation] {
+    func transform(apiModel: GetUBikesResponse) -> [UbikeStation] {
         
         guard let apiModels = apiModel.retVal?.values else {
             return []
@@ -33,22 +33,22 @@ class UbikeStationModelMapper {
         }
     }
     
-    private func getName(apiModel: UBike) -> UbikeStation.Name {
+    private func getName(apiModel: GetUBikesResponse.Station) -> UbikeStation.Name {
         UbikeStation.Name(english: apiModel.snaen ?? unknown,
                           chinese: apiModel.sna ?? unknown)
     }
     
-    private func getArea(apiModel: UBike) -> UbikeStation.Area {
+    private func getArea(apiModel: GetUBikesResponse.Station) -> UbikeStation.Area {
         UbikeStation.Area(english: apiModel.sareaen ?? unknown,
                           chinese: apiModel.sarea ?? unknown)
     }
     
-    private func getAddress(apiModel: UBike) -> UbikeStation.Address {
+    private func getAddress(apiModel: GetUBikesResponse.Station) -> UbikeStation.Address {
         UbikeStation.Address(english: apiModel.aren ?? unknown,
                              chinese: apiModel.ar ?? unknown)
     }
     
-    private func getCoordinate(apiModel: UBike) -> UbikeStation.Coordinate? {
+    private func getCoordinate(apiModel: GetUBikesResponse.Station) -> UbikeStation.Coordinate? {
         guard let lat = Double(apiModel.lat ?? ""),
               let long = Double(apiModel.lng ?? "") else {
             return nil
@@ -57,7 +57,7 @@ class UbikeStationModelMapper {
         return UbikeStation.Coordinate(latitude: lat, longitude: long)
     }
     
-    private func getParkingSpace(apiModel: UBike) -> UbikeStation.ParkingSpace {
+    private func getParkingSpace(apiModel: GetUBikesResponse.Station) -> UbikeStation.ParkingSpace {
         let total = Int(apiModel.tot ?? "0") ?? 0
         let bike = Int(apiModel.sbi ?? "0") ?? 0
         let empty = Int(apiModel.bemp ?? "0") ?? 0
@@ -65,7 +65,7 @@ class UbikeStationModelMapper {
         return UbikeStation.ParkingSpace(total: total, bike: bike, empty: empty)
     }
     
-    private func getUpdatedDate(apiModel: UBike) -> Date? {
+    private func getUpdatedDate(apiModel: GetUBikesResponse.Station) -> Date? {
         guard let updatedDateString = apiModel.mday else { return nil }
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYYMMddHHmmss"

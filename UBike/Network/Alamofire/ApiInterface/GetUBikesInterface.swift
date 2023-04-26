@@ -9,7 +9,7 @@ import Foundation
 
 struct GetUBikesInterface: APIInterfaceType {
     
-    typealias OutputModel = GetUBikesResp
+    typealias OutputModel = GetUBikesResponse
 
     var decoder: JSONDecoder = JSONDecoder() // default key strategy
     var url: String = "\(NetworkConstants.httpsUrlScheme)\(NetworkConstants.taipeiGovernmentDomainHost)/blobyoubike/YouBikeTP.json"

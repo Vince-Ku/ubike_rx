@@ -10,7 +10,7 @@ import RxSwift
 extension UbikeStationModelMapper: ReactiveCompatible {}
 
 extension Reactive where Base: UbikeStationModelMapper {
-    func transform(apiModel: GetUBikesResp) -> Single<[UbikeStation]> {
+    func transform(apiModel: GetUBikesResponse) -> Single<[UbikeStation]> {
         Single.create { [weak base] observer in
             guard let appModel = base?.transform(apiModel: apiModel) else {
                 return Disposables.create()
