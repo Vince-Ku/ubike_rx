@@ -9,11 +9,7 @@ import CoreLocation
 import RxSwift
 import RxRelay
 
-protocol LocationManagerProxyDelegate: AnyObject {
-    func openLocationSettingAlert(completion: @escaping (() -> Void))
-}
-
-class LocationManagerProxy: NSObject {
+class LocationManagerProxy: NSObject, LocationManagerProxyType {
     private let disposeBag = DisposeBag()
     private let locationManager = CLLocationManager()
     

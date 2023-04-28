@@ -8,7 +8,7 @@
 import Foundation
 import MapKit
 
-class UibikeStationBottomSheetStateMapper {
+class UibikeStationBottomSheetStateMapper: UibikeStationBottomSheetStateMapperType {
     
     func getNavigationText(route: MKRoute) -> String {
         let hours = Int(route.expectedTravelTime / 3600)

@@ -14,10 +14,10 @@ import MapKit
 class HomeViewModel {
 
     // MARK: DI
-    private let locationManager: LocationManagerProxy
+    private let locationManager: LocationManagerProxyType
     private let ubikeStationsRepository: UbikeStationsRepositoryType
     private let routeRepository: RouteRepositoryType
-    private let mapper: UibikeStationBottomSheetStateMapper
+    private let mapper: UibikeStationBottomSheetStateMapperType
     private let coordinator: HomeCoordinatorType
     
     private let disposeBag = DisposeBag()
@@ -33,7 +33,7 @@ class HomeViewModel {
     let showListButtonDidTap = PublishRelay<Void>()
 
     // MARK: Output
-    let showLocation = PublishRelay<(CLLocation, CLLocationDistance?)>()
+    let updateMapRegion = PublishRelay<(CLLocation, CLLocationDistance?)>()
     let showUibikeStationsAnnotation = BehaviorRelay<[UBikeStationAnnotation]>(value: [])
     let updateUibikeStationBottomSheet = BehaviorRelay<UibikeStationBottomSheetState>(value: .empty)
     let updateUibikeStationNameText = BehaviorRelay<String>(value: "尚未選擇站點")
@@ -43,7 +43,7 @@ class HomeViewModel {
     let updateNavigationTitle = BehaviorRelay<String?>(value: nil)
     let updateRoute = BehaviorRelay<MKRoute?>(value: nil)
     
-    init(locationManager: LocationManagerProxy, ubikeStationsRepository: UbikeStationsRepositoryType, routeRepository: RouteRepositoryType, mapper: UibikeStationBottomSheetStateMapper, coordinator: HomeCoordinatorType) {
+    init(locationManager: LocationManagerProxyType, ubikeStationsRepository: UbikeStationsRepositoryType, routeRepository: RouteRepositoryType, mapper: UibikeStationBottomSheetStateMapperType, coordinator: HomeCoordinatorType) {
         self.locationManager = locationManager
         self.ubikeStationsRepository = ubikeStationsRepository
         self.routeRepository = routeRepository
@@ -62,7 +62,7 @@ class HomeViewModel {
                 self?.locationManager.getCurrentLocation() ?? .never()
             }
             .subscribe(onSuccess: { [weak self] location in
-                self?.showLocation.accept((location, 5000))
+                self?.updateMapRegion.accept((location, 5000))
             })
             .disposed(by: disposeBag)
         
@@ -71,7 +71,14 @@ class HomeViewModel {
                 self?.locationManager.getCurrentLocation() ?? .never()
             }
             .subscribe(onNext: { [weak self] location in
-                self?.showLocation.accept((location, nil))
+                self?.updateMapRegion.accept((location, nil))
+            })
+            .disposed(by: disposeBag)
+        
+        annotationDidSelect
+            .map { CLLocation(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude) }
+            .subscribe(onNext: { [weak self] location in
+                self?.updateMapRegion.accept((location, nil))
             })
             .disposed(by: disposeBag)
     }
@@ -85,13 +92,6 @@ class HomeViewModel {
                 $0.map { UBikeStationAnnotation(ubikeStation: $0) }
             }
             .bind(to: showUibikeStationsAnnotation)
-            .disposed(by: disposeBag)
-        
-        annotationDidSelect
-            .map { CLLocation(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude) }
-            .subscribe(onNext: { [weak self] location in
-                self?.showLocation.accept((location, nil))
-            })
             .disposed(by: disposeBag)
         
         annotationDidSelect
@@ -176,7 +176,7 @@ class HomeViewModel {
                                                 longitude: route.polyline.coordinate.longitude)
 
                 self?.updateRoute.accept(route)
-                self?.showLocation.accept((centerLocation, route.distance))
+                self?.updateMapRegion.accept((centerLocation, route.distance))
             })
             .disposed(by: disposeBag)
     }

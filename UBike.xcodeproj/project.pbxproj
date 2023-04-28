@@ -50,6 +50,10 @@
 		6164500529F7751800696A05 /* AppleMapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6164500429F7751800696A05 /* AppleMapService.swift */; };
 		616F217229F4375A00B88BD3 /* UibikeStationBottomSheetStateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F217129F4375A00B88BD3 /* UibikeStationBottomSheetStateMapper.swift */; };
 		616F217529F437D100B88BD3 /* UibikeStationBottomSheetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F217429F437D100B88BD3 /* UibikeStationBottomSheetState.swift */; };
+		61ACFA4929F9C29000DF0760 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACFA4829F9C29000DF0760 /* HomeViewModelTests.swift */; };
+		61ACFA4B29F9C34B00DF0760 /* UibikeStationBottomSheetStateMapperType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACFA4A29F9C34B00DF0760 /* UibikeStationBottomSheetStateMapperType.swift */; };
+		61ACFA4D29F9C3C600DF0760 /* LocationManagerProxyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACFA4C29F9C3C600DF0760 /* LocationManagerProxyType.swift */; };
+		61ACFA4F29F9C44700DF0760 /* LocationManagerProxyDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ACFA4E29F9C44700DF0760 /* LocationManagerProxyDelegate.swift */; };
 		61BBC5E629F0F5CA0029B07E /* UBikeStationCoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BBC5E529F0F5CA0029B07E /* UBikeStationCoreDataService.swift */; };
 		61BBC5E829F109230029B07E /* UserDefaultsServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BBC5E729F109230029B07E /* UserDefaultsServiceType.swift */; };
 		61BBC5EA29F10E940029B07E /* UBikeStationCoreDataServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BBC5E929F10E940029B07E /* UBikeStationCoreDataServiceType.swift */; };
@@ -115,6 +119,10 @@
 		6164500429F7751800696A05 /* AppleMapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMapService.swift; sourceTree = "<group>"; };
 		616F217129F4375A00B88BD3 /* UibikeStationBottomSheetStateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UibikeStationBottomSheetStateMapper.swift; sourceTree = "<group>"; };
 		616F217429F437D100B88BD3 /* UibikeStationBottomSheetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UibikeStationBottomSheetState.swift; sourceTree = "<group>"; };
+		61ACFA4829F9C29000DF0760 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
+		61ACFA4A29F9C34B00DF0760 /* UibikeStationBottomSheetStateMapperType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UibikeStationBottomSheetStateMapperType.swift; sourceTree = "<group>"; };
+		61ACFA4C29F9C3C600DF0760 /* LocationManagerProxyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerProxyType.swift; sourceTree = "<group>"; };
+		61ACFA4E29F9C44700DF0760 /* LocationManagerProxyDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerProxyDelegate.swift; sourceTree = "<group>"; };
 		61BBC5E529F0F5CA0029B07E /* UBikeStationCoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikeStationCoreDataService.swift; sourceTree = "<group>"; };
 		61BBC5E729F109230029B07E /* UserDefaultsServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsServiceType.swift; sourceTree = "<group>"; };
 		61BBC5E929F10E940029B07E /* UBikeStationCoreDataServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBikeStationCoreDataServiceType.swift; sourceTree = "<group>"; };
@@ -192,6 +200,7 @@
 		3AD19631264B73DF000E0BA4 /* UBikeTests */ = {
 			isa = PBXGroup;
 			children = (
+				61ACFA5029F9C49100DF0760 /* Modules */,
 				3AD19634264B73DF000E0BA4 /* Info.plist */,
 			);
 			path = UBikeTests;
@@ -402,6 +411,7 @@
 			isa = PBXGroup;
 			children = (
 				616F217129F4375A00B88BD3 /* UibikeStationBottomSheetStateMapper.swift */,
+				61ACFA4A29F9C34B00DF0760 /* UibikeStationBottomSheetStateMapperType.swift */,
 			);
 			path = Mapper;
 			sourceTree = "<group>";
@@ -424,6 +434,22 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		61ACFA5029F9C49100DF0760 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				61ACFA5129F9C49800DF0760 /* Home */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		61ACFA5129F9C49800DF0760 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				61ACFA4829F9C29000DF0760 /* HomeViewModelTests.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		61BBC5E429F0F5BF0029B07E /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -437,6 +463,8 @@
 			isa = PBXGroup;
 			children = (
 				61BBC6FA29F17EEF0029B07E /* LocationManagerProxy.swift */,
+				61ACFA4C29F9C3C600DF0760 /* LocationManagerProxyType.swift */,
+				61ACFA4E29F9C44700DF0760 /* LocationManagerProxyDelegate.swift */,
 			);
 			path = Location;
 			sourceTree = "<group>";
@@ -520,6 +548,7 @@
 					};
 					3AD1962D264B73DF000E0BA4 = {
 						CreatedOnToolsVersion = 12.5;
+						LastSwiftMigration = 1420;
 						TestTargetID = 3AD19614264B73D7000E0BA4;
 					};
 				};
@@ -667,9 +696,11 @@
 				61644EF529F6E41700696A05 /* RouteRepository.swift in Sources */,
 				6120884929F512B600A9CC4F /* Ubike_Station+CoreDataProperties.swift in Sources */,
 				6120884829F512B600A9CC4F /* Ubike_Station+CoreDataClass.swift in Sources */,
+				61ACFA4F29F9C44700DF0760 /* LocationManagerProxyDelegate.swift in Sources */,
 				6130524829F49A0F0064332B /* ToggleButton.swift in Sources */,
 				3AD19660264DB3A9000E0BA4 /* BorderButton.swift in Sources */,
 				6120884B29F512B600A9CC4F /* Favorite_Ubike_Station+CoreDataProperties.swift in Sources */,
+				61ACFA4B29F9C34B00DF0760 /* UibikeStationBottomSheetStateMapperType.swift in Sources */,
 				616F217529F437D100B88BD3 /* UibikeStationBottomSheetState.swift in Sources */,
 				6124F05529EE79C100A0301A /* UserDefaultsService.swift in Sources */,
 				6124F04D29EE542000A0301A /* UbikeStation.swift in Sources */,
@@ -680,6 +711,7 @@
 				6160BC2829F835FD00209A36 /* AlamofireNetworkServiceType.swift in Sources */,
 				6124F0FC29EFB14500A0301A /* UBike.xcdatamodeld in Sources */,
 				3AD19662264ECF84000E0BA4 /* NetworkConstants.swift in Sources */,
+				61ACFA4D29F9C3C600DF0760 /* LocationManagerProxyType.swift in Sources */,
 				6160BC3129F83DC400209A36 /* HomeCoordinatorType.swift in Sources */,
 				6124F03E29ED7F4B00A0301A /* GetUBikesInterface.swift in Sources */,
 				6124F05D29EF11CF00A0301A /* CoreDataServiceType.swift in Sources */,
@@ -699,6 +731,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61ACFA4929F9C29000DF0760 /* HomeViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -888,6 +921,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 25Q4Y7QB9R;
 				INFOPLIST_FILE = UBikeTests/Info.plist;
@@ -899,6 +933,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = vince.UBikeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UBike.app/UBike";
@@ -911,6 +946,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 25Q4Y7QB9R;
 				INFOPLIST_FILE = UBikeTests/Info.plist;

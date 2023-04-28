@@ -274,7 +274,7 @@ class HomeViewController: UIViewController {
     }
     
     private func setupLocationEvent() {
-        viewModel.showLocation.asSignal()
+        viewModel.updateMapRegion.asSignal()
             .emit(onNext: { [weak self] location, distance in
                 self?.showLocation(location, distance, distance)
             })
