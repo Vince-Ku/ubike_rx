@@ -47,7 +47,7 @@ class HomeViewController: UIViewController {
         return btn
     }()
 
-    private let showUserLocationButton: RoundedRectangleShadowButton = {
+    private let positioningButton: RoundedRectangleShadowButton = {
         let btn = RoundedRectangleShadowButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setImage(UIImage(named: "icon_navigation"), for: .normal)
@@ -162,7 +162,7 @@ class HomeViewController: UIViewController {
         // Buttons
         buttonsContainerStackView.addArrangedSubview(showListButton)
         buttonsContainerStackView.addArrangedSubview(refreshAnnotationButton)
-        buttonsContainerStackView.addArrangedSubview(showUserLocationButton)
+        buttonsContainerStackView.addArrangedSubview(positioningButton)
         view.addSubview(buttonsContainerStackView)
         NSLayoutConstraint.activate([
             buttonsContainerStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
@@ -268,8 +268,8 @@ class HomeViewController: UIViewController {
             .bind(to: viewModel.refreshAnnotationButtonDidTap)
             .disposed(by: disposeBag)
 
-        showUserLocationButton.rx.tap
-            .bind(to: viewModel.showUserLocationButtonDidTap)
+        positioningButton.rx.tap
+            .bind(to: viewModel.positioningButtonDidTap)
             .disposed(by: disposeBag)
     }
     

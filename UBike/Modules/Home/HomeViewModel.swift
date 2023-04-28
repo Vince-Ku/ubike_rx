@@ -24,7 +24,7 @@ class HomeViewModel {
     
     // MARK: Input
     let viewDidLoad = PublishRelay<Void>()
-    let showUserLocationButtonDidTap = PublishRelay<Void>()
+    let positioningButtonDidTap = PublishRelay<Void>()
     let refreshAnnotationButtonDidTap = PublishRelay<Void>()
     let annotationDidSelect = PublishRelay<UbikeStation>()
     let annotationDidDeselect = PublishRelay<UbikeStation>()
@@ -70,7 +70,7 @@ class HomeViewModel {
             })
             .disposed(by: disposeBag)
         
-        showUserLocationButtonDidTap
+        positioningButtonDidTap
             .flatMap { [weak self] _ -> Single<Void> in
                 self?.locationManager.requestAuthorizationIfNeeded() ?? .never()
             }
