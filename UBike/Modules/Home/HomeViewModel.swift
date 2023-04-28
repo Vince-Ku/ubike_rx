@@ -34,7 +34,7 @@ class HomeViewModel {
 
     // MARK: Output
     let updateMapRegion = PublishRelay<(CLLocation, CLLocationDistance?)>()
-    let showUibikeStationsAnnotation = BehaviorRelay<[UBikeStationAnnotation]>(value: [])
+    let updateUibikeStationsAnnotation = BehaviorRelay<[UBikeStationAnnotation]>(value: [])
     let updateUibikeStationBottomSheet = BehaviorRelay<UibikeStationBottomSheetState>(value: .empty)
     let updateUibikeStationNameText = BehaviorRelay<String>(value: "尚未選擇站點")
     let updateUibikeSpaceText = BehaviorRelay<String?>(value: nil)
@@ -51,7 +51,7 @@ class HomeViewModel {
         self.coordinator = coordinator
         
         setupLocation()
-        setupAnnotation()
+        setupAnnotations()
         setupButtomSheet()
         setupUbikeList()
     }
@@ -83,7 +83,7 @@ class HomeViewModel {
             .disposed(by: disposeBag)
     }
     
-    private func setupAnnotation() {
+    private func setupAnnotations() {
         Observable.merge(viewDidLoad.asObservable().take(1), refreshAnnotationButtonDidTap.asObservable())
             .flatMapLatest { [weak self] _ -> Single<[UbikeStation]> in
                 self?.ubikeStationsRepository.getUbikeStations(isLatest: true) ?? .never()
@@ -91,9 +91,11 @@ class HomeViewModel {
             .map {
                 $0.map { UBikeStationAnnotation(ubikeStation: $0) }
             }
-            .bind(to: showUibikeStationsAnnotation)
+            .bind(to: updateUibikeStationsAnnotation)
             .disposed(by: disposeBag)
-        
+    }
+    
+    private func setupButtomSheet() {
         annotationDidSelect
             .subscribe(onNext: { [weak self] ubikeStation in
                 self?.updateUibikeStationNameText.accept(ubikeStation.name.chinese)
@@ -145,9 +147,7 @@ class HomeViewModel {
                 self?.updateRoute.accept(nil)
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func setupButtomSheet() {
+        
         favoriteStationButtonDidTap
             .flatMapLatest { [weak self] id, isFavorite -> Single<Void> in
                 self?.ubikeStationsRepository.updateUbikeStation(id: id, isFavorite: isFavorite) ?? .never()

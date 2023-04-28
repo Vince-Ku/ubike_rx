@@ -204,6 +204,113 @@ final class HomeViewModelTests: XCTestCase {
         }
     }
 
+    ///
+    /// 當`畫面載入完成`時，更新所有`Ubike場站地圖標注`。
+    ///
+    /// Expect:
+    ///     更新Ubike場站地圖標注事件(只會發出`1`+`1`次):
+    ///         Ubike場站 (`3`個):
+    ///             id:`4444`, 座標: `(經度：4444, 緯度：44)`
+    ///             id:`22`, 座標: `(經度：22, 緯度：22)`
+    ///             id:`00`, 座標: `(經度：123, 緯度：888)`
+    ///
+    /// Condition:
+    ///     Ubike場站 (`3`個):
+    ///             id:`4444`, 座標: `(經度：4444, 緯度：44)`
+    ///             id:`22`, 座標: `(經度：22, 緯度：22)`
+    ///             id:`00`, 座標: `(經度：123, 緯度：888)`
+    ///
+    func testUpdateUbikeStationAnnotationWhenViewDidLoad() {
+        // expect
+        let expectUbikeStations = [getUbikeStation(id: "4444", coordinate: .init(latitude: 4444, longitude: 44)),
+                                   getUbikeStation(id: "22", coordinate: .init(latitude: 22, longitude: 22)),
+                                   getUbikeStation(id: "00", coordinate: .init(latitude: 123, longitude: 888))]
+
+        // mock
+        let mockUbikeStations = [getUbikeStation(id: "4444", coordinate: .init(latitude: 4444, longitude: 44)),
+                                 getUbikeStation(id: "22", coordinate: .init(latitude: 22, longitude: 22)),
+                                 getUbikeStation(id: "00", coordinate: .init(latitude: 123, longitude: 888))]
+        
+        // sut
+        let sut = makeSUT(ubikeStationsRepository: MockUbikeStationsRepository(ubikeStations: mockUbikeStations))
+        
+        let observer = TestScheduler(initialClock: 0).createObserver([UBikeStationAnnotation].self)
+        _ = sut.updateUibikeStationsAnnotation.subscribe(observer)
+        
+        sut.viewDidLoad.accept(())
+        sut.viewDidLoad.accept(())
+        sut.viewDidLoad.accept(())
+        
+        XCTAssertEqual(observer.events.count, 2)
+        
+        XCTAssertEqual(observer.events[0].value.element?.count, 0) // default view state
+
+        for event in observer.events[1...] {
+            XCTAssertEqual(event.value.element?.count, 3)
+                
+            for (nub, annotation) in event.value.element!.enumerated() {
+                XCTAssertEqual(annotation.ubikeStation.id, expectUbikeStations[nub].id)
+                XCTAssertEqual(annotation.ubikeStation.coordinate.latitude,
+                               expectUbikeStations[nub].coordinate.latitude)
+                XCTAssertEqual(annotation.ubikeStation.coordinate.longitude,
+                               expectUbikeStations[nub].coordinate.longitude)
+            }
+        }
+    }
+    
+    ///
+    /// 當`重新整理按鈕點擊`時，更新所有`Ubike場站地圖標注`。
+    ///
+    /// Expect:
+    ///     更新Ubike場站地圖標注事件(可以發出`1`+`多`次):
+    ///         Ubike場站 (`3`個):
+    ///             id:`4444`, 座標: `(經度：4444, 緯度：44)`
+    ///             id:`22`, 座標: `(經度：22, 緯度：22)`
+    ///             id:`00`, 座標: `(經度：123, 緯度：888)`
+    ///
+    /// Condition:
+    ///     Ubike場站 (`3`個):
+    ///             id:`4444`, 座標: `(經度：4444, 緯度：44)`
+    ///             id:`22`, 座標: `(經度：22, 緯度：22)`
+    ///             id:`00`, 座標: `(經度：123, 緯度：888)`
+    ///
+    func testUpdateUbikeStationAnnotationWhenRefreshButtonDidTap() {
+        // expect
+        let expectUbikeStations = [getUbikeStation(id: "4444", coordinate: .init(latitude: 4444, longitude: 44)),
+                                   getUbikeStation(id: "22", coordinate: .init(latitude: 22, longitude: 22)),
+                                   getUbikeStation(id: "00", coordinate: .init(latitude: 123, longitude: 888))]
+
+        // mock
+        let mockUbikeStations = [getUbikeStation(id: "4444", coordinate: .init(latitude: 4444, longitude: 44)),
+                                 getUbikeStation(id: "22", coordinate: .init(latitude: 22, longitude: 22)),
+                                 getUbikeStation(id: "00", coordinate: .init(latitude: 123, longitude: 888))]
+        
+        // sut
+        let sut = makeSUT(ubikeStationsRepository: MockUbikeStationsRepository(ubikeStations: mockUbikeStations))
+        
+        let observer = TestScheduler(initialClock: 0).createObserver([UBikeStationAnnotation].self)
+        _ = sut.updateUibikeStationsAnnotation.subscribe(observer)
+        
+        sut.refreshAnnotationButtonDidTap.accept(())
+        sut.refreshAnnotationButtonDidTap.accept(())
+        sut.refreshAnnotationButtonDidTap.accept(())
+        
+        XCTAssertEqual(observer.events.count, 4)
+        
+        XCTAssertEqual(observer.events[0].value.element?.count, 0) // default view state
+
+        for event in observer.events[1...] {
+            XCTAssertEqual(event.value.element?.count, 3)
+                
+            for (nub, annotation) in event.value.element!.enumerated() {
+                XCTAssertEqual(annotation.ubikeStation.id, expectUbikeStations[nub].id)
+                XCTAssertEqual(annotation.ubikeStation.coordinate.latitude,
+                               expectUbikeStations[nub].coordinate.latitude)
+                XCTAssertEqual(annotation.ubikeStation.coordinate.longitude,
+                               expectUbikeStations[nub].coordinate.longitude)
+            }
+        }
+    }
 }
 
 // MARK: mock objects
@@ -223,12 +330,18 @@ class MockLocationManagerProxy: LocationManagerProxyType {
 }
 
 class MockUbikeStationsRepository: UbikeStationsRepositoryType {
+    private let ubikeStations: [UbikeStation]
+    
+    init(ubikeStations: [UbikeStation] = []) {
+        self.ubikeStations = ubikeStations
+    }
+    
     func getUbikeStation(id: String) -> Single<UbikeStation?> {
         return .never()
     }
     
-    func getUbikeStations(isLatest: Bool) -> RxSwift.Single<[UbikeStation]> {
-        return .never()
+    func getUbikeStations(isLatest: Bool) -> Single<[UbikeStation]> {
+        .just(ubikeStations)
     }
     
     func updateUbikeStation(id: String, isFavorite: Bool) -> Single<Void> {

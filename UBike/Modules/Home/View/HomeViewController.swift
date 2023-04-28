@@ -234,7 +234,7 @@ class HomeViewController: UIViewController {
     private func setupMapEvent(){
         mapView.delegate = self
         
-        viewModel.showUibikeStationsAnnotation.asDriver()
+        viewModel.updateUibikeStationsAnnotation.asDriver()
             .drive(onNext: { [weak self] annotations in
                 guard let mapView = self?.mapView else { return }
                 
