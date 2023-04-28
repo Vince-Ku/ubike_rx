@@ -57,24 +57,19 @@ class HomeViewModel {
     }
     
     private func setupLocation() {
-        viewDidLoad.take(1).asSingle()
-            .flatMap { [weak self] _ -> Single<Void> in
-                self?.locationManager.requestAuthorizationIfNeeded() ?? .never()
+        viewDidLoad.take(1).asMaybe()
+            .flatMap { [weak self] _ -> Maybe<CLLocation> in
+                self?.locationManager.getCurrentLocation() ?? .never()
             }
-            .flatMap { [weak self] _ -> Single<CLLocation?> in
-                self?.locationManager.activate() ?? .never()
-            }
-            .compactMap { $0 }
             .subscribe(onSuccess: { [weak self] location in
                 self?.showLocation.accept((location, 5000))
             })
             .disposed(by: disposeBag)
         
         positioningButtonDidTap
-            .flatMap { [weak self] _ -> Single<Void> in
-                self?.locationManager.requestAuthorizationIfNeeded() ?? .never()
+            .flatMap { [weak self] _ -> Maybe<CLLocation> in
+                self?.locationManager.getCurrentLocation() ?? .never()
             }
-            .compactMap { [weak self] _ in self?.locationManager.getCurrentLocation() }
             .subscribe(onNext: { [weak self] location in
                 self?.showLocation.accept((location, nil))
             })
@@ -122,9 +117,11 @@ class HomeViewModel {
         
         annotationDidSelect
             .map { CLLocation(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude) }
-            .compactMap { [weak self] destination -> (CLLocation, CLLocation)? in
-                guard let location = self?.locationManager.getCurrentLocation() else { return nil }
-                return (location, destination)
+            .flatMapLatest { [weak self] destination -> Maybe<(CLLocation, CLLocation)> in
+                guard let self = self else { return .never() }
+                
+                return self.locationManager.getCurrentLocation()
+                    .map { location in (location, destination)}
             }
             .flatMapLatest { [weak self] source, destination -> Single<MKRoute> in
                 self?.routeRepository.getWalkingRoute(source: source, destination: destination) ?? .never()
@@ -165,9 +162,11 @@ class HomeViewModel {
                     .compactMap { $0?.coordinate }
                     .map { CLLocation(latitude: $0.latitude, longitude: $0.longitude) }
             }
-            .compactMap { [weak self] destination -> (CLLocation, CLLocation)? in // get Destination
-                guard let location = self?.locationManager.getCurrentLocation() else { return nil }
-                return (location, destination)
+            .flatMapLatest { [weak self] destination -> Maybe<(CLLocation, CLLocation)> in // get Destination
+                guard let self = self else { return .never() }
+                
+                return self.locationManager.getCurrentLocation()
+                    .map { location in (location, destination)}
             }
             .flatMapLatest { [weak self] source, destination -> Single<MKRoute> in // get Route
                 self?.routeRepository.getWalkingRoute(source: source, destination: destination) ?? .never()
@@ -175,7 +174,7 @@ class HomeViewModel {
             .subscribe(onNext: { [weak self] route in
                 let centerLocation = CLLocation(latitude: route.polyline.coordinate.latitude,
                                                 longitude: route.polyline.coordinate.longitude)
-                
+
                 self?.updateRoute.accept(route)
                 self?.showLocation.accept((centerLocation, route.distance))
             })
