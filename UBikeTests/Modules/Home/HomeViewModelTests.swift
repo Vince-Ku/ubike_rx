@@ -481,7 +481,7 @@ class MockUbikeStationsRepository: UbikeStationsRepositoryType {
         .just(ubikeStations)
     }
     
-    func updateUbikeStation(id: String, isFavorite: Bool) -> Single<Void> {
+    func updateUbikeStation(id: String, isFavorite: Bool) -> Single<UbikeStation> {
         return .never()
     }
 }

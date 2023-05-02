@@ -149,10 +149,15 @@ class HomeViewModel {
             .disposed(by: disposeBag)
         
         collectionButtonDidTap
-            .flatMapLatest { [weak self] id, isFavorite -> Single<Void> in
-                self?.ubikeStationsRepository.updateUbikeStation(id: id, isFavorite: isFavorite) ?? .never()
+            .flatMapLatest { [weak self] id, isFavorite -> Single<Bool> in
+                guard let self = self else { return .never() }
+                return self.ubikeStationsRepository.updateUbikeStation(id: id, isFavorite: isFavorite)
+                    .map(\.isFavorite)
+                    .catchAndReturn(!isFavorite) // recover collection button state
             }
-            .subscribe() // TODO: update annotation
+            .subscribe(onNext: { [weak self] isFavorite in
+                self?.updateCollectionButtonState.accept(isFavorite)
+            })
             .disposed(by: disposeBag)
             
         navigationButtonDidTap

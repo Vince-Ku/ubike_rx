@@ -288,6 +288,8 @@ class HomeViewController: UIViewController {
                 guard let id = button.id else { return nil }
                 return (id, !button.isSelected)
             }
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .distinctUntilChanged { $0 == $1 }
             .bind(to: viewModel.collectionButtonDidTap)
             .disposed(by: disposeBag)
             

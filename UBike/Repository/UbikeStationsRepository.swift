@@ -31,8 +31,19 @@ class UbikeStationsRepository: UbikeStationsRepositoryType {
         ubikeStationCoreDataService.get(id: id)
     }
     
-    func updateUbikeStation(id: String, isFavorite: Bool) -> Single<Void> {
+    func updateUbikeStation(id: String, isFavorite: Bool) -> Single<UbikeStation> {
         ubikeStationCoreDataService.update(id: id, isFavorite: isFavorite)
+            .flatMap { [weak self] _ -> Single<UbikeStation?> in
+                guard let self = self else { return .never() }
+                
+                return self.getUbikeStation(id: id)
+            }
+            .map { ubikeStation -> UbikeStation in
+                guard let ubikeStation = ubikeStation else {
+                    throw NSError(domain: "UbikeStationsRepository func updateUbikeStation", code: NSURLErrorDataNotAllowed)
+                }
+                return ubikeStation
+            }
     }
     
     private func fetchUbikeStations() -> Single<[UbikeStation]> {
