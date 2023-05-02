@@ -380,6 +380,72 @@ final class HomeViewModelTests: XCTestCase {
         }
     }
     
+    ///
+    /// 當點擊`Ubike場站地圖標注`時，更新`Ubike車輛數量`。
+    ///
+    /// Expect:
+    ///     更新Ubike車輛數事件(可以發出`1`+`多`次):
+    ///         數量: `777` 台
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testUpdateUbikeNumberWhenUbikeStationAnnotationDidSelect() {
+        // mock
+        let mockUbikeStation = getUbikeStation(parkingSpace: .init(total: 0, bike: 777, empty: 0))
+        
+        // sut
+        sut = makeSUT(ubikeStationsRepository: MockUbikeStationsRepository(ubikeStation: mockUbikeStation))
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(String?.self)
+        _ = sut.updateUibikeSpaceText.subscribe(observer)
+
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        
+        XCTAssertEqual(observer.events.count, 1+3)
+        
+        XCTAssertEqual(observer.events[0].value.element!, nil) // default view state
+
+        for event in observer.events[1...] {
+            XCTAssertEqual(event.value.element, "777")
+        }
+    }
+    
+    ///
+    /// 當點擊`Ubike場站地圖標注`時，更新`空車位數量`。
+    ///
+    /// Expect:
+    ///     更新空車位數量事件(可以發出`1`+`多`次):
+    ///         數量: `568` 個
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testUpdateEmptySpaceNumberWhenUbikeStationAnnotationDidSelect() {
+        // mock
+        let mockUbikeStation = getUbikeStation(parkingSpace: .init(total: 0, bike: 0, empty: 568))
+        
+        // sut
+        sut = makeSUT(ubikeStationsRepository: MockUbikeStationsRepository(ubikeStation: mockUbikeStation))
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(String?.self)
+        _ = sut.updateEmptySpaceText.subscribe(observer)
+
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        
+        XCTAssertEqual(observer.events.count, 1+3)
+        
+        XCTAssertEqual(observer.events[0].value.element!, nil) // default view state
+
+        for event in observer.events[1...] {
+            XCTAssertEqual(event.value.element, "568")
+        }
+    }
+    
 }
 
 // MARK: mock objects
@@ -400,13 +466,15 @@ class MockLocationManagerProxy: LocationManagerProxyType {
 
 class MockUbikeStationsRepository: UbikeStationsRepositoryType {
     private let ubikeStations: [UbikeStation]
+    private let ubikeStation: UbikeStation?
     
-    init(ubikeStations: [UbikeStation] = []) {
+    init(ubikeStations: [UbikeStation] = [], ubikeStation: UbikeStation? = nil) {
         self.ubikeStations = ubikeStations
+        self.ubikeStation = ubikeStation
     }
     
     func getUbikeStation(id: String) -> Single<UbikeStation?> {
-        return .never()
+        .just(ubikeStation)
     }
     
     func getUbikeStations(isLatest: Bool) -> Single<[UbikeStation]> {
