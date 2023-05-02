@@ -28,18 +28,6 @@ final class HomeViewModelTests: XCTestCase {
                       coordinator: coordinator)
     }
     
-    private func getUbikeStation(id: String = "",
-                                 name: UbikeStation.Name = .init(english: "", chinese: ""),
-                                 area: UbikeStation.Area = .init(english: "", chinese: ""),
-                                 coordinate: UbikeStation.Coordinate = .init(latitude: 0, longitude: 0),
-                                 address: UbikeStation.Address = .init(english: "", chinese: ""),
-                                 parkingSpace: UbikeStation.ParkingSpace = .init(total: 0, bike: 0, empty: 0),
-                                 isFavorite: Bool = false,
-                                 updatedDate: Date? = nil) -> UbikeStation {
-        
-        UbikeStation(id: id, name: name, area: area, coordinate: coordinate, address: address, parkingSpace:     parkingSpace, isFavorite: isFavorite, updatedDate: updatedDate)
-    }
-    
     ///
     /// 當`畫面載入完成`時，更新`地圖顯示區域`。
     ///
@@ -446,6 +434,99 @@ final class HomeViewModelTests: XCTestCase {
         }
     }
     
+    ///
+    /// 當點擊`Ubike場站地圖標注`時，更新`收藏按鈕狀態`。
+    ///
+    /// Expect:
+    ///     更新收藏鈕狀態事件(可以發出`1`+`多`次):
+    ///         default:
+    ///             狀態: `false` (未收藏)
+    ///         第一次:
+    ///             狀態: `true`  (已收藏)
+    ///         第二次:
+    ///             狀態: `true`  (已收藏)
+    ///         第三次:
+    ///             狀態: `true`  (已收藏)
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testUpdateCollectionButtonStateWhenUbikeStationAnnotationDidSelect() {
+        // mock
+        let mockUbikeStation = getUbikeStation(isFavorite: true)
+        
+        // sut
+        sut = makeSUT(ubikeStationsRepository: MockUbikeStationsRepository(ubikeStation: mockUbikeStation))
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(Bool.self)
+        _ = sut.updateCollectionButtonState.subscribe(observer)
+
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        
+        XCTAssertEqual(observer.events.count, 1+3)
+        
+        XCTAssertEqual(observer.events[0].value.element, false) // default view state
+
+        for event in observer.events[1...] {
+            XCTAssertEqual(event.value.element, true)
+        }
+    }
+    
+    ///
+    /// 當點擊`收藏按鈕`時，更新`收藏按鈕狀態`。
+    ///
+    /// Expect:
+    ///     更新收藏鈕狀態事件(可以發出`1`+`多`次):
+    ///         default:
+    ///             狀態: `false` (未收藏)
+    ///         第一次:
+    ///             狀態: `true`  (已收藏)
+    ///         第二次:
+    ///             狀態: `true`  (已收藏)
+    ///         第三次:
+    ///             狀態: `true`  (已收藏)
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testUpdateCollectionButtonStateWhenCollectionButtonDidTap() {
+        // mock
+        let mockUbikeStationsRepository = MockUbikeStationsRepository(isFavorite: true)
+        
+        // sut
+        sut = makeSUT(ubikeStationsRepository: mockUbikeStationsRepository)
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(Bool.self)
+        _ = sut.updateCollectionButtonState.subscribe(observer)
+
+        sut.collectionButtonDidTap.accept(("", true))
+        sut.collectionButtonDidTap.accept(("", true))
+        sut.collectionButtonDidTap.accept(("", true))
+        
+        XCTAssertEqual(observer.events.count, 1+3)
+        
+        XCTAssertEqual(observer.events[0].value.element, false) // default view state
+        
+        for event in observer.events[1...] {
+            XCTAssertEqual(event.value.element, true)
+        }
+    }
+    
+}
+
+// MARK: Utility
+private func getUbikeStation(id: String = "",
+                             name: UbikeStation.Name = .init(english: "", chinese: ""),
+                             area: UbikeStation.Area = .init(english: "", chinese: ""),
+                             coordinate: UbikeStation.Coordinate = .init(latitude: 0, longitude: 0),
+                             address: UbikeStation.Address = .init(english: "", chinese: ""),
+                             parkingSpace: UbikeStation.ParkingSpace = .init(total: 0, bike: 0, empty: 0),
+                             isFavorite: Bool = false,
+                             updatedDate: Date? = nil) -> UbikeStation {
+    
+    UbikeStation(id: id, name: name, area: area, coordinate: coordinate, address: address, parkingSpace:     parkingSpace, isFavorite: isFavorite, updatedDate: updatedDate)
 }
 
 // MARK: mock objects
@@ -467,10 +548,12 @@ class MockLocationManagerProxy: LocationManagerProxyType {
 class MockUbikeStationsRepository: UbikeStationsRepositoryType {
     private let ubikeStations: [UbikeStation]
     private let ubikeStation: UbikeStation?
+    private let isFavorite: Bool?
     
-    init(ubikeStations: [UbikeStation] = [], ubikeStation: UbikeStation? = nil) {
+    init(ubikeStations: [UbikeStation] = [], ubikeStation: UbikeStation? = nil, isFavorite: Bool? = nil) {
         self.ubikeStations = ubikeStations
         self.ubikeStation = ubikeStation
+        self.isFavorite = isFavorite
     }
     
     func getUbikeStation(id: String) -> Single<UbikeStation?> {
@@ -480,9 +563,10 @@ class MockUbikeStationsRepository: UbikeStationsRepositoryType {
     func getUbikeStations(isLatest: Bool) -> Single<[UbikeStation]> {
         .just(ubikeStations)
     }
-    
+
     func updateUbikeStation(id: String, isFavorite: Bool) -> Single<UbikeStation> {
-        return .never()
+        guard let isFavorite = self.isFavorite else { return .never() }
+        return .just(UBikeTests.getUbikeStation(isFavorite: isFavorite))
     }
 }
 
