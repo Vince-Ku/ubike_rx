@@ -514,6 +514,50 @@ final class HomeViewModelTests: XCTestCase {
         }
     }
     
+    ///
+    /// 當點擊`Ubike場站地圖標注`時，更新`導航按鈕標題文字`。
+    ///
+    /// Expect:
+    ///     更新導航按鈕標題事件(可以發出`1`+`多`次):
+    ///         default:
+    ///             狀態: `nil`
+    ///         第一次:
+    ///             狀態: `還有很多時間喔！！`
+    ///         第二次:
+    ///             狀態: `還有很多時間喔！！`
+    ///         第三次:
+    ///             狀態: `還有很多時間喔！！`
+    ///
+    /// Condition:
+    ///     使用者位置: `(經度：111, 緯度：9282)`
+    ///     Ubike場站位置: `(經度：555, 緯度：888)`
+    ///
+    func testUpdateNavigaionTitleWhenAnnotationDidSelect() {
+        // mock
+        let mockLocationProxy = MockLocationManagerProxy(getCurrentLocationResult: .just(.init(latitude: 111, longitude: 9282)))
+        let mockRouteRepository = MockRouteRepository(route: MKRoute())
+        let mockMapper = MockUibikeStationBottomSheetStateMapper(titleText: "還有很多時間喔！！")
+        let mockUbikeStation = getUbikeStation(coordinate: .init(latitude: 555, longitude: 888))
+        
+        // sut
+        sut = makeSUT(locationManager: mockLocationProxy, routeRepository: mockRouteRepository, mapper: mockMapper)
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(String?.self)
+        _ = sut.updateNavigationTitle.subscribe(observer)
+
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        
+        XCTAssertEqual(observer.events.count, 1+3)
+        
+        XCTAssertEqual(observer.events[0].value.element!, nil) // default view state
+        
+        for event in observer.events[1...] {
+            XCTAssertEqual(event.value.element, "還有很多時間喔！！")
+        }
+    }
+    
 }
 
 // MARK: Utility
@@ -571,14 +615,29 @@ class MockUbikeStationsRepository: UbikeStationsRepositoryType {
 }
 
 class MockRouteRepository: RouteRepositoryType {
+    private let route: MKRoute?
+    
+    init(route: MKRoute? = nil) {
+        self.route = route
+    }
+    
     func getWalkingRoute(source: CLLocation, destination: CLLocation) -> Single<MKRoute> {
-        return .never()
+        guard let route = route else { return .never() }
+        
+        return .just( route)
     }
 }
 
 class MockUibikeStationBottomSheetStateMapper: UibikeStationBottomSheetStateMapperType {
+    private let titleText: String?
+    
+    init(titleText: String? = nil) {
+        self.titleText = titleText
+    }
+    
     func getNavigationText(route: MKRoute) -> String {
-        return ""
+        guard let titleText = titleText else { return "" }
+        return titleText
     }
 }
 
