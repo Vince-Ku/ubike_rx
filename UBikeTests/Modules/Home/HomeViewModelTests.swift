@@ -842,6 +842,27 @@ final class HomeViewModelTests: XCTestCase {
             XCTAssertEqual(event.value.element!, nil)
         }
     }
+    
+    ///
+    /// 當點擊`Ubike場站列表按鈕`時，打開`Ubike場站列表`模組。
+    ///
+    /// Expect:
+    ///     路由器調用方法 `openUbikeListModule()`
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testOpenUbikeListModuleWhenShowListButtonDidTap() {
+        // mock
+        let mockCoordinator = MockHomeCoordinator()
+        
+        // sut
+        sut = makeSUT(coordinator: mockCoordinator)
+        
+        sut.showListButtonDidTap.accept(())
+        
+        XCTAssertEqual(mockCoordinator.openUbikeListModuleDidCalled, true)
+    }
 }
 
 // MARK: Utility
@@ -926,11 +947,11 @@ class MockUibikeStationBottomSheetStateMapper: UibikeStationBottomSheetStateMapp
 }
 
 class MockHomeCoordinator: HomeCoordinatorType {
-    func start() {
-        
-    }
+    var openUbikeListModuleDidCalled = false
+    
+    func start() {}
     
     func openUbikeListModule() {
-        
+        openUbikeListModuleDidCalled = true
     }
 }
