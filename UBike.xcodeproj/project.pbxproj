@@ -213,8 +213,6 @@
 			children = (
 				6124F04F29EE6D6D00A0301A /* Mapper */,
 				6124F04E29EE542600A0301A /* Model */,
-				6124F04629EE4E2A00A0301A /* LocalDataSource */,
-				6124F04729EE4E3600A0301A /* RemoteDataSource */,
 				6124F04229EE440900A0301A /* UbikeStationsRepository.swift */,
 				6124F04A29EE4EEC00A0301A /* UbikeStationsRepositoryType.swift */,
 				61644EF429F6E41700696A05 /* RouteRepository.swift */,
@@ -248,20 +246,6 @@
 				3AD19655264B7F1A000E0BA4 /* GetUBikesApiModel.swift */,
 			);
 			path = ApiModel;
-			sourceTree = "<group>";
-		};
-		6124F04629EE4E2A00A0301A /* LocalDataSource */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = LocalDataSource;
-			sourceTree = "<group>";
-		};
-		6124F04729EE4E3600A0301A /* RemoteDataSource */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = RemoteDataSource;
 			sourceTree = "<group>";
 		};
 		6124F04E29EE542600A0301A /* Model */ = {
