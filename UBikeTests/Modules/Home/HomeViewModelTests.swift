@@ -16,7 +16,7 @@ final class HomeViewModelTests: XCTestCase {
 
     private var sut: HomeViewModel!
     
-    private func makeSUT(locationManager: LocationManagerProxyType = MockLocationManagerProxy(getCurrentLocationResult: .never()),
+    private func makeSUT(locationManager: LocationManagerProxyType = MockLocationManagerProxy(),
                          ubikeStationsRepository: UbikeStationsRepositoryType = MockUbikeStationsRepository(),
                          routeRepository: RouteRepositoryType = MockRouteRepository(),
                          mapper: UibikeStationBottomSheetStateMapperType = MockUibikeStationBottomSheetStateMapper(),
@@ -40,11 +40,6 @@ final class HomeViewModelTests: XCTestCase {
     ///     使用者位置: `(經度：123, 緯度：222)`
     ///
     func testUpdateMapRegionWhenViewDidLoadWithUserLocation() {
-        // expect
-        let expectedLatitude: Double = 123
-        let expectedLongitude: Double = 222
-        let expectedDistance: CLLocationDistance = 5000
-        
         // mock
         let mockLocation = CLLocation(latitude: 123, longitude: 222)
         let mockLocationManagerProxy = MockLocationManagerProxy(getCurrentLocationResult: .just(mockLocation))
@@ -57,12 +52,13 @@ final class HomeViewModelTests: XCTestCase {
 
         sut.viewDidLoad.accept(())
         sut.viewDidLoad.accept(())
+        sut.viewDidLoad.accept(())
         
         XCTAssertEqual(observer.events.count, 1) // only execute once
         
-        XCTAssertEqual(observer.events[0].value.element?.0.coordinate.latitude, expectedLatitude)
-        XCTAssertEqual(observer.events[0].value.element?.0.coordinate.longitude, expectedLongitude)
-        XCTAssertEqual(observer.events[0].value.element?.1, expectedDistance)
+        XCTAssertEqual(observer.events[0].value.element?.0.coordinate.latitude, 123)
+        XCTAssertEqual(observer.events[0].value.element?.0.coordinate.longitude, 222)
+        XCTAssertEqual(observer.events[0].value.element?.1, 5000)
     }
     
     ///
@@ -86,6 +82,7 @@ final class HomeViewModelTests: XCTestCase {
 
         sut.viewDidLoad.accept(())
         sut.viewDidLoad.accept(())
+        sut.viewDidLoad.accept(())
         
         XCTAssertEqual(observer.events.count, 0)
     }
@@ -102,11 +99,6 @@ final class HomeViewModelTests: XCTestCase {
     ///     使用者位置: `(經度：123, 緯度：2222)`
     ///
     func testUpdateMapRegionWhenPositionButtonDidTapWithUserLocation() {
-        // expect
-        let expectedLatitude: Double = 123
-        let expectedLongitude: Double = 2222
-        let expectedDistance: CLLocationDistance? = nil
-        
         // mock
         let mockLocation = CLLocation(latitude: 123, longitude: 2222)
         let mockLocationManagerProxy = MockLocationManagerProxy(getCurrentLocationResult: .just(mockLocation))
@@ -119,13 +111,14 @@ final class HomeViewModelTests: XCTestCase {
 
         sut.positioningButtonDidTap.accept(())
         sut.positioningButtonDidTap.accept(())
+        sut.positioningButtonDidTap.accept(())
         
-        XCTAssertEqual(observer.events.count, 2)
+        XCTAssertEqual(observer.events.count, 3)
         
         for event in observer.events {
-            XCTAssertEqual(event.value.element?.0.coordinate.latitude, expectedLatitude)
-            XCTAssertEqual(event.value.element?.0.coordinate.longitude, expectedLongitude)
-            XCTAssertEqual(event.value.element?.1, expectedDistance)
+            XCTAssertEqual(event.value.element?.0.coordinate.latitude, 123)
+            XCTAssertEqual(event.value.element?.0.coordinate.longitude, 2222)
+            XCTAssertEqual(event.value.element?.1, nil)
         }
     }
 
@@ -150,6 +143,7 @@ final class HomeViewModelTests: XCTestCase {
 
         sut.positioningButtonDidTap.accept(())
         sut.positioningButtonDidTap.accept(())
+        sut.positioningButtonDidTap.accept(())
         
         XCTAssertEqual(observer.events.count, 0)
     }
@@ -166,11 +160,6 @@ final class HomeViewModelTests: XCTestCase {
     ///     Ubike場站位置: `(經度：555, 緯度：888)`
     ///
     func testUpdateMapRegionWhenAnnotationDidTap() {
-        // expect
-        let expectedLatitude: Double = 555
-        let expectedLongitude: Double = 888
-        let expectedDistance: CLLocationDistance? = nil
-        
         // mock
         let mockUbikeStation = getUbikeStation(coordinate: .init(latitude: 555, longitude: 888))
         
@@ -182,13 +171,14 @@ final class HomeViewModelTests: XCTestCase {
         
         sut.annotationDidSelect.accept(mockUbikeStation)
         sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
         
-        XCTAssertEqual(observer.events.count, 2)
+        XCTAssertEqual(observer.events.count, 3)
         
         for event in observer.events {
-            XCTAssertEqual(event.value.element?.0.coordinate.latitude, expectedLatitude)
-            XCTAssertEqual(event.value.element?.0.coordinate.longitude, expectedLongitude)
-            XCTAssertEqual(event.value.element?.1, expectedDistance)
+            XCTAssertEqual(event.value.element?.0.coordinate.latitude, 555)
+            XCTAssertEqual(event.value.element?.0.coordinate.longitude, 888)
+            XCTAssertEqual(event.value.element?.1, nil)
         }
     }
 
@@ -197,10 +187,13 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新Ubike場站地圖標注事件(只會發出`1`+`1`次):
-    ///         Ubike場站 (`3`個):
-    ///             id:`4444`, 座標: `(經度：4444, 緯度：44)`
-    ///             id:`22`, 座標: `(經度：22, 緯度：22)`
-    ///             id:`00`, 座標: `(經度：123, 緯度：888)`
+    ///         default(`0`個):
+    ///             []
+    ///         第一次:
+    ///             Ubike場站 (`3`個):
+    ///                 id:`4444`, 座標: `(經度：4444, 緯度：44)`
+    ///                 id:`22`, 座標: `(經度：22, 緯度：22)`
+    ///                 id:`00`, 座標: `(經度：123, 緯度：888)`
     ///
     /// Condition:
     ///     Ubike場站 (`3`個):
@@ -209,11 +202,6 @@ final class HomeViewModelTests: XCTestCase {
     ///             id:`00`, 座標: `(經度：123, 緯度：888)`
     ///
     func testUpdateUbikeStationAnnotationWhenViewDidLoad() {
-        // expect
-        let expectUbikeStations = [getUbikeStation(id: "4444", coordinate: .init(latitude: 4444, longitude: 44)),
-                                   getUbikeStation(id: "22", coordinate: .init(latitude: 22, longitude: 22)),
-                                   getUbikeStation(id: "00", coordinate: .init(latitude: 123, longitude: 888))]
-
         // mock
         let mockUbikeStations = [getUbikeStation(id: "4444", coordinate: .init(latitude: 4444, longitude: 44)),
                                  getUbikeStation(id: "22", coordinate: .init(latitude: 22, longitude: 22)),
@@ -237,11 +225,11 @@ final class HomeViewModelTests: XCTestCase {
             XCTAssertEqual(event.value.element?.count, 3)
                 
             for (nub, annotation) in event.value.element!.enumerated() {
-                XCTAssertEqual(annotation.ubikeStation.id, expectUbikeStations[nub].id)
+                XCTAssertEqual(annotation.ubikeStation.id, mockUbikeStations[nub].id)
                 XCTAssertEqual(annotation.ubikeStation.coordinate.latitude,
-                               expectUbikeStations[nub].coordinate.latitude)
+                               mockUbikeStations[nub].coordinate.latitude)
                 XCTAssertEqual(annotation.ubikeStation.coordinate.longitude,
-                               expectUbikeStations[nub].coordinate.longitude)
+                               mockUbikeStations[nub].coordinate.longitude)
             }
         }
     }
@@ -251,10 +239,13 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新Ubike場站地圖標注事件(可以發出`1`+`多`次):
-    ///         Ubike場站 (`3`個):
-    ///             id:`4444`, 座標: `(經度：4444, 緯度：44)`
-    ///             id:`22`, 座標: `(經度：22, 緯度：22)`
-    ///             id:`00`, 座標: `(經度：123, 緯度：888)`
+    ///         default(`0`個):
+    ///             []
+    ///         第N次:
+    ///             Ubike場站 (`3`個):
+    ///                 id:`4444`, 座標: `(經度：4444, 緯度：44)`
+    ///                 id:`22`, 座標: `(經度：22, 緯度：22)`
+    ///                 id:`00`, 座標: `(經度：123, 緯度：888)`
     ///
     /// Condition:
     ///     Ubike場站 (`3`個):
@@ -263,11 +254,6 @@ final class HomeViewModelTests: XCTestCase {
     ///             id:`00`, 座標: `(經度：123, 緯度：888)`
     ///
     func testUpdateUbikeStationAnnotationWhenRefreshButtonDidTap() {
-        // expect
-        let expectUbikeStations = [getUbikeStation(id: "4444", coordinate: .init(latitude: 4444, longitude: 44)),
-                                   getUbikeStation(id: "22", coordinate: .init(latitude: 22, longitude: 22)),
-                                   getUbikeStation(id: "00", coordinate: .init(latitude: 123, longitude: 888))]
-
         // mock
         let mockUbikeStations = [getUbikeStation(id: "4444", coordinate: .init(latitude: 4444, longitude: 44)),
                                  getUbikeStation(id: "22", coordinate: .init(latitude: 22, longitude: 22)),
@@ -291,11 +277,11 @@ final class HomeViewModelTests: XCTestCase {
             XCTAssertEqual(event.value.element?.count, 3)
                 
             for (nub, annotation) in event.value.element!.enumerated() {
-                XCTAssertEqual(annotation.ubikeStation.id, expectUbikeStations[nub].id)
+                XCTAssertEqual(annotation.ubikeStation.id, mockUbikeStations[nub].id)
                 XCTAssertEqual(annotation.ubikeStation.coordinate.latitude,
-                               expectUbikeStations[nub].coordinate.latitude)
+                               mockUbikeStations[nub].coordinate.latitude)
                 XCTAssertEqual(annotation.ubikeStation.coordinate.longitude,
-                               expectUbikeStations[nub].coordinate.longitude)
+                               mockUbikeStations[nub].coordinate.longitude)
             }
         }
     }
@@ -305,7 +291,10 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新Ubike場站資訊小卡狀態事件(可以發出`1`+`多`次):
-    ///         狀態: `regular (id: 228)`
+    ///         default:
+    ///             狀態: `empty`
+    ///         第N次:
+    ///             狀態: `regular (id: 228)`
     ///
     /// Condition:
     ///     Ubike場站地圖標注:
@@ -339,7 +328,10 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新Ubike場站名稱事件(可以發出`1`+`多`次):
-    ///         名稱: `Vince 場站`
+    ///         default:
+    ///             名稱: `尚未選擇站點`
+    ///         第N次:
+    ///             名稱: `Vince 場站`
     ///
     /// Condition:
     ///     Ubike場站地圖標注:
@@ -373,7 +365,10 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新Ubike車輛數事件(可以發出`1`+`多`次):
-    ///         數量: `777` 台
+    ///         default:
+    ///              數量: `nil`
+    ///         第N次:
+    ///              數量: `777` 台
     ///
     /// Condition:
     ///     none
@@ -406,7 +401,10 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新空車位數量事件(可以發出`1`+`多`次):
-    ///         數量: `568` 個
+    ///         default:
+    ///              數量: `nil`
+    ///         第N次:
+    ///              數量: `568` 台
     ///
     /// Condition:
     ///     none
@@ -441,11 +439,7 @@ final class HomeViewModelTests: XCTestCase {
     ///     更新收藏鈕狀態事件(可以發出`1`+`多`次):
     ///         default:
     ///             狀態: `false` (未收藏)
-    ///         第一次:
-    ///             狀態: `true`  (已收藏)
-    ///         第二次:
-    ///             狀態: `true`  (已收藏)
-    ///         第三次:
+    ///         第N次:
     ///             狀態: `true`  (已收藏)
     ///
     /// Condition:
@@ -481,11 +475,7 @@ final class HomeViewModelTests: XCTestCase {
     ///     更新收藏鈕狀態事件(可以發出`1`+`多`次):
     ///         default:
     ///             狀態: `false` (未收藏)
-    ///         第一次:
-    ///             狀態: `true`  (已收藏)
-    ///         第二次:
-    ///             狀態: `true`  (已收藏)
-    ///         第三次:
+    ///         第N次:
     ///             狀態: `true`  (已收藏)
     ///
     /// Condition:
@@ -521,11 +511,7 @@ final class HomeViewModelTests: XCTestCase {
     ///     更新導航按鈕標題事件(可以發出`1`+`多`次):
     ///         default:
     ///             狀態: `nil`
-    ///         第一次:
-    ///             狀態: `還有很多時間喔！！`
-    ///         第二次:
-    ///             狀態: `還有很多時間喔！！`
-    ///         第三次:
+    ///         第N次:
     ///             狀態: `還有很多時間喔！！`
     ///
     /// Condition:
@@ -565,11 +551,7 @@ final class HomeViewModelTests: XCTestCase {
     ///     更新導航路線事件(可發出`1`+`多`次):
     ///         default:
     ///             導航路線: `nil`
-    ///         第一次:
-    ///             導航路線: `mockRoute` reference
-    ///         第二次:
-    ///             導航路線: `mockRoute` reference
-    ///         第三次:
+    ///         第N次:
     ///             導航路線: `mockRoute` reference
     ///
     /// Condition:
@@ -607,13 +589,7 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新地圖顯示區域事件(可發出`多`次):
-    ///         第一次:
-    ///             中心點: `mockRoute` 的中心點 (經度, 緯度)
-    ///             距離: `mockRoute` 的距離
-    ///         第二次:
-    ///             中心點: `mockRoute` 的中心點 (經度, 緯度)
-    ///             距離: `mockRoute` 的距離
-    ///         第三次:
+    ///         第N次:
     ///             中心點: `mockRoute` 的中心點 (經度, 緯度)
     ///             距離: `mockRoute` 的距離
     ///
@@ -652,7 +628,10 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新Ubike場站資訊小卡狀態事件(可以發出`1`+`多`次):
-    ///         狀態: `empty` (空白)
+    ///         default:
+    ///             狀態: `empty` (空白)
+    ///         第N次:
+    ///             狀態: `empty` (空白)
     ///
     /// Condition:
     ///     none
@@ -680,7 +659,10 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新Ubike場站名稱事件(可以發出`1`+`多`次):
-    ///         名稱: `尚未選擇站點`
+    ///         default:
+    ///             名稱: `尚未選擇站點`
+    ///         第N次:
+    ///             名稱: `尚未選擇站點`
     ///
     /// Condition:
     ///     none
@@ -708,7 +690,10 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新收藏鈕狀態事件(可以發出`1`+`多`次):
-    ///         狀態: `false` (未收藏)
+    ///         default:
+    ///             狀態: `false` (未收藏)
+    ///         第N次:
+    ///             狀態: `false` (未收藏)
     ///
     /// Condition:
     ///     none
@@ -736,7 +721,10 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新Ubike車輛數事件(可以發出`1`+`多`次):
-    ///         數量: `nil`
+    ///         default:
+    ///             數量: `nil`
+    ///         第N次:
+    ///             數量: `nil`
     ///
     /// Condition:
     ///     none
@@ -764,7 +752,10 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新空車位數量事件(可以發出`1`+`多`次):
-    ///         數量: `nil`
+    ///         default:
+    ///             數量: `nil`
+    ///         第N次:
+    ///             數量: `nil`
     ///
     /// Condition:
     ///     none
@@ -792,7 +783,10 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新導航路線事件(可發出`1`+`多`次):
-    ///         導航路線: `nil`
+    ///         default:
+    ///             導航路線: `nil`
+    ///         第N次:
+    ///             導航路線: `nil`
     ///
     /// Condition:
     ///     none
@@ -820,7 +814,10 @@ final class HomeViewModelTests: XCTestCase {
     ///
     /// Expect:
     ///     更新導航按鈕標題事件(可以發出`1`+`多`次):
-    ///         導航按鈕標題: `nil`
+    ///         default:
+    ///             導航按鈕標題: `nil`
+    ///         第N次:
+    ///             導航按鈕標題: `nil`
     ///
     /// Condition:
     ///     none
@@ -884,7 +881,7 @@ class MockLocationManagerProxy: LocationManagerProxyType {
     
     private let getCurrentLocationResult: Maybe<CLLocation>
 
-    init(delegate: LocationManagerProxyDelegate? = nil, getCurrentLocationResult: Maybe<CLLocation>) {
+    init(delegate: LocationManagerProxyDelegate? = nil, getCurrentLocationResult: Maybe<CLLocation> = .never()) {
         self.delegate = delegate
         self.getCurrentLocationResult = getCurrentLocationResult
     }
