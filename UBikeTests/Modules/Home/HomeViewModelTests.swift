@@ -647,6 +647,201 @@ final class HomeViewModelTests: XCTestCase {
         }
     }
     
+    ///
+    /// 當取消點選`Ubike場站地圖標注`時，更新`Ubike場站資訊小卡狀態`。
+    ///
+    /// Expect:
+    ///     更新Ubike場站資訊小卡狀態事件(可以發出`1`+`多`次):
+    ///         狀態: `empty` (空白)
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testUpdateUibikeStationBottomSheetStateWhenUbikeStationAnnotationDeselect() {
+        // sut
+        sut = makeSUT()
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(UibikeStationBottomSheetState.self)
+        _ = sut.updateUibikeStationBottomSheet.subscribe(observer)
+        
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        
+        XCTAssertEqual(observer.events.count, 4)
+        
+        for event in observer.events {
+            XCTAssertEqual(event.value.element, .empty)
+        }
+    }
+
+    ///
+    /// 當取消點選`Ubike場站地圖標注`時，更新 `Ubike場站名稱`。
+    ///
+    /// Expect:
+    ///     更新Ubike場站名稱事件(可以發出`1`+`多`次):
+    ///         名稱: `尚未選擇站點`
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testUpdateUpdateUibikeStationNameTextWhenUbikeStationAnnotationDeselect() {
+        // sut
+        sut = makeSUT()
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(String.self)
+        _ = sut.updateUibikeStationNameText.subscribe(observer)
+        
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        
+        XCTAssertEqual(observer.events.count, 4)
+        
+        for event in observer.events {
+            XCTAssertEqual(event.value.element, "尚未選擇站點")
+        }
+    }
+    
+    ///
+    /// 當取消點選`Ubike場站地圖標注`時，更新`收藏鈕狀態`。
+    ///
+    /// Expect:
+    ///     更新收藏鈕狀態事件(可以發出`1`+`多`次):
+    ///         狀態: `false` (未收藏)
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testUpdateCollectionButtonStateWhenUbikeStationAnnotationDeselect() {
+        // sut
+        sut = makeSUT()
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(Bool.self)
+        _ = sut.updateCollectionButtonState.subscribe(observer)
+        
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        
+        XCTAssertEqual(observer.events.count, 4)
+        
+        for event in observer.events {
+            XCTAssertEqual(event.value.element, false)
+        }
+    }
+    
+    ///
+    /// 當取消點選`Ubike場站地圖標注`時，更新`Ubike車輛數`。
+    ///
+    /// Expect:
+    ///     更新Ubike車輛數事件(可以發出`1`+`多`次):
+    ///         數量: `nil`
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testUpdateUbikeSpaceWhenUbikeStationAnnotationDeselect() {
+        // sut
+        sut = makeSUT()
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(String?.self)
+        _ = sut.updateUibikeSpaceText.subscribe(observer)
+        
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        
+        XCTAssertEqual(observer.events.count, 4)
+        
+        for event in observer.events {
+            XCTAssertEqual(event.value.element!, nil)
+        }
+    }
+    
+    ///
+    /// 當取消點選`Ubike場站地圖標注`時，更新`空車位數量`。
+    ///
+    /// Expect:
+    ///     更新空車位數量事件(可以發出`1`+`多`次):
+    ///         數量: `nil`
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testUpdateEmptySpaceWhenUbikeStationAnnotationDeselect() {
+        // sut
+        sut = makeSUT()
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(String?.self)
+        _ = sut.updateEmptySpaceText.subscribe(observer)
+        
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        
+        XCTAssertEqual(observer.events.count, 4)
+        
+        for event in observer.events {
+            XCTAssertEqual(event.value.element!, nil)
+        }
+    }
+    
+    ///
+    /// 當取消點選`Ubike場站地圖標注`時，更新`導航路線`。
+    ///
+    /// Expect:
+    ///     更新導航路線事件(可發出`1`+`多`次):
+    ///         導航路線: `nil`
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testUpdateRouteWhenUbikeStationAnnotationDeselect() {
+        // sut
+        sut = makeSUT()
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(MKRoute?.self)
+        _ = sut.updateRoute.subscribe(observer)
+        
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        
+        XCTAssertEqual(observer.events.count, 4)
+        
+        for event in observer.events {
+            XCTAssertEqual(event.value.element!, nil)
+        }
+    }
+    
+    ///
+    /// 當取消點選`Ubike場站地圖標注`時，更新`導航按鈕標題`。
+    ///
+    /// Expect:
+    ///     更新導航按鈕標題事件(可以發出`1`+`多`次):
+    ///         導航按鈕標題: `nil`
+    ///
+    /// Condition:
+    ///     none
+    ///
+    func testUpdateNavigationTitleWhenUbikeStationAnnotationDeselect() {
+        // sut
+        sut = makeSUT()
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(String?.self)
+        _ = sut.updateNavigationTitle.subscribe(observer)
+        
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        sut.annotationDidDeselect.accept(getUbikeStation())
+        
+        XCTAssertEqual(observer.events.count, 4)
+        
+        for event in observer.events {
+            XCTAssertEqual(event.value.element!, nil)
+        }
+    }
 }
 
 // MARK: Utility
