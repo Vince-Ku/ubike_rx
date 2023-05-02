@@ -311,6 +311,41 @@ final class HomeViewModelTests: XCTestCase {
             }
         }
     }
+    
+    ///
+    /// 當點擊`Ubike場站地圖標注`時，更新`Ubike場站資訊小卡`狀態。
+    ///
+    /// Expect:
+    ///     更新Ubike場站資訊小卡狀態事件(可以發出`1`+`多`次):
+    ///         狀態: `regular (id: 228)`
+    ///
+    /// Condition:
+    ///     Ubike場站地圖標注:
+    ///         id: `228`
+    ///
+    func testUpdateUbikeStationDetailStateWhenUbikeStationAnnotationDidSelect() {
+        // mock
+        let mockUbikeStation = getUbikeStation(id: "228")
+        
+        // sut
+        sut = makeSUT()
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(UibikeStationBottomSheetState.self)
+        _ = sut.updateUibikeStationBottomSheet.subscribe(observer)
+
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        
+        XCTAssertEqual(observer.events.count, 1+3)
+        
+        XCTAssertEqual(observer.events[0].value.element, .empty) // default view state
+
+        for event in observer.events[1...] {
+            XCTAssertEqual(event.value.element, .regular(id: "228"))
+        }
+    }
+    
 }
 
 // MARK: mock objects

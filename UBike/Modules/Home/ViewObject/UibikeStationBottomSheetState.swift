@@ -5,7 +5,7 @@
 //  Created by Vince on 2023/4/22.
 //
 
-enum UibikeStationBottomSheetState {
+enum UibikeStationBottomSheetState: Equatable {
     case regular(id: String) // UibikeStation id
     case empty
 }
