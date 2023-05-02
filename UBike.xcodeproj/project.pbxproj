@@ -40,6 +40,7 @@
 		6124F0FC29EFB14500A0301A /* UBike.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6124F0FA29EFB14500A0301A /* UBike.xcdatamodeld */; };
 		6124F21629EFBC9E00A0301A /* UbikeStationCoreDataMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6124F21529EFBC9E00A0301A /* UbikeStationCoreDataMapper.swift */; };
 		6130524829F49A0F0064332B /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6130524729F49A0F0064332B /* ToggleButton.swift */; };
+		6147CE0B2A01893D00895E7D /* UibikeStationBottomSheetStateMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6147CE0A2A01893D00895E7D /* UibikeStationBottomSheetStateMapperTests.swift */; };
 		615347B329F3D45A00FACB8F /* UbikeStationAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615347B229F3D45900FACB8F /* UbikeStationAnnotationView.swift */; };
 		6160BC2829F835FD00209A36 /* AlamofireNetworkServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6160BC2729F835FD00209A36 /* AlamofireNetworkServiceType.swift */; };
 		6160BC2D29F83C5F00209A36 /* StartUpCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6160BC2C29F83C5F00209A36 /* StartUpCoordinator.swift */; };
@@ -109,6 +110,7 @@
 		6124F0FB29EFB14500A0301A /* UBike.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UBike.xcdatamodel; sourceTree = "<group>"; };
 		6124F21529EFBC9E00A0301A /* UbikeStationCoreDataMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStationCoreDataMapper.swift; sourceTree = "<group>"; };
 		6130524729F49A0F0064332B /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
+		6147CE0A2A01893D00895E7D /* UibikeStationBottomSheetStateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UibikeStationBottomSheetStateMapperTests.swift; sourceTree = "<group>"; };
 		615347B229F3D45900FACB8F /* UbikeStationAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbikeStationAnnotationView.swift; sourceTree = "<group>"; };
 		6160BC2729F835FD00209A36 /* AlamofireNetworkServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireNetworkServiceType.swift; sourceTree = "<group>"; };
 		6160BC2C29F83C5F00209A36 /* StartUpCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpCoordinator.swift; sourceTree = "<group>"; };
@@ -378,6 +380,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		6147CE092A01892C00895E7D /* Mapper */ = {
+			isa = PBXGroup;
+			children = (
+				6147CE0A2A01893D00895E7D /* UibikeStationBottomSheetStateMapperTests.swift */,
+			);
+			path = Mapper;
+			sourceTree = "<group>";
+		};
 		6160BC2929F8371300209A36 /* Alamofire */ = {
 			isa = PBXGroup;
 			children = (
@@ -445,6 +455,7 @@
 		61ACFA5129F9C49800DF0760 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				6147CE092A01892C00895E7D /* Mapper */,
 				61ACFA4829F9C29000DF0760 /* HomeViewModelTests.swift */,
 			);
 			path = Home;
@@ -732,6 +743,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				61ACFA4929F9C29000DF0760 /* HomeViewModelTests.swift in Sources */,
+				6147CE0B2A01893D00895E7D /* UibikeStationBottomSheetStateMapperTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
