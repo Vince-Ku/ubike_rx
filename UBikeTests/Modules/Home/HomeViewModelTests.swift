@@ -346,6 +346,40 @@ final class HomeViewModelTests: XCTestCase {
         }
     }
     
+    ///
+    /// 當點擊`Ubike場站地圖標注`時，更新`Ubike場站名稱`。
+    ///
+    /// Expect:
+    ///     更新Ubike場站名稱事件(可以發出`1`+`多`次):
+    ///         名稱: `Vince 場站`
+    ///
+    /// Condition:
+    ///     Ubike場站地圖標注:
+    ///         名稱: `Vince 場站`
+    ///
+    func testUpdateUbikeStationNameWhenUbikeStationAnnotationDidSelect() {
+        // mock
+        let mockUbikeStation = getUbikeStation(name: .init(english: "", chinese: "Vince 場站"))
+        
+        // sut
+        sut = makeSUT()
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(String.self)
+        _ = sut.updateUibikeStationNameText.subscribe(observer)
+
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        sut.annotationDidSelect.accept(mockUbikeStation)
+        
+        XCTAssertEqual(observer.events.count, 1+3)
+        
+        XCTAssertEqual(observer.events[0].value.element, "尚未選擇站點") // default view state
+
+        for event in observer.events[1...] {
+            XCTAssertEqual(event.value.element, "Vince 場站")
+        }
+    }
+    
 }
 
 // MARK: mock objects
