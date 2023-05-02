@@ -558,6 +558,95 @@ final class HomeViewModelTests: XCTestCase {
         }
     }
     
+    ///
+    /// 當點擊`導航按鈕`時，更新地圖上的`導航路線`。
+    ///
+    /// Expect:
+    ///     更新導航路線事件(可發出`1`+`多`次):
+    ///         default:
+    ///             導航路線: `nil`
+    ///         第一次:
+    ///             導航路線: `mockRoute` reference
+    ///         第二次:
+    ///             導航路線: `mockRoute` reference
+    ///         第三次:
+    ///             導航路線: `mockRoute` reference
+    ///
+    /// Condition:
+    ///     使用者位置: `(經度：222, 緯度：7777)`
+    ///     場站位置: `(經度：111, 緯度：6666)`
+    ///
+    func testUpdateRouteWhenNavigationButtonDidTap() {
+        // mock
+        let mockRoute = MKRoute()
+        let mockUbikeStationRepository = MockUbikeStationsRepository(ubikeStation: getUbikeStation(coordinate: .init(latitude: 111, longitude: 6666)))
+        let mockLocationProxy = MockLocationManagerProxy(getCurrentLocationResult: .just(.init(latitude: 222, longitude: 7777)))
+        let mockRouteRepository = MockRouteRepository(route: mockRoute)
+        
+        // sut
+        sut = makeSUT(locationManager: mockLocationProxy, ubikeStationsRepository: mockUbikeStationRepository, routeRepository: mockRouteRepository)
+        
+        let observer = TestScheduler(initialClock: 0).createObserver(MKRoute?.self)
+        _ = sut.updateRoute.subscribe(observer)
+        
+        sut.navigationButtonDidTap.accept("")
+        sut.navigationButtonDidTap.accept("")
+        sut.navigationButtonDidTap.accept("")
+        
+        XCTAssertEqual(observer.events.count, 4)
+        
+        XCTAssertEqual(observer.events[0].value.element!, nil) // default view state
+        
+        for event in observer.events[1...] {
+            XCTAssertEqual(event.value.element, mockRoute)
+        }
+    }
+    
+    ///
+    /// 當點擊`導航按鈕`時，更新`地圖顯示區域`。
+    ///
+    /// Expect:
+    ///     更新地圖顯示區域事件(可發出`多`次):
+    ///         第一次:
+    ///             中心點: `mockRoute` 的中心點 (經度, 緯度)
+    ///             距離: `mockRoute` 的距離
+    ///         第二次:
+    ///             中心點: `mockRoute` 的中心點 (經度, 緯度)
+    ///             距離: `mockRoute` 的距離
+    ///         第三次:
+    ///             中心點: `mockRoute` 的中心點 (經度, 緯度)
+    ///             距離: `mockRoute` 的距離
+    ///
+    /// Condition:
+    ///     使用者位置: `(經度：44, 緯度：11)`
+    ///     場站位置: `(經度：555, 緯度：12345)`
+    ///
+    func testUpdateMapRegionWhenNavigationButtonDidTap() {
+        // mock
+        let mockRoute = MKRoute()
+        let mockUbikeStationRepository = MockUbikeStationsRepository(ubikeStation: getUbikeStation(coordinate: .init(latitude: 555, longitude: 12345)))
+        let mockLocationProxy = MockLocationManagerProxy(getCurrentLocationResult: .just(.init(latitude: 44, longitude: 11)))
+        let mockRouteRepository = MockRouteRepository(route: mockRoute)
+        
+        // sut
+        sut = makeSUT(locationManager: mockLocationProxy, ubikeStationsRepository: mockUbikeStationRepository, routeRepository: mockRouteRepository)
+        
+        let observer = TestScheduler(initialClock: 0).createObserver((CLLocation, CLLocationDistance?).self)
+        _ = sut.updateMapRegion.subscribe(observer)
+        
+        sut.navigationButtonDidTap.accept("")
+        sut.navigationButtonDidTap.accept("")
+        sut.navigationButtonDidTap.accept("")
+        
+        XCTAssertEqual(observer.events.count, 3)
+        
+        for event in observer.events {
+            XCTAssertEqual(event.value.element?.0.coordinate.latitude, mockRoute.polyline.coordinate.latitude)
+            XCTAssertEqual(event.value.element?.0.coordinate.longitude, mockRoute.polyline.coordinate.longitude)
+            XCTAssertEqual(event.value.element?.1, mockRoute.distance)
+        }
+    }
+    
 }
 
 // MARK: Utility
