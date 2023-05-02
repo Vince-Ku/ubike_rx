@@ -63,7 +63,7 @@ class HomeViewController: UIViewController {
         return view
     }()
 
-    private let favoriteStationButton: ToggleButton = {
+    private let collectionButton: ToggleButton = {
         let btn = ToggleButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.imageEdgeInsets = .init(top: 30, left: 30, bottom: 30, right: 30) //temp
@@ -179,17 +179,17 @@ class HomeViewController: UIViewController {
             bottomSheetView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
-        bottomSheetView.addSubview(favoriteStationButton)
+        bottomSheetView.addSubview(collectionButton)
         NSLayoutConstraint.activate([
-            favoriteStationButton.widthAnchor.constraint(equalToConstant: 30),
-            favoriteStationButton.heightAnchor.constraint(equalToConstant: 30),
-            favoriteStationButton.topAnchor.constraint(equalTo: bottomSheetView.topAnchor, constant: 20),
-            favoriteStationButton.rightAnchor.constraint(equalTo: bottomSheetView.rightAnchor, constant: -20)
+            collectionButton.widthAnchor.constraint(equalToConstant: 30),
+            collectionButton.heightAnchor.constraint(equalToConstant: 30),
+            collectionButton.topAnchor.constraint(equalTo: bottomSheetView.topAnchor, constant: 20),
+            collectionButton.rightAnchor.constraint(equalTo: bottomSheetView.rightAnchor, constant: -20)
         ])
         
         bottomSheetView.addSubview(stationNameLabel)
         NSLayoutConstraint.activate([
-            stationNameLabel.centerYAnchor.constraint(equalTo: favoriteStationButton.centerYAnchor),
+            stationNameLabel.centerYAnchor.constraint(equalTo: collectionButton.centerYAnchor),
             stationNameLabel.leadingAnchor.constraint(equalTo: bottomSheetView.leadingAnchor, constant: 20),
         ])
         
@@ -224,7 +224,7 @@ class HomeViewController: UIViewController {
         bottomSheetView.addSubview(navigationButton)
         NSLayoutConstraint.activate([
             navigationButton.leadingAnchor.constraint(equalTo: stationNameLabel.leadingAnchor),
-            navigationButton.trailingAnchor.constraint(equalTo: favoriteStationButton.trailingAnchor),
+            navigationButton.trailingAnchor.constraint(equalTo: collectionButton.trailingAnchor),
             navigationButton.heightAnchor.constraint(equalToConstant: 36),
             navigationButton.topAnchor.constraint(equalTo: emptySpaceIconImageView.bottomAnchor, constant: 10),
             navigationButton.bottomAnchor.constraint(equalTo: bottomSheetView.safeAreaLayoutGuide.bottomAnchor, constant: -10)
@@ -282,17 +282,17 @@ class HomeViewController: UIViewController {
     }
     
     private func setupBottomSheetEvent() {
-        favoriteStationButton.rx.tap
-            .withUnretained(favoriteStationButton)
+        collectionButton.rx.tap
+            .withUnretained(collectionButton)
             .compactMap { button, _ -> (String, Bool)? in
                 guard let id = button.id else { return nil }
                 return (id, !button.isSelected)
             }
-            .bind(to: viewModel.favoriteStationButtonDidTap)
+            .bind(to: viewModel.collectionButtonDidTap)
             .disposed(by: disposeBag)
             
         navigationButton.rx.tap
-            .withUnretained(favoriteStationButton)
+            .withUnretained(collectionButton)
             .compactMap(\.0.id)
             .bind(to: viewModel.navigationButtonDidTap)
             .disposed(by: disposeBag)
@@ -301,13 +301,13 @@ class HomeViewController: UIViewController {
             .drive(onNext: { [weak self] state in
                 switch state {
                 case .empty:
-                    self?.favoriteStationButton.id = nil
-                    self?.favoriteStationButton.isEnabled = false
+                    self?.collectionButton.id = nil
+                    self?.collectionButton.isEnabled = false
                     self?.navigationButton.isEnabled = false
                     
                 case .regular(let id):
-                    self?.favoriteStationButton.id = id
-                    self?.favoriteStationButton.isEnabled = true
+                    self?.collectionButton.id = id
+                    self?.collectionButton.isEnabled = true
                     self?.navigationButton.isEnabled = true
                 }
             })
@@ -317,8 +317,8 @@ class HomeViewController: UIViewController {
             .bind(to: stationNameLabel.rx.text)
             .disposed(by: disposeBag)
         
-        viewModel.updateFavoriteButtonState
-            .bind(to: favoriteStationButton.rx.isSelected)
+        viewModel.updateCollectionButtonState
+            .bind(to: collectionButton.rx.isSelected)
             .disposed(by: disposeBag)
         
         viewModel.updateUibikeSpaceText

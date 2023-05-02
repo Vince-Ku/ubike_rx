@@ -28,7 +28,7 @@ class HomeViewModel {
     let refreshAnnotationButtonDidTap = PublishRelay<Void>()
     let annotationDidSelect = PublishRelay<UbikeStation>()
     let annotationDidDeselect = PublishRelay<UbikeStation>()
-    let favoriteStationButtonDidTap = PublishRelay<(String, Bool)>()
+    let collectionButtonDidTap = PublishRelay<(String, Bool)>()
     let navigationButtonDidTap = PublishRelay<String>()
     let showListButtonDidTap = PublishRelay<Void>()
 
@@ -39,7 +39,7 @@ class HomeViewModel {
     let updateUibikeStationNameText = BehaviorRelay<String>(value: "尚未選擇站點")
     let updateUibikeSpaceText = BehaviorRelay<String?>(value: nil)
     let updateEmptySpaceText = BehaviorRelay<String?>(value: nil)
-    let updateFavoriteButtonState = BehaviorRelay<Bool>(value: false)
+    let updateCollectionButtonState = BehaviorRelay<Bool>(value: false)
     let updateNavigationTitle = BehaviorRelay<String?>(value: nil)
     let updateRoute = BehaviorRelay<MKRoute?>(value: nil)
     
@@ -113,7 +113,7 @@ class HomeViewModel {
             .subscribe(onNext: { [weak self] ubikeStation in
                 self?.updateUibikeSpaceText.accept(String(ubikeStation.parkingSpace.bike))
                 self?.updateEmptySpaceText.accept(String(ubikeStation.parkingSpace.empty))
-                self?.updateFavoriteButtonState.accept(ubikeStation.isFavorite)
+                self?.updateCollectionButtonState.accept(ubikeStation.isFavorite)
             })
             .disposed(by: disposeBag)
         
@@ -142,13 +142,13 @@ class HomeViewModel {
                 self?.updateUibikeStationNameText.accept("尚未選擇站點")
                 self?.updateUibikeSpaceText.accept(nil)
                 self?.updateEmptySpaceText.accept(nil)
-                self?.updateFavoriteButtonState.accept(false)
+                self?.updateCollectionButtonState.accept(false)
                 self?.updateNavigationTitle.accept(nil)
                 self?.updateRoute.accept(nil)
             })
             .disposed(by: disposeBag)
         
-        favoriteStationButtonDidTap
+        collectionButtonDidTap
             .flatMapLatest { [weak self] id, isFavorite -> Single<Void> in
                 self?.ubikeStationsRepository.updateUbikeStation(id: id, isFavorite: isFavorite) ?? .never()
             }
