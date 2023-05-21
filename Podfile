@@ -20,8 +20,4 @@ target 'UBike' do
     pod 'RxTest'
   end
 
-  target 'UBikeUITests' do
-    # Pods for testing
-  end
-
 end
